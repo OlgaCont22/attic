@@ -56,7 +56,7 @@
             display: none;
             z-index: 25;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.12s ease;
             will-change: transform;
             box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.7);
         }
@@ -163,9 +163,8 @@
         // Каждая область — точка разворачивания постера. Области невидимые.
         //   left, top, width, height — позиция и размер области, px
         //   poster — ПОЛНАЯ ССЫЛКА на постер
-        // ВАЖНО: сейчас постеры распределены по областям 1–10 по порядку списка.
-        // Чтобы привязать нужный постер к нужной области — просто поменяйте
-        // ссылку в поле poster соответствующей строки.
+        // Постеры распределены по областям 1–10 по порядку списка — при
+        // необходимости поменяйте ссылки в поле poster нужных строк.
         const HOTSPOTS = [
             { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: 'https://i128.fastpic.org/big/2026/0901/97/16f199c7a28890cb50739d99e1c6b897.jpg' },
             { id: 2, left: 344, top: 138, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/73/03725476c0216d74d12e33a94b2f5e73.jpg' },
@@ -182,6 +181,10 @@
         // Максимальный размер развёрнутого постера (можно подкорректировать)
         const POSTER_MAX_W = 360;
         const POSTER_MAX_H = 460;
+
+        // Яркость постера при ВЫКЛЮЧЕННОМ свете (1 = без затемнения).
+        // Подкрутите под ваш тёмный фон, если постер слишком тёмный/светлый.
+        const POSTER_DARK_BRIGHTNESS = 0.3;
 
         // Параметры мерцания при ВКЛЮЧЕНИИ света
         const FLICKER_ON = {
@@ -227,7 +230,6 @@
             });
         }
 
-        // Предзагрузка всех постеров (ссылка берётся прямо из поля poster области)
         function preloadPosters() {
             return Promise.all(HOTSPOTS.map(zone => {
                 const src = zone.poster;
@@ -359,6 +361,21 @@
             expandPoster(zoneData);
         }
 
+        // ========== ОСВЕЩЕНИЕ ПОСТЕРА ==========
+        // Возвращает значение фильтра постера в зависимости от состояния света:
+        // свет выкл — постер затемнён, свет вкл — обычная яркость.
+        function getPosterFilter() {
+            return state.isLightOn ? 'brightness(1)' : `brightness(${POSTER_DARK_BRIGHTNESS})`;
+        }
+
+        // Обновляет яркость текущего развёрнутого постера (например, при
+        // переключении света, пока постер открыт).
+        function updateExpandedPosterLighting() {
+            if (state.currentExpandedPoster) {
+                state.currentExpandedPoster.el.style.filter = getPosterFilter();
+            }
+        }
+
         // ========== ПОСТЕРЫ ==========
         function createPosterElements() {
             const scene = document.getElementById('scene');
@@ -366,7 +383,7 @@
             const maxH = Math.min(POSTER_MAX_H, state.sceneH * 0.85);
 
             state.loadedPosters.forEach(p => {
-                if (!p.img) return; // постер не загрузился — пропускаем
+                if (!p.img) return;
                 const naturalW = p.img.naturalWidth || 300;
                 const naturalH = p.img.naturalHeight || 420;
                 const ratio = Math.min(maxW / naturalW, maxH / naturalH);
@@ -403,6 +420,8 @@
             const centerY = (state.sceneH - zoneData.finalH) / 2;
 
             poster.style.display = 'block';
+            // Постер сразу получает яркость под текущее состояние света
+            poster.style.filter = getPosterFilter();
             poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
             state.currentExpandedPoster = zoneData;
 
@@ -507,6 +526,8 @@
                 runFlicker(FLICKER_ON);
                 scheduleAmbientFlicker();
             }
+            // Если в этот момент развёрнут постер — обновляем его яркость под свет
+            updateExpandedPosterLighting();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
