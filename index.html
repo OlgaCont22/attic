@@ -40,33 +40,16 @@
 
         #bgOn { opacity: 0; }
 
-        /* ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ (ХОТСПОТЫ) ========== */
-        /* Пока области ВИДИМЫЕ — для настройки позиций.
-           Чтобы сделать их невидимыми, замените блок .hotspot на:
-           .hotspot { position:absolute; cursor:pointer; z-index:20; background:transparent; border:none; }
-           и уберите блок .hotspot::before (номер области). */
+        /* ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ (ХОТСПОТЫ) ==========
+           Области НЕВИДИМЫЕ: без рамки, заливки и номера, но кликабельные.
+           Позиции и размеры задаются в массиве HOTSPOTS в скрипте. */
         .hotspot {
             position: absolute;
-            border: 2px dashed rgba(255, 80, 80, 0.9);
-            background-color: rgba(255, 80, 80, 0.15);
+            background: transparent;
+            border: none;
             cursor: pointer;
             z-index: 20;
             box-sizing: border-box;
-            transition: background-color 0.15s ease, border-color 0.15s ease;
-        }
-        .hotspot:hover {
-            border-color: rgba(255, 140, 140, 1);
-            background-color: rgba(255, 80, 80, 0.32);
-        }
-        /* Номер области в углу — удобно при настройке; потом можно убрать */
-        .hotspot::before {
-            content: attr(data-id);
-            position: absolute;
-            top: 2px;
-            left: 5px;
-            font: 12px/1 Arial, sans-serif;
-            color: rgba(255, 210, 210, 0.95);
-            pointer-events: none;
         }
 
         /* ========== ВЫКЛЮЧАТЕЛЬ (чистый CSS) ========== */
@@ -162,15 +145,20 @@
         const BG_OFF = 'https://i128.fastpic.org/big/2026/0901/6e/4fe4eacd84cf704db889b067b8d6976e.jpg'; // свет выключен
         const BG_ON  = 'https://i128.fastpic.org/big/2026/0901/e4/a4a8797bc75d8ed099610cdeb14f3ce4.jpg'; // свет включён
 
+        // ========== АУДИО ==========
+        // Укажите путь к вашему файлу фоновой музыки (положите его в папку sounds
+        // рядом с HTML-файлом, либо замените путь ниже на свой).
+        const AUDIO_URLS = {
+            backgroundMusic: './sounds/attic-ambience.aac',
+        };
+
         // ========== НАСТРАИВАЕМЫЕ КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
-        // Каждая область — будущая точка разворачивания постера.
+        // Каждая область — точка разворачивания постера. Области невидимые.
         // Отредактируйте значения под своё изображение:
         //   left   — отступ от ЛЕВОГО края сцены, px
         //   top    — отступ от ВЕРХНЕГО края сцены, px
         //   width  — ширина области, px
         //   height — высота области, px
-        // Координаты указаны относительно левого верхнего угла сцены.
-        // Значения ниже — ПРИМЕРНЫЕ, расставьте их по нужным объектам.
         const HOTSPOTS = [
             { id: 1, left: 35, top: 307,  width: 95, height: 230 },
             { id: 2, left: 344, top: 138, width: 88, height: 133 },
@@ -192,8 +180,7 @@
             maxGap: 180,
         };
 
-        // Параметры фонового мерцания, когда свет уже стабильно горит:
-        // слабее (яркость гуляет недалеко от 1) и короче (1 сек)
+        // Параметры фонового мерцания, когда свет уже стабильно горит
         const FLICKER_AMBIENT = {
             duration: 1000,
             levels: [0.9, 0.96, 1.05, 0.93, 1.03, 1],
@@ -210,15 +197,76 @@
             allAssetsLoaded: false,
             flickerGeneration: 0,
             ambientFlickerTimer: null,
+            audioEnabled: false,
+            audioElements: null,
         };
 
-        // Загрузка изображения с возвратом его естественных размеров
+        // ========== ЗАГРУЗКА ИЗОБРАЖЕНИЙ ==========
         function preloadImg(src) {
             return new Promise(resolve => {
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = () => resolve(null);
                 img.src = src;
+            });
+        }
+
+        // ========== АУДИО: создание и предзагрузка ==========
+        function initAudio() {
+            state.audioElements = {
+                backgroundMusic: new Audio(AUDIO_URLS.backgroundMusic),
+            };
+            state.audioElements.backgroundMusic.loop = true;
+            state.audioElements.backgroundMusic.volume = 0.3;
+        }
+
+        // Предзагрузка музыки на экране загрузки (с таймаутом, чтобы не зависнуть,
+        // если файл отсутствует)
+        function preloadAudio() {
+            return new Promise(resolve => {
+                initAudio();
+                const elements = [state.audioElements.backgroundMusic];
+                let loaded = 0;
+                let settled = false;
+                const total = elements.length;
+
+                const finish = () => {
+                    if (settled) return;
+                    settled = true;
+                    resolve();
+                };
+
+                if (total === 0) { finish(); return; }
+
+                setTimeout(finish, 25000); // страховка от зависания
+
+                elements.forEach(audio => {
+                    audio.addEventListener('canplaythrough', () => {
+                        if (settled) return;
+                        loaded++;
+                        if (loaded === total) finish();
+                    }, { once: true });
+                    audio.addEventListener('error', () => {
+                        if (settled) return;
+                        loaded++;
+                        if (loaded === total) finish();
+                    }, { once: true });
+                    audio.load();
+                });
+            });
+        }
+
+        // Запуск фоновой музыки с обходом блокировки автовоспроизведения:
+        // если браузер не дал запустить сразу — стартуем при первом клике/клавише
+        function tryPlayBackgroundMusic() {
+            const music = state.audioElements && state.audioElements.backgroundMusic;
+            if (!music) return;
+            const promise = music.play();
+            if (!promise || typeof promise.catch !== 'function') return;
+            promise.catch(() => {
+                const handleInteraction = () => music.play().catch(() => {});
+                document.addEventListener('click', handleInteraction, { once: true });
+                document.addEventListener('keydown', handleInteraction, { once: true });
             });
         }
 
@@ -230,7 +278,12 @@
         }
 
         async function initialize() {
-            const [offImg, onImg] = await Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]);
+            const [bgImgs] = await Promise.all([
+                Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]),
+                preloadAudio(),
+            ]);
+            const offImg = bgImgs[0];
+            const onImg = bgImgs[1];
 
             const w = offImg ? offImg.naturalWidth : 1265;
             const h = offImg ? offImg.naturalHeight : 550;
@@ -253,10 +306,12 @@
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('scene').style.display = 'block';
             createHotspots();
+            state.audioEnabled = true;
+            tryPlayBackgroundMusic();
         }
 
         // ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
-        // Создаёт области из массива HOTSPOTS и вешает на каждую обработчик клика.
+        // Создаёт НЕВИДИМЫЕ области из массива HOTSPOTS и вешает обработчик клика.
         function createHotspots() {
             const scene = document.getElementById('scene');
             HOTSPOTS.forEach(zone => {
@@ -267,7 +322,6 @@
                 el.style.top = zone.top + 'px';
                 el.style.width = zone.width + 'px';
                 el.style.height = zone.height + 'px';
-                el.title = 'Область ' + zone.id;
                 el.addEventListener('click', () => onHotspotClick(zone));
                 scene.appendChild(el);
             });
