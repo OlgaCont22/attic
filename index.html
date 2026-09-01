@@ -19,6 +19,7 @@
         .scene {
             position: relative;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         #bgWrap {
@@ -61,39 +62,16 @@
             box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.7);
         }
 
-        /* ========== ВЫКЛЮЧАТЕЛЬ (чистый CSS) ========== */
-        .light-switch {
+        /* ========== ВЫКЛЮЧАТЕЛЬ-ШНУРОК ========== */
+        .pull-cord {
             position: absolute;
-            right: 20px;
-            bottom: 20px;
-            width: 52px;
-            height: 84px;
-            border-radius: 10px;
-            background: linear-gradient(145deg, #e8e4da, #b8b2a6);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.55), inset 0 1px 2px rgba(255,255,255,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
             z-index: 30;
-            transition: box-shadow 0.2s ease, transform 0.1s ease;
-        }
-        .light-switch:hover {
-            box-shadow: 0 3px 12px rgba(0,0,0,0.7), 0 0 12px rgba(255,220,120,0.35), inset 0 1px 2px rgba(255,255,255,0.5);
-        }
-        .light-switch:active { transform: scale(0.96); }
-        .light-switch .rocker {
-            width: 30px;
-            height: 52px;
-            border-radius: 6px;
-            background: linear-gradient(#faf7f0, #cfc9bd);
-            box-shadow: 0 3px 5px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(0,0,0,0.15);
-            transition: transform 0.12s ease, box-shadow 0.12s ease;
-            transform: perspective(160px) rotateX(22deg);
-        }
-        .light-switch.on .rocker {
-            transform: perspective(160px) rotateX(-22deg);
-            box-shadow: 0 -3px 5px rgba(0,0,0,0.35), inset 0 2px 3px rgba(0,0,0,0.12), 0 0 10px rgba(255,230,150,0.5);
+            user-select: none;
+            -webkit-user-drag: none;
+            --light: 0.3;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)) brightness(var(--light));
+            transition: filter 0.15s ease;
         }
 
         /* ========== ЭКРАН ЗАГРУЗКИ ========== */
@@ -145,19 +123,30 @@
             <img id="bgOn" class="bg" alt="">
         </div>
         <!-- Хотспоты и постеры добавляются сюда из JS -->
-        <div id="lightSwitch" class="light-switch" role="button" aria-label="Выключатель света" title="Включить/выключить свет">
-            <div class="rocker"></div>
-        </div>
+        <img id="pullCord" class="pull-cord" alt="Выключатель-шнурок" title="Дёрнуть за шнурок">
     </div>
 
     <script>
-        const BG_OFF = './images/bgOff.jpg'; // свет выключен
-        const BG_ON  = './images/bgOn.jpg'; // свет включён
+        const BG_OFF = 'https://i128.fastpic.org/big/2026/0901/32/181850fe156c04d799b80ba62f8dc932.jpg'; // свет выключен
+        const BG_ON  = 'https://i128.fastpic.org/big/2026/0901/c4/9046d8dc4e1ac2ab45b2aebc6cfedac4.jpg'; // свет включён
+
+        // ========== ВЫКЛЮЧАТЕЛЬ-ШНУРОК ==========
+        const PULL_CORD_URL = 'https://i128.fastpic.org/big/2026/0901/ec/9a2da0b478a2a2c2fbd95e3cf46ae8ec.png';
+        const CORD_HEIGHT = 240;
+        const CORD_RIGHT = 26;
 
         // ========== АУДИО ==========
         const AUDIO_URLS = {
             backgroundMusic: './sounds/attic-ambience.aac',
+            switchSound: 'https://www.dropbox.com/scl/fi/sl0r1qaqv1qj15u4xzfko/light.mp3?rlkey=he6r4gicpq3f12gcz0lxfe7ix&st=hrp10dnj&dl=1',
+            posterUnfoldSound: 'https://www.dropbox.com/scl/fi/rs5tkasaftb5ina5w1pgi/poster_unf.mp3?rlkey=qb2lya0kfrgpumt3io0tgikhu&st=ol0jtean&dl=1',
+            posterFoldSound: 'https://www.dropbox.com/scl/fi/8s7x1igyymi3wfhql628l/poster_f.mp3?rlkey=s9f4b71wxmzvsuv361nwd3eka&st=fcr18wwk&dl=1',
+            catPurr: 'https://www.dropbox.com/scl/fi/8mgqe7xjqtrqkyck81mfk/murr.mp3?rlkey=mplsv40s07l6frlxi26hx0jho&st=5x1xma5l&dl=1',
         };
+
+        // Интервал между воспроизведениями мурчания: 15–30 секунд
+        const CAT_PURR_MIN_DELAY = 15000;
+        const CAT_PURR_MAX_DELAY = 30000;
 
         // ========== НАСТРАИВАЕМЫЕ КЛИКАБЕЛЬНЫЕ ОБЛАСТИ И ПОСТЕРЫ ==========
         // Каждая область — точка разворачивания постера. Области невидимые.
@@ -166,24 +155,23 @@
         // Постеры распределены по областям 1–10 по порядку списка — при
         // необходимости поменяйте ссылки в поле poster нужных строк.
         const HOTSPOTS = [
-            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: './images/RE_poster.JPG' },
-            { id: 2, left: 344, top: 138, width: 88, height: 133, poster: './images/casino_poster.JPG' },
-            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: './images/hope_poster.JPG' },
-            { id: 4, left: 645, top: 136, width: 88, height: 133, poster: './images/horse_poster.JPG' },
-            { id: 5, left: 165, top: 300, width: 68, height: 180, poster: './images/vic_poster.JPG' },
-            { id: 6, left: 348, top: 311, width: 65, height: 100, poster: './images/Onsl_poster.JPG' },
-            { id: 7, left: 492, top: 309, width: 88, height: 133, poster: './images/wer_poster.jpg' },
-            { id: 8, left: 645, top: 309, width: 88, height: 133, poster: './images/blade_poster.jpg' },
-            { id: 9, left: 842, top: 300, width: 56, height: 180, poster: './images/terr_poster.jpg' },
-            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: './images/fall_poster.jpg' },
+            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: 'https://i128.fastpic.org/big/2026/0901/97/16f199c7a28890cb50739d99e1c6b897.jpg' },
+            { id: 2, left: 344, top: 138, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/73/03725476c0216d74d12e33a94b2f5e73.jpg' },
+            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/58/8660cd16390102d54bc916e806666758.jpg' },
+            { id: 4, left: 645, top: 136, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/0f/b1fe490a8e4b5fb7db0f228101224f0f.jpg' },
+            { id: 5, left: 165, top: 300, width: 68, height: 180, poster: 'https://i128.fastpic.org/big/2026/0901/5b/1b1d9aa57a972edd3d686331780c545b.jpg' },
+            { id: 6, left: 348, top: 311, width: 65, height: 100, poster: 'https://i128.fastpic.org/big/2026/0901/48/b73d819f6a3dad2dcf076134ab743a48.jpg' },
+            { id: 7, left: 492, top: 309, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/2f/e128107b2b500615058eb8b090bdee2f.jpg' },
+            { id: 8, left: 645, top: 309, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/ba/2114d8fd50ce314cb29325fd518e50ba.jpg' },
+            { id: 9, left: 842, top: 300, width: 56, height: 180, poster: 'https://i128.fastpic.org/big/2026/0901/de/c5cd20eb1c9af7bbef4ea5b48e1c5ade.jpg' },
+            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: 'https://i128.fastpic.org/big/2026/0901/b9/31a877ec1689c62a34736b0c664cf7b9.jpg' },
         ];
 
         // Максимальный размер развёрнутого постера (можно подкорректировать)
         const POSTER_MAX_W = 360;
         const POSTER_MAX_H = 460;
 
-        // Яркость постера при ВЫКЛЮЧЕННОМ свете (1 = без затемнения).
-        // Подкрутите под ваш тёмный фон, если постер слишком тёмный/светлый.
+        // Яркость постеров и шнурка при ВЫКЛЮЧЕННОМ свете (1 = без затемнения)
         const POSTER_DARK_BRIGHTNESS = 0.3;
 
         // Параметры мерцания при ВКЛЮЧЕНИИ света
@@ -218,6 +206,9 @@
             posterById: {},
             currentExpandedPoster: null,
             isAnimating: false,
+            cordImg: null,
+            catPurrTimer: null,
+            catPurrCycleStarted: false,
         };
 
         // ========== ЗАГРУЗКА ИЗОБРАЖЕНИЙ ==========
@@ -241,15 +232,25 @@
         function initAudio() {
             state.audioElements = {
                 backgroundMusic: new Audio(AUDIO_URLS.backgroundMusic),
+                switchSound: new Audio(AUDIO_URLS.switchSound),
+                posterUnfoldSound: new Audio(AUDIO_URLS.posterUnfoldSound),
+                posterFoldSound: new Audio(AUDIO_URLS.posterFoldSound),
+                catPurr: new Audio(AUDIO_URLS.catPurr),
             };
             state.audioElements.backgroundMusic.loop = true;
-            state.audioElements.backgroundMusic.volume = 0.6;
+            state.audioElements.backgroundMusic.volume = 0.3;
         }
 
         function preloadAudio() {
             return new Promise(resolve => {
                 initAudio();
-                const elements = [state.audioElements.backgroundMusic];
+                const elements = [
+                    state.audioElements.backgroundMusic,
+                    state.audioElements.switchSound,
+                    state.audioElements.posterUnfoldSound,
+                    state.audioElements.posterFoldSound,
+                    state.audioElements.catPurr,
+                ];
                 let loaded = 0;
                 let settled = false;
                 const total = elements.length;
@@ -291,6 +292,66 @@
             });
         }
 
+        function playSwitchSound() {
+            if (!state.audioEnabled || !state.audioElements) return;
+            const s = state.audioElements.switchSound;
+            if (!s) return;
+            s.currentTime = 0;
+            s.play().catch(() => {});
+        }
+
+        // Звук РАЗВОРАЧИВАНИЯ постера
+        function playPosterUnfoldSound() {
+            if (!state.audioEnabled || !state.audioElements) return;
+            const s = state.audioElements.posterUnfoldSound;
+            if (!s) return;
+            s.currentTime = 0;
+            s.play().catch(() => {});
+        }
+
+        // Звук СВОРАЧИВАНИЯ постера
+        function playPosterFoldSound() {
+            if (!state.audioEnabled || !state.audioElements) return;
+            const s = state.audioElements.posterFoldSound;
+            if (!s) return;
+            s.currentTime = 0;
+            s.play().catch(() => {});
+        }
+
+        // ========== МУРЧАНИЕ КОШКИ ==========
+        // Планирует следующее мурчание через случайные 15–30 секунд.
+        function scheduleNextPurr() {
+            if (state.catPurrTimer) clearTimeout(state.catPurrTimer);
+            const delay = CAT_PURR_MIN_DELAY + Math.random() * (CAT_PURR_MAX_DELAY - CAT_PURR_MIN_DELAY);
+            state.catPurrTimer = setTimeout(() => playCatPurr(), delay);
+        }
+
+        function playCatPurr() {
+            if (!state.audioEnabled || !state.audioElements) return;
+            const purr = state.audioElements.catPurr;
+            if (!purr) return;
+            purr.currentTime = 0;
+            const promise = purr.play();
+            if (promise && typeof promise.catch === 'function') {
+                promise.catch(() => {
+                    // Если воспроизведение не стартовало (например, заблокировано
+                    // автоплей-политикой) — планируем следующую попытку, чтобы цикл не прерывался
+                    scheduleNextPurr();
+                });
+            }
+        }
+
+        // Запускает цикл мурчания. Следующее воспроизведение планируется ТОЛЬКО
+        // после того, как текущее доиграло до конца (событие 'ended').
+        function startCatPurrCycle() {
+            if (state.catPurrCycleStarted) return;
+            const purr = state.audioElements && state.audioElements.catPurr;
+            if (!purr) return;
+            state.catPurrCycleStarted = true;
+            purr.addEventListener('ended', () => scheduleNextPurr());
+            scheduleNextPurr(); // первое мурчание — после стартовой случайной паузы
+        }
+
         function applySceneSize(width, height) {
             const scene = document.getElementById('scene');
             scene.style.width = width + 'px';
@@ -298,10 +359,11 @@
         }
 
         async function initialize() {
-            const [bgImgs, loadedPosters] = await Promise.all([
+            const [bgImgs, loadedPosters, , cordImg] = await Promise.all([
                 Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]),
                 preloadPosters(),
                 preloadAudio(),
+                preloadImg(PULL_CORD_URL),
             ]);
             const offImg = bgImgs[0];
 
@@ -312,6 +374,7 @@
             state.sceneW = w;
             state.sceneH = h;
             state.loadedPosters = loadedPosters;
+            state.cordImg = cordImg;
 
             document.getElementById('bgOff').src = BG_OFF;
             document.getElementById('bgOn').src = BG_ON;
@@ -329,10 +392,61 @@
             if (!state.allAssetsLoaded) return;
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('scene').style.display = 'block';
+            setupPullCord();
             createHotspots();
             createPosterElements();
             state.audioEnabled = true;
             tryPlayBackgroundMusic();
+            startCatPurrCycle();
+        }
+
+        // ========== ВЫКЛЮЧАТЕЛЬ-ШНУРОК ==========
+        function setupPullCord() {
+            const cord = document.getElementById('pullCord');
+            if (!cord) return;
+            cord.src = PULL_CORD_URL;
+
+            const img = state.cordImg;
+            const naturalW = img ? img.naturalWidth : 60;
+            const naturalH = img ? img.naturalHeight : CORD_HEIGHT;
+            const ratio = naturalW / naturalH;
+
+            const height = CORD_HEIGHT;
+            const width = Math.round(height * ratio);
+
+            cord.style.width = width + 'px';
+            cord.style.height = height + 'px';
+            cord.style.right = CORD_RIGHT + 'px';
+            cord.style.top = Math.round(-height / 3) + 'px';
+
+            updateCordLighting();
+        }
+
+        function updateCordLighting() {
+            const cord = document.getElementById('pullCord');
+            if (!cord) return;
+            const light = state.isLightOn ? 1 : POSTER_DARK_BRIGHTNESS;
+            cord.style.setProperty('--light', String(light));
+        }
+
+        function playCordAnimation() {
+            const cord = document.getElementById('pullCord');
+            if (!cord || typeof cord.animate !== 'function') return;
+
+            const h = cord.offsetHeight || CORD_HEIGHT;
+            const pull = Math.round(h * 0.24);
+
+            const keyframes = [
+                { transform: 'translateY(0px)', easing: 'cubic-bezier(0.55, 0, 1, 0.45)' },
+                { transform: `translateY(${pull}px)`, offset: 0.16, easing: 'cubic-bezier(0, 0.4, 0.5, 1)' },
+                { transform: `translateY(${Math.round(-pull * 0.10)}px)`, offset: 0.40, easing: 'ease-in-out' },
+                { transform: `translateY(${Math.round(pull * 0.16)}px)`, offset: 0.58, easing: 'ease-in-out' },
+                { transform: `translateY(${Math.round(-pull * 0.05)}px)`, offset: 0.74, easing: 'ease-in-out' },
+                { transform: `translateY(${Math.round(pull * 0.06)}px)`, offset: 0.87, easing: 'ease-out' },
+                { transform: 'translateY(0px)' }
+            ];
+
+            cord.animate(keyframes, { duration: 475 });
         }
 
         // ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
@@ -362,14 +476,10 @@
         }
 
         // ========== ОСВЕЩЕНИЕ ПОСТЕРА ==========
-        // Возвращает значение фильтра постера в зависимости от состояния света:
-        // свет выкл — постер затемнён, свет вкл — обычная яркость.
         function getPosterFilter() {
             return state.isLightOn ? 'brightness(1)' : `brightness(${POSTER_DARK_BRIGHTNESS})`;
         }
 
-        // Обновляет яркость текущего развёрнутого постера (например, при
-        // переключении света, пока постер открыт).
         function updateExpandedPosterLighting() {
             if (state.currentExpandedPoster) {
                 state.currentExpandedPoster.el.style.filter = getPosterFilter();
@@ -412,6 +522,7 @@
                 return;
             }
             state.isAnimating = true;
+            playPosterUnfoldSound();
 
             const poster = zoneData.el;
             const sx = zoneData.zone.width / zoneData.finalW;
@@ -420,7 +531,6 @@
             const centerY = (state.sceneH - zoneData.finalH) / 2;
 
             poster.style.display = 'block';
-            // Постер сразу получает яркость под текущее состояние света
             poster.style.filter = getPosterFilter();
             poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
             state.currentExpandedPoster = zoneData;
@@ -436,6 +546,7 @@
         function collapsePoster(callback) {
             if (!state.currentExpandedPoster || state.isAnimating) return;
             state.isAnimating = true;
+            playPosterFoldSound();
 
             const zoneData = state.currentExpandedPoster;
             const poster = zoneData.el;
@@ -457,7 +568,7 @@
             if (!state.currentExpandedPoster) return;
             if (e.target.closest('.hotspot')) return;
             if (e.target.closest('.poster')) return;
-            if (e.target.closest('.light-switch')) return;
+            if (e.target.closest('.pull-cord')) return;
             collapsePoster();
         });
 
@@ -509,29 +620,29 @@
             const bgOff = document.getElementById('bgOff');
             const bgOn = document.getElementById('bgOn');
             const wrap = document.getElementById('bgWrap');
-            const sw = document.getElementById('lightSwitch');
+
+            playSwitchSound();
+            playCordAnimation();
 
             if (state.isLightOn) {
                 stopAmbientFlicker();
                 wrap.style.filter = 'brightness(1)';
                 bgOn.style.opacity = '0';
                 bgOff.style.opacity = '1';
-                sw.classList.remove('on');
                 state.isLightOn = false;
             } else {
                 bgOff.style.opacity = '0';
                 bgOn.style.opacity = '1';
-                sw.classList.add('on');
                 state.isLightOn = true;
                 runFlicker(FLICKER_ON);
                 scheduleAmbientFlicker();
             }
-            // Если в этот момент развёрнут постер — обновляем его яркость под свет
             updateExpandedPosterLighting();
+            updateCordLighting();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('lightSwitch').addEventListener('click', toggleLight);
+            document.getElementById('pullCord').addEventListener('click', toggleLight);
         });
 
         initialize();
