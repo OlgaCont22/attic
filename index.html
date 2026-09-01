@@ -151,32 +151,35 @@
     </div>
 
     <script>
-        const BG_OFF = './images/bgOff.jpg'; // свет выключен
-        const BG_ON  = './images/bgOn.jpg'; // свет включён
+        const BG_OFF = 'https://i128.fastpic.org/big/2026/0901/32/181850fe156c04d799b80ba62f8dc932.jpg'; // свет выключен
+        const BG_ON  = 'https://i128.fastpic.org/big/2026/0901/c4/9046d8dc4e1ac2ab45b2aebc6cfedac4.jpg'; // свет включён
 
         // ========== АУДИО ==========
         const AUDIO_URLS = {
             backgroundMusic: './sounds/attic-ambience.aac',
         };
 
-        // ========== НАСТРАИВАЕМЫЕ КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
+        // ========== НАСТРАИВАЕМЫЕ КЛИКАБЕЛЬНЫЕ ОБЛАСТИ И ПОСТЕРЫ ==========
         // Каждая область — точка разворачивания постера. Области невидимые.
-        // Постер для области с id = N берётся из файла ./images/posterN.jpg
+        //   left, top, width, height — позиция и размер области, px
+        //   poster — ПОЛНАЯ ССЫЛКА на постер
+        // ВАЖНО: сейчас постеры распределены по областям 1–10 по порядку списка.
+        // Чтобы привязать нужный постер к нужной области — просто поменяйте
+        // ссылку в поле poster соответствующей строки.
         const HOTSPOTS = [
-            { id: 1, left: 35, top: 307,  width: 95, height: 230 },
-            { id: 2, left: 344, top: 138, width: 88, height: 133 },
-            { id: 3, left: 492, top: 136,  width: 88, height: 133 },
-            { id: 4, left: 645, top: 136,  width: 88, height: 133 },
-            { id: 5, left: 165, top: 300, width: 68, height: 180 },
-            { id: 6, left: 348, top: 311, width: 65, height: 100 },
-            { id: 7, left: 492, top: 309, width: 88, height: 133 },
-            { id: 8, left: 645, top: 309, width: 88, height: 133 },
-            { id: 9, left: 842, top: 300, width: 56, height: 180 },
-            { id: 10, left: 930, top: 307,  width: 90, height: 220 },
+            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: 'https://i128.fastpic.org/big/2026/0901/97/16f199c7a28890cb50739d99e1c6b897.jpg' },
+            { id: 2, left: 344, top: 138, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/73/03725476c0216d74d12e33a94b2f5e73.jpg' },
+            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/58/8660cd16390102d54bc916e806666758.jpg' },
+            { id: 4, left: 645, top: 136, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/0f/b1fe490a8e4b5fb7db0f228101224f0f.jpg' },
+            { id: 5, left: 165, top: 300, width: 68, height: 180, poster: 'https://i128.fastpic.org/big/2026/0901/5b/1b1d9aa57a972edd3d686331780c545b.jpg' },
+            { id: 6, left: 348, top: 311, width: 65, height: 100, poster: 'https://i128.fastpic.org/big/2026/0901/48/b73d819f6a3dad2dcf076134ab743a48.jpg' },
+            { id: 7, left: 492, top: 309, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/2f/e128107b2b500615058eb8b090bdee2f.jpg' },
+            { id: 8, left: 645, top: 309, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/ba/2114d8fd50ce314cb29325fd518e50ba.jpg' },
+            { id: 9, left: 842, top: 300, width: 56, height: 180, poster: 'https://i128.fastpic.org/big/2026/0901/de/c5cd20eb1c9af7bbef4ea5b48e1c5ade.jpg' },
+            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: 'https://i128.fastpic.org/big/2026/0901/b9/31a877ec1689c62a34736b0c664cf7b9.jpg' },
         ];
 
-        // Максимальный размер развёрнутого постера (можно подкорректировать).
-        // Реальный размер постера считается под его пропорции, без искажений.
+        // Максимальный размер развёрнутого постера (можно подкорректировать)
         const POSTER_MAX_W = 360;
         const POSTER_MAX_H = 460;
 
@@ -224,10 +227,10 @@
             });
         }
 
-        // Предзагрузка всех постеров (по одному на каждую область)
+        // Предзагрузка всех постеров (ссылка берётся прямо из поля poster области)
         function preloadPosters() {
             return Promise.all(HOTSPOTS.map(zone => {
-                const src = `./images/poster${zone.id}.jpg`;
+                const src = zone.poster;
                 return preloadImg(src).then(img => ({ zone, src, img }));
             }));
         }
@@ -357,7 +360,6 @@
         }
 
         // ========== ПОСТЕРЫ ==========
-        // Создаёт элементы постеров и считает их конечный размер под пропорции.
         function createPosterElements() {
             const scene = document.getElementById('scene');
             const maxW = Math.min(POSTER_MAX_W, state.sceneW * 0.5);
@@ -386,7 +388,6 @@
             });
         }
 
-        // Развернуть постер: появляется в зоне в её размере, затем растёт в центр.
         function expandPoster(zoneData) {
             if (state.isAnimating) return;
             if (state.currentExpandedPoster) {
@@ -413,7 +414,6 @@
             });
         }
 
-        // Свернуть постер: обратно в зону, затем скрыть.
         function collapsePoster(callback) {
             if (!state.currentExpandedPoster || state.isAnimating) return;
             state.isAnimating = true;
