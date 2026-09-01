@@ -16,9 +16,6 @@
             overflow: hidden;
         }
 
-        /* Размер сцены задаётся из JS под размеры фонового изображения.
-           flex-shrink: 0 запрещает сцене сжиматься при уменьшении окна —
-           фон не деформируется, а просто обрезается краями (overflow: hidden у body). */
         .scene {
             position: relative;
             flex-shrink: 0;
@@ -40,9 +37,7 @@
 
         #bgOn { opacity: 0; }
 
-        /* ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ (ХОТСПОТЫ) ==========
-           Области НЕВИДИМЫЕ: без рамки, заливки и номера, но кликабельные.
-           Позиции и размеры задаются в массиве HOTSPOTS в скрипте. */
+        /* ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ (ХОТСПОТЫ) ========== */
         .hotspot {
             position: absolute;
             background: transparent;
@@ -50,6 +45,20 @@
             cursor: pointer;
             z-index: 20;
             box-sizing: border-box;
+        }
+
+        /* ========== ПОСТЕРЫ ========== */
+        .poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            display: none;
+            z-index: 25;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.7);
         }
 
         /* ========== ВЫКЛЮЧАТЕЛЬ (чистый CSS) ========== */
@@ -80,10 +89,10 @@
             background: linear-gradient(#faf7f0, #cfc9bd);
             box-shadow: 0 3px 5px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(0,0,0,0.15);
             transition: transform 0.12s ease, box-shadow 0.12s ease;
-            transform: perspective(160px) rotateX(22deg); /* «выкл» — наклон вниз */
+            transform: perspective(160px) rotateX(22deg);
         }
         .light-switch.on .rocker {
-            transform: perspective(160px) rotateX(-22deg); /* «вкл» — наклон вверх */
+            transform: perspective(160px) rotateX(-22deg);
             box-shadow: 0 -3px 5px rgba(0,0,0,0.35), inset 0 2px 3px rgba(0,0,0,0.12), 0 0 10px rgba(255,230,150,0.5);
         }
 
@@ -135,7 +144,7 @@
             <img id="bgOff" class="bg" alt="">
             <img id="bgOn" class="bg" alt="">
         </div>
-        <!-- Хотспоты добавляются сюда из JS (createHotspots) -->
+        <!-- Хотспоты и постеры добавляются сюда из JS -->
         <div id="lightSwitch" class="light-switch" role="button" aria-label="Выключатель света" title="Включить/выключить свет">
             <div class="rocker"></div>
         </div>
@@ -146,19 +155,13 @@
         const BG_ON  = './images/bgOn.jpg'; // свет включён
 
         // ========== АУДИО ==========
-        // Укажите путь к вашему файлу фоновой музыки (положите его в папку sounds
-        // рядом с HTML-файлом, либо замените путь ниже на свой).
         const AUDIO_URLS = {
             backgroundMusic: './sounds/attic-ambience.aac',
         };
 
         // ========== НАСТРАИВАЕМЫЕ КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
         // Каждая область — точка разворачивания постера. Области невидимые.
-        // Отредактируйте значения под своё изображение:
-        //   left   — отступ от ЛЕВОГО края сцены, px
-        //   top    — отступ от ВЕРХНЕГО края сцены, px
-        //   width  — ширина области, px
-        //   height — высота области, px
+        // Постер для области с id = N берётся из файла ./images/posterN.jpg
         const HOTSPOTS = [
             { id: 1, left: 35, top: 307,  width: 95, height: 230 },
             { id: 2, left: 344, top: 138, width: 88, height: 133 },
@@ -172,7 +175,12 @@
             { id: 10, left: 930, top: 307,  width: 90, height: 220 },
         ];
 
-        // Параметры мерцания при ВКЛЮЧЕНИИ света (яркое, заметное)
+        // Максимальный размер развёрнутого постера (можно подкорректировать).
+        // Реальный размер постера считается под его пропорции, без искажений.
+        const POSTER_MAX_W = 360;
+        const POSTER_MAX_H = 460;
+
+        // Параметры мерцания при ВКЛЮЧЕНИИ света
         const FLICKER_ON = {
             duration: 1200,
             levels: [0.4, 0.7, 1.15, 0.6, 1.2, 0.9, 1],
@@ -180,7 +188,7 @@
             maxGap: 180,
         };
 
-        // Параметры фонового мерцания, когда свет уже стабильно горит
+        // Параметры фонового мерцания, когда свет стабильно горит
         const FLICKER_AMBIENT = {
             duration: 1000,
             levels: [0.9, 0.96, 1.05, 0.93, 1.03, 1],
@@ -188,7 +196,6 @@
             maxGap: 180,
         };
 
-        // Границы случайной паузы между фоновыми мерцаниями: 10–20 секунд
         const AMBIENT_MIN_DELAY = 10000;
         const AMBIENT_MAX_DELAY = 20000;
 
@@ -199,6 +206,12 @@
             ambientFlickerTimer: null,
             audioEnabled: false,
             audioElements: null,
+            sceneW: 0,
+            sceneH: 0,
+            loadedPosters: [],
+            posterById: {},
+            currentExpandedPoster: null,
+            isAnimating: false,
         };
 
         // ========== ЗАГРУЗКА ИЗОБРАЖЕНИЙ ==========
@@ -211,7 +224,15 @@
             });
         }
 
-        // ========== АУДИО: создание и предзагрузка ==========
+        // Предзагрузка всех постеров (по одному на каждую область)
+        function preloadPosters() {
+            return Promise.all(HOTSPOTS.map(zone => {
+                const src = `./images/poster${zone.id}.jpg`;
+                return preloadImg(src).then(img => ({ zone, src, img }));
+            }));
+        }
+
+        // ========== АУДИО ==========
         function initAudio() {
             state.audioElements = {
                 backgroundMusic: new Audio(AUDIO_URLS.backgroundMusic),
@@ -220,8 +241,6 @@
             state.audioElements.backgroundMusic.volume = 0.3;
         }
 
-        // Предзагрузка музыки на экране загрузки (с таймаутом, чтобы не зависнуть,
-        // если файл отсутствует)
         function preloadAudio() {
             return new Promise(resolve => {
                 initAudio();
@@ -237,8 +256,7 @@
                 };
 
                 if (total === 0) { finish(); return; }
-
-                setTimeout(finish, 25000); // страховка от зависания
+                setTimeout(finish, 25000);
 
                 elements.forEach(audio => {
                     audio.addEventListener('canplaythrough', () => {
@@ -256,8 +274,6 @@
             });
         }
 
-        // Запуск фоновой музыки с обходом блокировки автовоспроизведения:
-        // если браузер не дал запустить сразу — стартуем при первом клике/клавише
         function tryPlayBackgroundMusic() {
             const music = state.audioElements && state.audioElements.backgroundMusic;
             if (!music) return;
@@ -270,7 +286,6 @@
             });
         }
 
-        // Применяет размер сцены = размеру фонового изображения
         function applySceneSize(width, height) {
             const scene = document.getElementById('scene');
             scene.style.width = width + 'px';
@@ -278,16 +293,20 @@
         }
 
         async function initialize() {
-            const [bgImgs] = await Promise.all([
+            const [bgImgs, loadedPosters] = await Promise.all([
                 Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]),
+                preloadPosters(),
                 preloadAudio(),
             ]);
             const offImg = bgImgs[0];
-            const onImg = bgImgs[1];
 
             const w = offImg ? offImg.naturalWidth : 1265;
             const h = offImg ? offImg.naturalHeight : 550;
             applySceneSize(w, h);
+
+            state.sceneW = w;
+            state.sceneH = h;
+            state.loadedPosters = loadedPosters;
 
             document.getElementById('bgOff').src = BG_OFF;
             document.getElementById('bgOn').src = BG_ON;
@@ -306,12 +325,12 @@
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('scene').style.display = 'block';
             createHotspots();
+            createPosterElements();
             state.audioEnabled = true;
             tryPlayBackgroundMusic();
         }
 
         // ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
-        // Создаёт НЕВИДИМЫЕ области из массива HOTSPOTS и вешает обработчик клика.
         function createHotspots() {
             const scene = document.getElementById('scene');
             HOTSPOTS.forEach(zone => {
@@ -327,13 +346,103 @@
             });
         }
 
-        // Обработчик клика по области.
-        // СЮДА позже добавим разворачивание постера (как в сцене с кассетами).
         function onHotspotClick(zone) {
-            console.log('Клик по области №' + zone.id, zone);
+            const zoneData = state.posterById[zone.id];
+            if (!zoneData) return;
+            if (state.currentExpandedPoster === zoneData) {
+                collapsePoster();
+                return;
+            }
+            expandPoster(zoneData);
         }
 
-        // ========== МЕРЦАНИЕ (общая функция) ==========
+        // ========== ПОСТЕРЫ ==========
+        // Создаёт элементы постеров и считает их конечный размер под пропорции.
+        function createPosterElements() {
+            const scene = document.getElementById('scene');
+            const maxW = Math.min(POSTER_MAX_W, state.sceneW * 0.5);
+            const maxH = Math.min(POSTER_MAX_H, state.sceneH * 0.85);
+
+            state.loadedPosters.forEach(p => {
+                if (!p.img) return; // постер не загрузился — пропускаем
+                const naturalW = p.img.naturalWidth || 300;
+                const naturalH = p.img.naturalHeight || 420;
+                const ratio = Math.min(maxW / naturalW, maxH / naturalH);
+                const finalW = Math.round(naturalW * ratio);
+                const finalH = Math.round(naturalH * ratio);
+
+                const el = document.createElement('img');
+                el.className = 'poster';
+                el.src = p.src;
+                el.style.width = finalW + 'px';
+                el.style.height = finalH + 'px';
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    collapsePoster();
+                });
+                scene.appendChild(el);
+
+                state.posterById[p.zone.id] = { zone: p.zone, el, finalW, finalH };
+            });
+        }
+
+        // Развернуть постер: появляется в зоне в её размере, затем растёт в центр.
+        function expandPoster(zoneData) {
+            if (state.isAnimating) return;
+            if (state.currentExpandedPoster) {
+                collapsePoster(() => expandPoster(zoneData));
+                return;
+            }
+            state.isAnimating = true;
+
+            const poster = zoneData.el;
+            const sx = zoneData.zone.width / zoneData.finalW;
+            const sy = zoneData.zone.height / zoneData.finalH;
+            const centerX = (state.sceneW - zoneData.finalW) / 2;
+            const centerY = (state.sceneH - zoneData.finalH) / 2;
+
+            poster.style.display = 'block';
+            poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
+            state.currentExpandedPoster = zoneData;
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    poster.style.transform = `translate(${centerX}px, ${centerY}px) scale(1, 1)`;
+                    setTimeout(() => { state.isAnimating = false; }, 320);
+                }, 20);
+            });
+        }
+
+        // Свернуть постер: обратно в зону, затем скрыть.
+        function collapsePoster(callback) {
+            if (!state.currentExpandedPoster || state.isAnimating) return;
+            state.isAnimating = true;
+
+            const zoneData = state.currentExpandedPoster;
+            const poster = zoneData.el;
+            const sx = zoneData.zone.width / zoneData.finalW;
+            const sy = zoneData.zone.height / zoneData.finalH;
+
+            poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
+
+            setTimeout(() => {
+                poster.style.display = 'none';
+                state.currentExpandedPoster = null;
+                state.isAnimating = false;
+                if (typeof callback === 'function') callback();
+            }, 320);
+        }
+
+        // Клик мимо постера/областей — свернуть текущий постер
+        document.addEventListener('click', (e) => {
+            if (!state.currentExpandedPoster) return;
+            if (e.target.closest('.hotspot')) return;
+            if (e.target.closest('.poster')) return;
+            if (e.target.closest('.light-switch')) return;
+            collapsePoster();
+        });
+
+        // ========== МЕРЦАНИЕ ==========
         function runFlicker(config) {
             const wrap = document.getElementById('bgWrap');
             const generation = ++state.flickerGeneration;
@@ -353,7 +462,6 @@
             step();
         }
 
-        // ========== ФОНОВОЕ МЕРЦАНИЕ (пока свет включён) ==========
         function scheduleAmbientFlicker() {
             if (state.ambientFlickerTimer) {
                 clearTimeout(state.ambientFlickerTimer);
