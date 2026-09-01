@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новая сцена</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        /* Размер сцены задаётся из JS под размеры фонового изображения.
+           flex-shrink: 0 запрещает сцене сжиматься при уменьшении окна —
+           фон не деформируется, а просто обрезается краями (overflow: hidden у body). */
+        .scene {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        #bgWrap {
+            position: absolute;
+            inset: 0;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            transition: opacity 0.12s ease;
+        }
+
+        #bgOn { opacity: 0; }
+
+        /* ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ (ХОТСПОТЫ) ========== */
+        /* Пока области ВИДИМЫЕ — для настройки позиций.
+           Чтобы сделать их невидимыми, замените блок .hotspot на:
+           .hotspot { position:absolute; cursor:pointer; z-index:20; background:transparent; border:none; }
+           и уберите блок .hotspot::before (номер области). */
+        .hotspot {
+            position: absolute;
+            border: 2px dashed rgba(255, 80, 80, 0.9);
+            background-color: rgba(255, 80, 80, 0.15);
+            cursor: pointer;
+            z-index: 20;
+            box-sizing: border-box;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+        .hotspot:hover {
+            border-color: rgba(255, 140, 140, 1);
+            background-color: rgba(255, 80, 80, 0.32);
+        }
+        /* Номер области в углу — удобно при настройке; потом можно убрать */
+        .hotspot::before {
+            content: attr(data-id);
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            font: 12px/1 Arial, sans-serif;
+            color: rgba(255, 210, 210, 0.95);
+            pointer-events: none;
+        }
+
+        /* ========== ВЫКЛЮЧАТЕЛЬ (чистый CSS) ========== */
+        .light-switch {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            width: 52px;
+            height: 84px;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #e8e4da, #b8b2a6);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.55), inset 0 1px 2px rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 30;
+            transition: box-shadow 0.2s ease, transform 0.1s ease;
+        }
+        .light-switch:hover {
+            box-shadow: 0 3px 12px rgba(0,0,0,0.7), 0 0 12px rgba(255,220,120,0.35), inset 0 1px 2px rgba(255,255,255,0.5);
+        }
+        .light-switch:active { transform: scale(0.96); }
+        .light-switch .rocker {
+            width: 30px;
+            height: 52px;
+            border-radius: 6px;
+            background: linear-gradient(#faf7f0, #cfc9bd);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(0,0,0,0.15);
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            transform: perspective(160px) rotateX(22deg); /* «выкл» — наклон вниз */
+        }
+        .light-switch.on .rocker {
+            transform: perspective(160px) rotateX(-22deg); /* «вкл» — наклон вверх */
+            box-shadow: 0 -3px 5px rgba(0,0,0,0.35), inset 0 2px 3px rgba(0,0,0,0.12), 0 0 10px rgba(255,230,150,0.5);
+        }
+
+        /* ========== ЭКРАН ЗАГРУЗКИ ========== */
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: default;
+        }
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 4px solid rgba(255,255,255,0.15);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #loadingText {
+            color: #888;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            text-align: center;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+        #loadingText.ready {
+            color: #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+        }
+        #loadingScreen.ready { cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="loadingScreen">
+        <div class="spinner"></div>
+        <div id="loadingText">ЗАГРУЗКА, ЖДИТЕ...</div>
+    </div>
+
+    <div class="scene" id="scene" style="display: none;">
+        <div id="bgWrap">
+            <img id="bgOff" class="bg" alt="">
+            <img id="bgOn" class="bg" alt="">
+        </div>
+        <!-- Хотспоты добавляются сюда из JS (createHotspots) -->
+        <div id="lightSwitch" class="light-switch" role="button" aria-label="Выключатель света" title="Включить/выключить свет">
+            <div class="rocker"></div>
+        </div>
+    </div>
+
+    <script>
+        const BG_OFF = 'https://i128.fastpic.org/big/2026/0831/74/b16536de52882d835468baf2989bf774.jpg'; // свет выключен
+        const BG_ON  = 'https://i128.fastpic.org/big/2026/0831/ea/4840f9bc462a68ece22988a76777b9ea.jpg'; // свет включён
+
+        // ========== НАСТРАИВАЕМЫЕ КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
+        // Каждая область — будущая точка разворачивания постера.
+        // Отредактируйте значения под своё изображение:
+        //   left   — отступ от ЛЕВОГО края сцены, px
+        //   top    — отступ от ВЕРХНЕГО края сцены, px
+        //   width  — ширина области, px
+        //   height — высота области, px
+        // Координаты указаны относительно левого верхнего угла сцены.
+        // Значения ниже — ПРИМЕРНЫЕ, расставьте их по нужным объектам.
+        const HOTSPOTS = [
+            { id: 1, left: 110, top: 60,  width: 140, height: 180 },
+            { id: 2, left: 400, top: 60,  width: 140, height: 180 },
+            { id: 3, left: 690, top: 60,  width: 140, height: 180 },
+            { id: 4, left: 980, top: 60,  width: 140, height: 180 },
+            { id: 5, left: 110, top: 300, width: 140, height: 180 },
+            { id: 6, left: 400, top: 300, width: 140, height: 180 },
+            { id: 7, left: 690, top: 300, width: 140, height: 180 },
+            { id: 8, left: 980, top: 300, width: 140, height: 180 },
+        ];
+
+        // Параметры мерцания при ВКЛЮЧЕНИИ света (яркое, заметное)
+        const FLICKER_ON = {
+            duration: 1200,
+            levels: [0.4, 0.7, 1.15, 0.6, 1.2, 0.9, 1],
+            minGap: 40,
+            maxGap: 180,
+        };
+
+        // Параметры фонового мерцания, когда свет уже стабильно горит:
+        // слабее (яркость гуляет недалеко от 1) и короче (1 сек)
+        const FLICKER_AMBIENT = {
+            duration: 1000,
+            levels: [0.9, 0.96, 1.05, 0.93, 1.03, 1],
+            minGap: 40,
+            maxGap: 180,
+        };
+
+        // Границы случайной паузы между фоновыми мерцаниями: 10–20 секунд
+        const AMBIENT_MIN_DELAY = 10000;
+        const AMBIENT_MAX_DELAY = 20000;
+
+        const state = {
+            isLightOn: false,
+            allAssetsLoaded: false,
+            flickerGeneration: 0,
+            ambientFlickerTimer: null,
+        };
+
+        // Загрузка изображения с возвратом его естественных размеров
+        function preloadImg(src) {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null);
+                img.src = src;
+            });
+        }
+
+        // Применяет размер сцены = размеру фонового изображения
+        function applySceneSize(width, height) {
+            const scene = document.getElementById('scene');
+            scene.style.width = width + 'px';
+            scene.style.height = height + 'px';
+        }
+
+        async function initialize() {
+            const [offImg, onImg] = await Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]);
+
+            const w = offImg ? offImg.naturalWidth : 1265;
+            const h = offImg ? offImg.naturalHeight : 550;
+            applySceneSize(w, h);
+
+            document.getElementById('bgOff').src = BG_OFF;
+            document.getElementById('bgOn').src = BG_ON;
+
+            state.allAssetsLoaded = true;
+            const loadingText = document.getElementById('loadingText');
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingText.firstChild.nodeValue = 'ВОЙТИ В ПОГРЕБОК ';
+            loadingText.classList.add('ready');
+            loadingScreen.classList.add('ready');
+            loadingScreen.addEventListener('click', enterScene);
+        }
+
+        function enterScene() {
+            if (!state.allAssetsLoaded) return;
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('scene').style.display = 'block';
+            createHotspots();
+        }
+
+        // ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
+        // Создаёт области из массива HOTSPOTS и вешает на каждую обработчик клика.
+        function createHotspots() {
+            const scene = document.getElementById('scene');
+            HOTSPOTS.forEach(zone => {
+                const el = document.createElement('div');
+                el.className = 'hotspot';
+                el.dataset.id = zone.id;
+                el.style.left = zone.left + 'px';
+                el.style.top = zone.top + 'px';
+                el.style.width = zone.width + 'px';
+                el.style.height = zone.height + 'px';
+                el.title = 'Область ' + zone.id;
+                el.addEventListener('click', () => onHotspotClick(zone));
+                scene.appendChild(el);
+            });
+        }
+
+        // Обработчик клика по области.
+        // СЮДА позже добавим разворачивание постера (как в сцене с кассетами).
+        function onHotspotClick(zone) {
+            console.log('Клик по области №' + zone.id, zone);
+        }
+
+        // ========== МЕРЦАНИЕ (общая функция) ==========
+        function runFlicker(config) {
+            const wrap = document.getElementById('bgWrap');
+            const generation = ++state.flickerGeneration;
+            const startTime = performance.now();
+
+            function step() {
+                if (generation !== state.flickerGeneration) return;
+                const elapsed = performance.now() - startTime;
+                if (elapsed >= config.duration) {
+                    wrap.style.filter = 'brightness(1)';
+                    return;
+                }
+                const level = config.levels[Math.floor(Math.random() * config.levels.length)];
+                wrap.style.filter = `brightness(${level})`;
+                setTimeout(step, config.minGap + Math.random() * (config.maxGap - config.minGap));
+            }
+            step();
+        }
+
+        // ========== ФОНОВОЕ МЕРЦАНИЕ (пока свет включён) ==========
+        function scheduleAmbientFlicker() {
+            if (state.ambientFlickerTimer) {
+                clearTimeout(state.ambientFlickerTimer);
+                state.ambientFlickerTimer = null;
+            }
+            if (!state.isLightOn) return;
+
+            const delay = AMBIENT_MIN_DELAY + Math.random() * (AMBIENT_MAX_DELAY - AMBIENT_MIN_DELAY);
+            state.ambientFlickerTimer = setTimeout(() => {
+                if (!state.isLightOn) return;
+                runFlicker(FLICKER_AMBIENT);
+                scheduleAmbientFlicker();
+            }, delay);
+        }
+
+        function stopAmbientFlicker() {
+            if (state.ambientFlickerTimer) {
+                clearTimeout(state.ambientFlickerTimer);
+                state.ambientFlickerTimer = null;
+            }
+            state.flickerGeneration++;
+        }
+
+        // ========== СВЕТ ==========
+        function toggleLight() {
+            const bgOff = document.getElementById('bgOff');
+            const bgOn = document.getElementById('bgOn');
+            const wrap = document.getElementById('bgWrap');
+            const sw = document.getElementById('lightSwitch');
+
+            if (state.isLightOn) {
+                stopAmbientFlicker();
+                wrap.style.filter = 'brightness(1)';
+                bgOn.style.opacity = '0';
+                bgOff.style.opacity = '1';
+                sw.classList.remove('on');
+                state.isLightOn = false;
+            } else {
+                bgOff.style.opacity = '0';
+                bgOn.style.opacity = '1';
+                sw.classList.add('on');
+                state.isLightOn = true;
+                runFlicker(FLICKER_ON);
+                scheduleAmbientFlicker();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('lightSwitch').addEventListener('click', toggleLight);
+        });
+
+        initialize();
+    </script>
+</body>
+</html>
