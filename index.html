@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новая сцена</title>
+    <title>КОТЕЙКИН ЧЕРДАЧОК</title>
     <style>
         body {
             margin: 0;
@@ -172,7 +172,7 @@
         // Координаты указаны относительно левого верхнего угла сцены.
         // Значения ниже — ПРИМЕРНЫЕ, расставьте их по нужным объектам.
         const HOTSPOTS = [
-            { id: 1, left: 110, top: 60,  width: 140, height: 180 },
+            { id: 1, left: 80, top: 300,  width: 140, height: 180 },
             { id: 2, left: 400, top: 60,  width: 140, height: 180 },
             { id: 3, left: 690, top: 60,  width: 140, height: 180 },
             { id: 4, left: 980, top: 60,  width: 140, height: 180 },
@@ -240,7 +240,7 @@
             state.allAssetsLoaded = true;
             const loadingText = document.getElementById('loadingText');
             const loadingScreen = document.getElementById('loadingScreen');
-            loadingText.firstChild.nodeValue = 'ВОЙТИ В ПОГРЕБОК ';
+            loadingText.firstChild.nodeValue = 'ЗАЛЕЗТЬ НА ЧЕРДАК';
             loadingText.classList.add('ready');
             loadingScreen.classList.add('ready');
             loadingScreen.addEventListener('click', enterScene);
