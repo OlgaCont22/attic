@@ -7,6 +7,7 @@
     <title>КОТЕЙКИН ЧЕРДАЧОК</title>
 
     <!-- Preload hints для критичных ресурсов -->
+    <link rel="preload" as="image" href="https://raw.githubusercontent.com/OlgaCont22/VHS/refs/heads/main/images/catModGif.gif">
     <link rel="preload" as="image" href="./images/bgOff.jpg">
     <link rel="preload" as="image" href="./images/bgOn.jpg">
 
@@ -651,11 +652,3 @@
 </body>
 </html>
 ```
-
-## Что изменилось
-
-- Вместо крутящегося спиннера на экране загрузки теперь **gif-картинка кота**: `<div class="spinner">` заменён на `<img id="loadingGif" src="https://raw.githubusercontent.com/OlgaCont22/VHS/refs/heads/main/images/catModGif.gif">`, как в сцене с VHS-кассетами.
-- В CSS удалены блок `.spinner` и анимация `@keyframes spin`, добавлен стиль `#loadingGif` (отступ снизу, максимальная ширина 200px), идентичный сцене с кассетами.
-- Добавлены `<link rel="preload" as="image">` для гифки и обоих фонов, чтобы картинка загрузки и фоны начинали подгружаться как можно раньше.
-
-Всё остальное (логика сцены, постеры, шнурок, свет, звуки) осталось без изменений.
