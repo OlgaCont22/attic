@@ -127,21 +127,21 @@
     </div>
 
     <script>
-        const BG_OFF = 'https://i128.fastpic.org/big/2026/0901/32/181850fe156c04d799b80ba62f8dc932.jpg'; // свет выключен
-        const BG_ON  = 'https://i128.fastpic.org/big/2026/0901/c4/9046d8dc4e1ac2ab45b2aebc6cfedac4.jpg'; // свет включён
+        const BG_OFF = './images/bgOff.jpg'; // свет выключен
+        const BG_ON  = './images/bgOn.jpg'; // свет включён
 
         // ========== ВЫКЛЮЧАТЕЛЬ-ШНУРОК ==========
-        const PULL_CORD_URL = 'https://i128.fastpic.org/big/2026/0901/ec/9a2da0b478a2a2c2fbd95e3cf46ae8ec.png';
+        const PULL_CORD_URL = './images/cord.png';
         const CORD_HEIGHT = 240;
         const CORD_RIGHT = 26;
 
         // ========== АУДИО ==========
         const AUDIO_URLS = {
             backgroundMusic: './sounds/attic-ambience.aac',
-            switchSound: 'https://www.dropbox.com/scl/fi/sl0r1qaqv1qj15u4xzfko/light.mp3?rlkey=he6r4gicpq3f12gcz0lxfe7ix&st=hrp10dnj&dl=1',
-            posterUnfoldSound: 'https://www.dropbox.com/scl/fi/rs5tkasaftb5ina5w1pgi/poster_unf.mp3?rlkey=qb2lya0kfrgpumt3io0tgikhu&st=ol0jtean&dl=1',
-            posterFoldSound: 'https://www.dropbox.com/scl/fi/8s7x1igyymi3wfhql628l/poster_f.mp3?rlkey=s9f4b71wxmzvsuv361nwd3eka&st=fcr18wwk&dl=1',
-            catPurr: 'https://www.dropbox.com/scl/fi/8mgqe7xjqtrqkyck81mfk/murr.mp3?rlkey=mplsv40s07l6frlxi26hx0jho&st=5x1xma5l&dl=1',
+            switchSound: './sounds/light.mp3',
+            posterUnfoldSound: './sounds/poster_unf.mp3',
+            posterFoldSound: './sounds/poster_f.mp3',
+            catPurr: './sounds/murr.mp3',
         };
 
         // Интервал между воспроизведениями мурчания: 15–30 секунд
@@ -155,16 +155,16 @@
         // Постеры распределены по областям 1–10 по порядку списка — при
         // необходимости поменяйте ссылки в поле poster нужных строк.
         const HOTSPOTS = [
-            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: 'https://i128.fastpic.org/big/2026/0901/97/16f199c7a28890cb50739d99e1c6b897.jpg' },
-            { id: 2, left: 344, top: 138, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/73/03725476c0216d74d12e33a94b2f5e73.jpg' },
-            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/58/8660cd16390102d54bc916e806666758.jpg' },
-            { id: 4, left: 645, top: 136, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/0f/b1fe490a8e4b5fb7db0f228101224f0f.jpg' },
-            { id: 5, left: 165, top: 300, width: 68, height: 180, poster: 'https://i128.fastpic.org/big/2026/0901/5b/1b1d9aa57a972edd3d686331780c545b.jpg' },
-            { id: 6, left: 348, top: 311, width: 65, height: 100, poster: 'https://i128.fastpic.org/big/2026/0901/48/b73d819f6a3dad2dcf076134ab743a48.jpg' },
-            { id: 7, left: 492, top: 309, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/2f/e128107b2b500615058eb8b090bdee2f.jpg' },
-            { id: 8, left: 645, top: 309, width: 88, height: 133, poster: 'https://i128.fastpic.org/big/2026/0901/ba/2114d8fd50ce314cb29325fd518e50ba.jpg' },
-            { id: 9, left: 842, top: 300, width: 56, height: 180, poster: 'https://i128.fastpic.org/big/2026/0901/de/c5cd20eb1c9af7bbef4ea5b48e1c5ade.jpg' },
-            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: 'https://i128.fastpic.org/big/2026/0901/b9/31a877ec1689c62a34736b0c664cf7b9.jpg' },
+            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: './images/RE_poster.JPG' },
+            { id: 2, left: 344, top: 138, width: 88, height: 133, poster: './images/casino_poster.JPG' },
+            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: './images/hope_poster.JPG' },
+            { id: 4, left: 645, top: 136, width: 88, height: 133, poster: './images/horse_poster.JPG' },
+            { id: 5, left: 165, top: 300, width: 68, height: 180, poster: './images/vic_poster.JPG' },
+            { id: 6, left: 348, top: 311, width: 65, height: 100, poster: './images/Onsl_poster.JPG' },
+            { id: 7, left: 492, top: 309, width: 88, height: 133, poster: './images/wer_poster.jpg' },
+            { id: 8, left: 645, top: 309, width: 88, height: 133, poster: './images/blade_poster.jpg' },
+            { id: 9, left: 842, top: 300, width: 56, height: 180, poster: './images/terr_poster.jpg' },
+            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: './images/fall_poster.jpg' },
         ];
 
         // Максимальный размер развёрнутого постера (можно подкорректировать)
