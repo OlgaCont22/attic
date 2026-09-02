@@ -146,6 +146,12 @@
             posterUnfoldSound: './sounds/poster_unf.mp3',
             posterFoldSound: './sounds/poster_f.mp3',
             catPurr: './sounds/murr.mp3',
+            // Звуки лампы: один из трёх играет случайным образом при включении света и при мерцании
+            lampSounds: [
+                'https://www.dropbox.com/scl/fi/km0y4wussskf20ad0f5k1/lamp1.mp3?rlkey=0qmgpsyifmy9n95jwcur8cr27&st=qio7kamy&dl=1',
+                'https://www.dropbox.com/scl/fi/gt6m9yu1pwgxpqvne7dta/lamp2.mp3?rlkey=ejqh0b11kxnj749cu7jqffv0l&st=msqy5gew&dl=1',
+                'https://www.dropbox.com/scl/fi/xe5hrnhzkilgbub82g352/lamp3.mp3?rlkey=rizzgm7kkp6ooooxmdvomq2b5&st=g72irm31&dl=1',
+            ],
         };
 
         // Интервал между воспроизведениями мурчания: 15–30 секунд
@@ -240,6 +246,7 @@
                 posterUnfoldSound: new Audio(AUDIO_URLS.posterUnfoldSound),
                 posterFoldSound: new Audio(AUDIO_URLS.posterFoldSound),
                 catPurr: new Audio(AUDIO_URLS.catPurr),
+                lampSounds: AUDIO_URLS.lampSounds.map(url => new Audio(url)),
             };
             state.audioElements.backgroundMusic.loop = true;
             state.audioElements.backgroundMusic.volume = 0.6;
@@ -254,6 +261,7 @@
                     state.audioElements.posterUnfoldSound,
                     state.audioElements.posterFoldSound,
                     state.audioElements.catPurr,
+                    state.audioElements.lampSounds,
                 ];
                 let loaded = 0;
                 let settled = false;
@@ -321,7 +329,16 @@
             s.currentTime = 0;
             s.play().catch(() => {});
         }
-
+        // Случайный звук ЛАМПЫ (один из трёх) — при включении света и при мерцании
+        function playRandomLampSound() {
+            if (!state.audioEnabled || !state.audioElements) return;
+            const sounds = state.audioElements.lampSounds;
+            if (!sounds || sounds.length === 0) return;
+            const s = sounds[Math.floor(Math.random() * sounds.length)];
+            if (!s) return;
+            s.currentTime = 0;
+            s.play().catch(() => {});
+        }
         // ========== МУРЧАНИЕ КОШКИ ==========
         // Планирует следующее мурчание через случайные 15–30 секунд.
         function scheduleNextPurr() {
@@ -606,6 +623,7 @@
             const delay = AMBIENT_MIN_DELAY + Math.random() * (AMBIENT_MAX_DELAY - AMBIENT_MIN_DELAY);
             state.ambientFlickerTimer = setTimeout(() => {
                 if (!state.isLightOn) return;
+                playRandomLampSound(); 
                 runFlicker(FLICKER_AMBIENT);
                 scheduleAmbientFlicker();
             }, delay);
@@ -638,6 +656,7 @@
                 bgOff.style.opacity = '0';
                 bgOn.style.opacity = '1';
                 state.isLightOn = true;
+                playRandomLampSound();  
                 runFlicker(FLICKER_ON);
                 scheduleAmbientFlicker();
             }
