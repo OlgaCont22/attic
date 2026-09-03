@@ -184,16 +184,9 @@
         // Яркость постеров и шнурка при ВЫКЛЮЧЕННОМ свете (1 = без затемнения)
         const POSTER_DARK_BRIGHTNESS = 0.3;
 
-        // Параметры мерцания при ВКЛЮЧЕНИИ света
-        const FLICKER_ON = {
-            duration: 1200,
-            levels: [0.4, 0.7, 1.15, 0.6, 1.2, 0.9, 1],
-            minGap: 40,
-            maxGap: 180,
-        };
-
-        // Параметры фонового мерцания, когда свет стабильно горит
-        const FLICKER_AMBIENT = {
+        // Единый эффект НЕБОЛЬШОГО мерцания: используется и при включении света,
+        // и для случайных мерцаний уже включённого света.
+        const FLICKER_AMBIENT = { ... };
             duration: 1000,
             levels: [0.9, 0.96, 1.05, 0.93, 1.03, 1],
             minGap: 40,
@@ -656,8 +649,8 @@
                 bgOff.style.opacity = '0';
                 bgOn.style.opacity = '1';
                 state.isLightOn = true;
-                playRandomLampSound();  
-                runFlicker(FLICKER_ON);
+                playRandomLampSound();
+                runFlicker(FLICKER_AMBIENT);   // то же небольшое мерцание, что и в случайном режиме
                 scheduleAmbientFlicker();
             }
             updateExpandedPosterLighting();
