@@ -215,6 +215,7 @@
             cordImg: null,
             catPurrTimer: null,
             catPurrCycleStarted: false,
+            selectedBackgroundMusicUrl: null, // случайно выбранный URL фоновой музыки
         };
 
         // ========== ЗАГРУЗКА ИЗОБРАЖЕНИЙ ==========
@@ -236,8 +237,13 @@
 
         // ========== АУДИО ==========
         function initAudio() {
+            // Случайным образом выбираем один из двух фоновых треков
+            const options = AUDIO_URLS.backgroundMusicOptions;
+            const selectedUrl = options[Math.floor(Math.random() * options.length)];
+            state.selectedBackgroundMusicUrl = selectedUrl;
+
             state.audioElements = {
-                backgroundMusic: new Audio(AUDIO_URLS.backgroundMusic),
+                backgroundMusic: new Audio(selectedUrl),
                 switchSound: new Audio(AUDIO_URLS.switchSound),
                 posterUnfoldSound: new Audio(AUDIO_URLS.posterUnfoldSound),
                 posterFoldSound: new Audio(AUDIO_URLS.posterFoldSound),
