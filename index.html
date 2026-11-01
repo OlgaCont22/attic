@@ -7,7 +7,7 @@
 
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     
-    <!-- Preload hints для крритичных ресурсов -->
+    <!-- Preload hints для критичных ресурсов -->
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/OlgaCont22/VHS/refs/heads/main/images/catModGif.gif">
     <link rel="preload" as="image" href="./images/bgOff.jpg">
     <link rel="preload" as="image" href="./images/bgOn.jpg">
@@ -126,7 +126,7 @@
             <img id="bgOn" class="bg" alt="">
         </div>
         <!-- Хотспоты и постеры добавляются сюда из JS -->
-        <img id="pullCord" class="pull-cord" alt="Выключатель-шнурок" title="Дёрнуть за шнурок">
+        <img id="pullCord" class="pull-cord">
     </div>
 
     <script>
@@ -140,7 +140,11 @@
 
         // ========== АУДИО ==========
         const AUDIO_URLS = {
-            backgroundMusic: './sounds/attic-ambience.aac',
+            // Фоновая музыка: один из двух файлов выбирается случайно при открытии страницы
+            backgroundMusicOptions: [
+                './sounds/attic-ambience.aac',
+                './sounds/attic-ambience2.aac',
+            ],
             switchSound: './sounds/light.mp3',
             posterUnfoldSound: './sounds/poster_unf.mp3',
             posterFoldSound: './sounds/poster_f.mp3',
@@ -164,16 +168,16 @@
         // Постеры распределены по областям 1–10 по порядку списка — при
         // необходимости поменяйте ссылки в поле poster нужных строк.
         const HOTSPOTS = [
-            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: './images/motor_poster.jpg' },
+            { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: './images/RE_poster.JPG' },
             { id: 2, left: 344, top: 138, width: 88, height: 133, poster: './images/casino_poster.JPG' },
-            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: './images/wicker_poster.JPG' },
+            { id: 3, left: 492, top: 136, width: 88, height: 133, poster: './images/hope_poster.JPG' },
             { id: 4, left: 645, top: 136, width: 88, height: 133, poster: './images/horse_poster.JPG' },
             { id: 5, left: 165, top: 300, width: 68, height: 180, poster: './images/vic_poster.JPG' },
             { id: 6, left: 348, top: 311, width: 65, height: 100, poster: './images/Onsl_poster.JPG' },
             { id: 7, left: 492, top: 309, width: 88, height: 133, poster: './images/wer_poster.jpg' },
             { id: 8, left: 645, top: 309, width: 88, height: 133, poster: './images/blade_poster.jpg' },
             { id: 9, left: 842, top: 300, width: 56, height: 180, poster: './images/terr_poster.jpg' },
-            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: './images/tigr_poster.jpg' },
+            { id: 10, left: 930, top: 307, width: 90, height: 220, poster: './images/fall_poster.jpg' },
         ];
 
         // Максимальный размер развёрнутого постера (можно подкорректировать)
@@ -211,6 +215,7 @@
             cordImg: null,
             catPurrTimer: null,
             catPurrCycleStarted: false,
+            selectedBackgroundMusicUrl: null, // случайно выбранный URL фоновой музыки
         };
 
         // ========== ЗАГРУЗКА ИЗОБРАЖЕНИЙ ==========
@@ -232,8 +237,13 @@
 
         // ========== АУДИО ==========
         function initAudio() {
+            // Случайным образом выбираем один из двух фоновых треков
+            const options = AUDIO_URLS.backgroundMusicOptions;
+            const selectedUrl = options[Math.floor(Math.random() * options.length)];
+            state.selectedBackgroundMusicUrl = selectedUrl;
+
             state.audioElements = {
-                backgroundMusic: new Audio(AUDIO_URLS.backgroundMusic),
+                backgroundMusic: new Audio(selectedUrl),
                 switchSound: new Audio(AUDIO_URLS.switchSound),
                 posterUnfoldSound: new Audio(AUDIO_URLS.posterUnfoldSound),
                 posterFoldSound: new Audio(AUDIO_URLS.posterFoldSound),
