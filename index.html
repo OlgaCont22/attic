@@ -46,6 +46,164 @@
 
         #bgOn { opacity: 0; }
 
+        /* ========== ФОНАРИК (в темноте) ========== */
+        /* Копия освещённого фона, видимая только в круге вокруг курсора */
+        #bgFlash {
+            --fx: -9999px;
+            --fy: -9999px;
+            --fr: 150px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            -webkit-mask-image: radial-gradient(circle var(--fr) at var(--fx) var(--fy),
+                #000 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.35) 70%, transparent 100%);
+                    mask-image: radial-gradient(circle var(--fr) at var(--fx) var(--fy),
+                #000 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.35) 70%, transparent 100%);
+        }
+        /* --fp — заряд батарейки 0..1 (задаётся из JS) */
+        #bgFlash.active { opacity: calc(0.8 * var(--fp, 1)); }
+
+        /* ========== ВИНЬЕТКА ========== */
+        /* Затемнение углов: сильное в темноте, лёгкое при включённой лампе.
+           Сила задаётся из JS (VIGNETTE_DARK / VIGNETTE_LIT) через opacity. */
+        #vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 14; /* над фоном, фонариком и пылью; под глазами кошки */
+            background: radial-gradient(ellipse 75% 80% at 50% 45%,
+                transparent 40%, rgba(5, 3, 0, 0.6) 75%, rgb(5, 3, 0) 100%);
+            transition: opacity 0.4s ease;
+        }
+
+        /* ========== ГЛАЗА КОШКИ В ТЕМНОТЕ ========== */
+        #catEyes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 15; /* над фоном и пылью, под хотспотами и постерами */
+            --glow: 0;    /* яркость свечения 0..1 (задаётся из JS) */
+            --slit: 35%;  /* ширина зрачка относительно глаза */
+            --lx: 0;      /* направление взгляда -1..1 */
+            --ly: 0;
+        }
+        .cat-eye { position: absolute; }
+        .eye-glow {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            opacity: var(--glow);
+            background: radial-gradient(ellipse at 45% 42%,
+                #f6ffc2 0%, #c4f456 38%, #6fae22 72%, rgba(70, 110, 15, 0.6) 100%);
+            box-shadow: 0 0 5px 1px rgba(200, 255, 100, 0.55),
+                        0 0 14px 4px rgba(160, 230, 60, 0.22);
+        }
+        .pupil {
+            position: absolute;
+            left: 50%;
+            top: 6%;
+            height: 88%;
+            width: var(--slit);
+            border-radius: 50%;
+            background: #0b1004;
+            transform: translate(calc(-50% + var(--lx) * 1.5px), calc(var(--ly) * 0.8px));
+        }
+
+        /* ========== КОНУС СВЕТА ОТ ЛАМПЫ ========== */
+        /* Внешний слой размывает края конуса; внутренний обрезан трапецией
+           (clip-path задаётся из JS по LAMP_BEAM). Лежит внутри #bgWrap,
+           поэтому мерцает вместе с лампой. */
+        #lampBeam {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            mix-blend-mode: screen;
+            filter: blur(16px);
+        }
+        #lampBeamCone {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 45% 95% at var(--bx, 50%) 0%,
+                    rgba(255, 230, 180, 0.85) 0%,
+                    rgba(255, 225, 170, 0.38) 45%,
+                    rgba(255, 215, 155, 0.10) 80%,
+                    transparent 100%);
+        }
+        /* Мягкое сияние вокруг самой лампочки */
+        #lampHalo {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            margin: -60px 0 0 -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 240, 200, 0.6) 0%,
+                rgba(255, 225, 170, 0.18) 45%, transparent 70%);
+        }
+
+        /* ========== НИТЬ НАКАЛА (разогрев / остывание лампы) ========== */
+        /* Оранжевое свечение спирали: видно в начале включения и
+           ненадолго после выключения. Яркость задаётся из JS. */
+        #filament {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            margin: -45px 0 0 -45px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: screen;
+            background: radial-gradient(circle,
+                rgba(255, 205, 130, 1) 0%,
+                rgba(255, 145, 55, 0.75) 14%,
+                rgba(230, 90, 20, 0.3) 35%,
+                transparent 70%);
+        }
+
+        /* ========== ПЫЛЬ В СВЕТЕ ========== */
+        #dust { pointer-events: none; }
+
+        /* ========== ПАУТИНА ========== */
+        #cobweb { pointer-events: none; }
+
+        /* ========== КОШКА-ТЕНЬ ========== */
+        #catShadow { pointer-events: none; }
+
+        /* ========== МОТЫЛЁК ========== */
+        #moth { pointer-events: none; }
+
+        /* ========== СЛЕДЫ ЛАП ========== */
+        #pawPrints { pointer-events: none; }
+
+        /* ========== СВЕТЛЯЧКИ ========== */
+        /* Вне #bgWrap и над виньеткой — чтобы углы их не гасили */
+        #fireflies {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        /* ========== СВЕТ ИЗ ЩЕЛЕЙ В ПОЛУ ========== */
+        #floorCracks { pointer-events: none; mix-blend-mode: screen; }
+
+        /* ========== ПЫЛЬ ОТ ПОСТЕРА ========== */
+        /* Над постером и бликом, чтобы облачко было видно и поверх бумаги */
+        #posterDust {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 27;
+        }
+
         /* ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ (ХОТСПОТЫ) ========== */
         .hotspot {
             position: absolute;
@@ -68,6 +226,43 @@
             transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.12s ease;
             will-change: transform;
             box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.7);
+        }
+
+        .poster > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+
+        /* Слой «старой бумаги» поверх постера (рисунок задаётся из JS) */
+        .poster-age {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            /* Бумажное зерно: шум SVG feTurbulence */
+            --paper-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.33  0 0 0 0 0.18  0 0 0 0.3 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+            /* Потёртые края */
+            box-shadow: inset 0 0 14px 2px rgba(90, 60, 25, 0.45);
+        }
+
+        /* Блик на глянцевом постере (наклон при наведении) */
+        #posterGlare {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            display: none;
+            z-index: 26;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: screen;
+            --gx: 50%;
+            --gy: 50%;
+            background: radial-gradient(circle at var(--gx) var(--gy),
+                rgba(255, 250, 235, 0.45) 0%, rgba(255, 250, 235, 0.12) 25%, transparent 55%);
+            will-change: transform;
         }
 
         /* ========== ВЫКЛЮЧАТЕЛЬ-ШНУРОК ========== */
@@ -124,7 +319,18 @@
         <div id="bgWrap">
             <img id="bgOff" class="bg" alt="">
             <img id="bgOn" class="bg" alt="">
+            <img id="bgFlash" class="bg" alt="">
+            <canvas id="floorCracks" class="bg"></canvas>
+            <div id="lampBeam"><div id="lampBeamCone"></div><div id="lampHalo"></div></div>
+            <div id="filament"></div>
+            <canvas id="pawPrints" class="bg"></canvas>
+            <canvas id="catShadow" class="bg"></canvas>
+            <canvas id="cobweb" class="bg"></canvas>
+            <canvas id="dust" class="bg"></canvas>
+            <canvas id="moth" class="bg"></canvas>
         </div>
+        <div id="vignette"></div>
+        <canvas id="fireflies"></canvas>
         <!-- Хотспоты и постеры добавляются сюда из JS -->
         <img id="pullCord" class="pull-cord" alt="Выключатель-шнурок">
     </div>
@@ -196,6 +402,165 @@
             maxGap: 180,
         };
 
+        // Фонарик в темноте: true — включён, false — полностью отключён
+        const FLASHLIGHT_ENABLED = true;
+        // Фонарик в темноте: радиус светового круга, px
+        const FLASHLIGHT_RADIUS = 200;
+        // Амплитуда дрожания фонарика, px (0 — без дрожания)
+        const FLASHLIGHT_SHAKE = 3;
+        // Тёплый оттенок луча, как у лампы накаливания: 0 — без оттенка, 1 — сильный
+        const FLASHLIGHT_TINT = 0.7;
+        // Садится батарейка: иногда луч мигает и тускнеет, пока фонарик не потрясти
+        // (быстро поводить курсором / пальцем туда-сюда)
+        const FLASHLIGHT_BATTERY_ENABLED = true;
+        const FLASHLIGHT_BATTERY_MIN_DELAY = 30000; // через сколько мс работы фонарика (30–70 с)
+        const FLASHLIGHT_BATTERY_MAX_DELAY = 70000;
+        const FLASHLIGHT_BATTERY_AUTO_RECOVER = 12000; // не потрясли — сам оживёт через столько мс
+
+        // ========== ВИНЬЕТКА ==========
+        // Затемнение углов: 0 — нет, 1 — максимум
+        const VIGNETTE_DARK = 0.85; // свет выключен
+        const VIGNETTE_LIT = 0.35;  // свет включён
+
+        // ========== КОНУС СВЕТА ОТ ЛАМПЫ ==========
+        // Мягкий видимый луч под лампочкой при включённом свете; пыль в нём ярче
+        const LAMP_BEAM_ENABLED = true;
+        const LAMP_BEAM = {
+            x: 546,          // центр лампочки по X, px (в координатах фона)
+            y: 88,           // откуда начинается конус (низ лампочки), px
+            topWidth: 26,    // ширина конуса у лампочки, px
+            bottomWidth: 680,// ширина конуса у нижнего края сцены, px
+            strength: 0.7,   // яркость луча: 0 — не виден, 1 — максимум
+        };
+        // Насколько видна пыль ВНЕ конуса при включённом свете (1 — как в конусе)
+        const LAMP_BEAM_DUST_OUTSIDE = 0.35;
+
+        // ========== РАЗОГРЕВ ЛАМПЫ ==========
+        // Включение как у лампы накаливания: сначала оранжевая спираль,
+        // потом тёплый тусклый свет разгорается до обычного.
+        // Выключение: комната гаснет сразу, спираль ещё мгновение тлеет.
+        const LAMP_WARMUP_ENABLED = true;
+        const LAMP_WARMUP_MS = 300;        // длительность разогрева, мс
+        const LAMP_AFTERGLOW_MS = 150;     // остывание спирали после выключения, мс
+        const LAMP_STUBBORN_CHANCE = 0.12; // шанс, что лампа «не схватится» с первого раза (0 — никогда)
+
+        // ========== ПАУТИНА ==========
+        // Паутина в углах: колышется от сквозняка и от движения курсора рядом.
+        // При свете видна всегда, в темноте — только в луче фонарика.
+        const COBWEB_ENABLED = true;
+        const COBWEB_OPACITY = 0.5; // насколько заметна при свете (0..1)
+        //   x, y — точка крепления (угол), r — размер, from/to — сектор, градусы
+        //   (0° — вправо, 90° — вниз)
+        const COBWEBS = [
+            { x: 428, y: 52, r: 85,  from: 6, to: 126 }, // угол балки и левого стропила
+            { x: 0,   y: 0,  r: 165, from: 2, to: 88 },  // левый верхний угол
+        ];
+
+        // ========== КОШКА-ТЕНЬ ==========
+        // В темноте иногда вдоль стены пробегает силуэт кошки. Попала в луч
+        // фонарика — замирает, глаза вспыхивают, и она убегает.
+        const CAT_SHADOW_ENABLED = true;
+        const CAT_SHADOW_FIRST_DELAY = 15000; // первое появление: через столько мс темноты
+        const CAT_SHADOW_MIN_DELAY = 40000;   // следующие: через 40–90 с темноты
+        const CAT_SHADOW_MAX_DELAY = 90000;
+        const CAT_SHADOW_OPACITY = 0.6;       // насколько тёмный силуэт (0..1)
+        // Путь: линия пола у задней стены, между стопками постеров
+        const CAT_SHADOW_PATH = { y: 471, leftX: 245, rightX: 835, speed: 120, scale: 1 };
+        // Контуры, за которыми силуэт прячется (настоящая кошка на переднем плане).
+        // Обведено по фону: спина, пушистая грудь, голова, уши.
+        const CAT_SHADOW_HIDE = [[
+            [300, 614], [304, 490], [309, 475], [315, 465], [320, 455], [326, 446], [330, 438], [340, 428],
+            [360, 415], [385, 400], [405, 385], [412, 360], [418, 334],  // спина → левое ухо
+            [432, 342], [452, 350], [470, 342], [484, 331],                // между ушами → правое ухо
+            [487, 360], [490, 380], [492, 396], [486, 410], [480, 425],    // морда, подбородок
+            [486, 445], [492, 470], [495, 614],                             // грудь
+        ]];
+
+        // ========== СВЕТ ИЗ ЩЕЛЕЙ В ПОЛУ ==========
+        // В темноте сквозь щели между досками пробивается тёплый свет из
+        // комнаты внизу: чуть дрожит, а иногда по нему проходит тень —
+        // кто-то ходит внизу. При включённой лампе щели гаснут.
+        const FLOOR_CRACKS_ENABLED = true;
+        const FLOOR_CRACK_STRENGTH = 0.25;  // яркость в темноте (0..1)
+        const FLOOR_CRACK_LIT = 0;         // яркость при включённой лампе (0 — не видно)
+        const FLOOR_CRACKS = {
+            vpX: 550, vpY: 270,            // точка схода досок (перспектива)
+            topY: 472, bottomY: 614,       // от стены до нижнего края сцены
+            // Щели: X у нижнего края сцены (по швам между досками на фоне)
+            xs: [120, 190, 250, 527, 578, 640, 700, 761, 831, 895, 960],
+        };
+        // Видимая часть пола (без стопок постеров по бокам)
+        const FLOOR_AREA = [
+            [245, 472], [832, 472], [888, 522], [905, 560], [1000, 600], [1010, 614],
+            [40, 614], [160, 590], [160, 520], [245, 490],
+        ];
+        // Хвост кошки на полу (сама кошка — CAT_SHADOW_HIDE): щели под ним не светятся
+        const FLOOR_TAIL_HIDE = [
+            [162, 541], [172, 529], [205, 525], [262, 531], [300, 532],
+            [300, 596], [245, 581], [205, 577], [178, 570], [162, 558],
+        ];
+        // Тень от того, кто ходит внизу: раз в 25–60 с темноты
+        const FLOOR_WALKER_MIN_DELAY = 25000;
+        const FLOOR_WALKER_MAX_DELAY = 60000;
+
+        // ========== СВЕТЛЯЧКИ ==========
+        // Через несколько секунд темноты по чердаку начинают плавать
+        // светлячки: слабо светятся и время от времени вспыхивают.
+        // Попали в луч фонарика — гаснут и отлетают, потом загораются снова.
+        const FIREFLIES_ENABLED = true;
+        const FIREFLY_COUNT = 7;
+        const FIREFLY_APPEAR_MS = 4000;  // через сколько мс темноты появляются
+        const FIREFLY_BRIGHTNESS = 0.9;  // яркость вспышки (0..1)
+        const FIREFLY_AREA = { left: 120, top: 110, right: 960, bottom: 520 }; // где летают, px
+
+        // ========== СЛЕДЫ ЛАП ==========
+        // Кошка-тень оставляет в пыли следы лап. В темноте их видно только
+        // в луче фонарика, при свете — везде. Постепенно исчезают.
+        const PAW_PRINTS_ENABLED = true;
+        const PAW_PRINT_FADE_MS = 90000;  // за сколько мс след исчезает полностью
+        const PAW_PRINT_OPACITY = 0.5;    // насколько заметен свежий след (0..1)
+        const PAW_PRINT_SIZE = 1;         // размер следа (1 — ~5 px)
+
+        // ========== МОТЫЛЁК ==========
+        // При включённой лампе вокруг лампочки петляет мотылёк и иногда
+        // стукается о неё. Свет выключили — улетает в темноту. В темноте
+        // может прилететь на луч фонарика и какое-то время кружить в нём.
+        const MOTH_ENABLED = true;
+        const MOTH_SCALE = 1;                      // размер (1 — ~16 px в размахе)
+        const MOTH_RETURN_DELAY = [1500, 4000];    // через сколько мс после включения света прилетает к лампе
+        const MOTH_BEAM_CHANCE = 0.6;              // шанс, что в темноте заинтересуется фонариком (0 — никогда)
+        const MOTH_BEAM_DELAY = [4000, 10000];     // через сколько мс темноты прилетает на луч
+        const MOTH_BEAM_STAY = [12000, 25000];     // сколько мс кружит в луче, потом улетает
+        const MOTH_SHADOW = 0.18;                  // тень мотылька на стене при свете (0 — нет)
+
+        // ========== СТАРАЯ БУМАГА ==========
+        // Открытый постер выглядит старым: желтизна, пятна, зерно
+        const POSTER_AGE_ENABLED = true;
+        const POSTER_AGE_STRENGTH = 1.0; // 0 — незаметно, 1 — максимум
+
+        // ========== НАКЛОН ПОСТЕРА ==========
+        // Открытый постер наклоняется в 3D вслед за курсором, по нему скользит блик
+        const POSTER_TILT_ENABLED = true;
+        const POSTER_TILT_MAX = 8;  // максимальный угол наклона, градусы
+
+        // ========== ГЛАЗА КОШКИ В ТЕМНОТЕ ==========
+        // true — включены, false — отключены
+        const CAT_EYES_ENABLED = true;
+        // Центры глаз на фоне (px, в координатах фона), размер и наклон
+        const CAT_EYES = [
+            { x: 449, y: 383, w: 11, h: 7, rot: -8 },  // ближний глаз
+            { x: 474, y: 381, w: 8,  h: 6, rot: -14 }, // дальний глаз
+        ];
+        // Слабое свечение в темноте, когда луч фонарика не на глазах (0 — не видно)
+        const CAT_EYES_IDLE_GLOW = 0.3;
+        // Пауза между морганиями, мс
+        const CAT_BLINK_MIN_DELAY = 2500;
+        const CAT_BLINK_MAX_DELAY = 7000;
+
+        // Пыль в свете: количество пылинок и их скорость (px/с)
+        const DUST_COUNT = 350;
+        const DUST_SPEED = 12;
+
         const AMBIENT_MIN_DELAY = 10000;
         const AMBIENT_MAX_DELAY = 20000;
 
@@ -213,8 +578,14 @@
             currentExpandedPoster: null,
             isAnimating: false,
             cordImg: null,
+            flashPointerInside: false,  // курсор над сценой (для фонарика)
+            warmupGen: 0,               // счётчик для отмены разогрева лампы
+            warmupActive: false,        // идёт разогрев лампы
+            warmupLevel: 0,             // яркость комнаты во время разогрева 0..1
+            flashBeam: { x: -9999, y: -9999, r: 150 }, // текущий центр и радиус луча
             catPurrTimer: null,
             catPurrCycleStarted: false,
+            addPawPrint: null,          // оставить след лапы (задаётся в setupPawPrints)
             selectedBackgroundMusicUrl: null, // случайно выбранный URL фоновой музыки
         };
 
@@ -401,6 +772,7 @@
 
             document.getElementById('bgOff').src = BG_OFF;
             document.getElementById('bgOn').src = BG_ON;
+            document.getElementById('bgFlash').src = BG_ON;
 
             state.allAssetsLoaded = true;
             const loadingText = document.getElementById('loadingText');
@@ -416,6 +788,19 @@
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('scene').style.display = 'block';
             setupPullCord();
+            setupFlashlight();
+            setupLampBeam();
+            setupFilament();
+            setupCobwebs();
+            setupFloorCracks();
+            setupPawPrints();
+            setupCatShadow();
+            setupDust();
+            setupMoth();
+            setupFireflies();
+            setupCatEyes();
+            updateVignette();
+            setupPosterTilt();
             createHotspots();
             createPosterElements();
             state.audioEnabled = true;
@@ -472,6 +857,333 @@
             cord.animate(keyframes, { duration: 475 });
         }
 
+        // ========== ФОНАРИК ==========
+        // В темноте круг вокруг курсора (или пальца) показывает освещённый фон.
+        function setupFlashlight() {
+            const scene = document.getElementById('scene');
+            const flash = document.getElementById('bgFlash');
+            if (!FLASHLIGHT_ENABLED) {
+                flash.remove(); // не держим лишний слой и не запускаем цикл анимации
+                return;
+            }
+            flash.style.setProperty('--fr', FLASHLIGHT_RADIUS + 'px');
+            if (FLASHLIGHT_TINT > 0) {
+                const k = FLASHLIGHT_TINT;
+                flash.style.filter = `sepia(${0.45 * k}) saturate(${1 + 0.35 * k}) ` +
+                    `hue-rotate(${-6 * k}deg) brightness(${1 + 0.06 * k})`;
+            }
+
+            let pos = { x: 0, y: 0 };
+            // Случайные фазы, чтобы дрожание не выглядело одинаковым при каждом заходе
+            const ph = Array.from({ length: 5 }, () => Math.random() * Math.PI * 2);
+
+            // ---- Батарейка ----
+            // ok → stutter (мигает) → dim (тусклый) → revive (встряхнули: мигнул и ожил) → ok
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const batt = {
+                mode: 'ok', power: 1, usage: 0, modeT: 0, flickT: 0, dimLevel: 0.25,
+                nextAt: rand(FLASHLIGHT_BATTERY_MIN_DELAY, FLASHLIGHT_BATTERY_MAX_DELAY) / 1000,
+                reversals: [], lastSx: 0, lastSy: 0,
+            };
+            const revive = () => {
+                if (batt.mode !== 'stutter' && batt.mode !== 'dim') return;
+                batt.mode = 'revive';
+                batt.modeT = 0.35;
+            };
+            // Встряска: 3+ резкие смены направления за 0,6 с
+            const trackShake = (dx, dy, now) => {
+                if (batt.mode !== 'stutter' && batt.mode !== 'dim') return;
+                const check = (d, key) => {
+                    if (Math.abs(d) < 4) return;
+                    if (batt[key] && Math.sign(d) !== Math.sign(batt[key])) batt.reversals.push(now);
+                    batt[key] = d;
+                };
+                check(dx, 'lastSx');
+                check(dy, 'lastSy');
+                batt.reversals = batt.reversals.filter(r => now - r < 600);
+                if (batt.reversals.length >= 3) { batt.reversals = []; revive(); }
+            };
+            const updateBattery = (dt) => {
+                if (!FLASHLIGHT_BATTERY_ENABLED) return;
+                const b = batt;
+                if (b.mode === 'ok') {
+                    b.usage += dt;
+                    if (b.usage >= b.nextAt) {
+                        b.mode = 'stutter';
+                        b.modeT = rand(0.6, 1.2);
+                        b.dimLevel = rand(0.15, 0.3);
+                    }
+                } else if (b.mode === 'stutter') {
+                    b.modeT -= dt;
+                    b.flickT -= dt;
+                    if (b.flickT <= 0) {
+                        b.power = Math.random() < 0.5 ? rand(0.05, 0.4) : rand(0.7, 1);
+                        b.flickT = rand(0.03, 0.12);
+                    }
+                    if (b.modeT <= 0) { b.mode = 'dim'; b.modeT = FLASHLIGHT_BATTERY_AUTO_RECOVER / 1000; }
+                } else if (b.mode === 'dim') {
+                    b.modeT -= dt;
+                    // Тусклый, с редкими провалами
+                    b.power = Math.random() < dt * 1.2 ? 0.04 : b.dimLevel * rand(0.85, 1.1);
+                    if (b.modeT <= 0) revive();
+                } else if (b.mode === 'revive') {
+                    b.modeT -= dt;
+                    b.power = Math.random() < 0.5 ? rand(0.3, 0.6) : 1;
+                    if (b.modeT <= 0) {
+                        b.mode = 'ok';
+                        b.power = 1;
+                        b.usage = 0;
+                        b.nextAt = rand(FLASHLIGHT_BATTERY_MIN_DELAY, FLASHLIGHT_BATTERY_MAX_DELAY) / 1000;
+                    }
+                }
+                flash.style.setProperty('--fp', b.power.toFixed(3));
+                // Во время мигания — резкие переключения вместо плавного перехода
+                flash.style.transition = b.mode === 'ok' ? '' : 'opacity 0.04s linear';
+            };
+            window.flashlightBattery = () => { batt.usage = batt.nextAt; }; // проверка в консоли
+
+            // Постоянный цикл: позиция курсора + лёгкое «дрожание руки»
+            // (сумма медленных синусоид) + едва заметная пульсация радиуса.
+            let lastTick = performance.now();
+            const tick = (now) => {
+                requestAnimationFrame(tick);
+                const dt = Math.min((now - lastTick) / 1000, 0.05);
+                lastTick = now;
+                if (!flash.classList.contains('active')) return;
+                updateBattery(dt);
+                const t = now / 1000;
+                const a = FLASHLIGHT_SHAKE;
+                const dx = a * (Math.sin(t * 7.3 + ph[0]) * 0.6 + Math.sin(t * 13.1 + ph[1]) * 0.4);
+                const dy = a * (Math.sin(t * 6.1 + ph[2]) * 0.6 + Math.sin(t * 11.7 + ph[3]) * 0.4);
+                // Слабая батарейка — луч не только тусклее, но и уже
+                // (через радиус это чувствуют пыль, глаза кошки, светлячки и т. д.)
+                const r = FLASHLIGHT_RADIUS * (1 + 0.02 * Math.sin(t * 9.4 + ph[4]))
+                    * (0.6 + 0.4 * batt.power);
+                flash.style.setProperty('--fx', (pos.x + dx).toFixed(1) + 'px');
+                flash.style.setProperty('--fy', (pos.y + dy).toFixed(1) + 'px');
+                flash.style.setProperty('--fr', r.toFixed(1) + 'px');
+                // Позиция луча нужна пыли, чтобы в темноте она была видна только в нём
+                state.flashBeam.x = pos.x + dx;
+                state.flashBeam.y = pos.y + dy;
+                state.flashBeam.r = r;
+            };
+            requestAnimationFrame(tick);
+
+            const move = (e) => {
+                const rect = scene.getBoundingClientRect();
+                // Учитываем возможное масштабирование сцены
+                const kx = state.sceneW / rect.width;
+                const ky = state.sceneH / rect.height;
+                const nx = (e.clientX - rect.left) * kx, ny = (e.clientY - rect.top) * ky;
+                trackShake(nx - pos.x, ny - pos.y, performance.now());
+                pos = { x: nx, y: ny };
+                updateFlashlight(true);
+            };
+
+            scene.addEventListener('pointermove', move);
+            scene.addEventListener('pointerdown', move);
+            scene.addEventListener('pointerleave', () => updateFlashlight(false));
+        }
+
+        function updateFlashlight(pointerInside) {
+            const flash = document.getElementById('bgFlash');
+            if (!flash) return;
+            if (typeof pointerInside === 'boolean') state.flashPointerInside = pointerInside;
+            flash.classList.toggle('active', !state.isLightOn && !!state.flashPointerInside);
+        }
+
+        // ========== ПЫЛЬ В СВЕТЕ ==========
+        // Пылинки медленно парят по чердаку. При включённой лампе видны везде,
+        // в темноте — только внутри луча фонарика. Холст лежит внутри #bgWrap,
+        // поэтому мерцание лампы действует и на пыль.
+        function setupDust() {
+            const canvas = document.getElementById('dust');
+            if (!canvas || !canvas.getContext) return;
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const particles = Array.from({ length: DUST_COUNT }, () => ({
+                x: rand(0, W),
+                y: rand(0, H),
+                vx: rand(-1, 1) * DUST_SPEED,
+                vy: rand(-1, 1) * DUST_SPEED * 0.6,
+                size: Math.random() < 0.85 ? rand(0.5, 1.4) : rand(1.6, 2.6), // редкие крупные
+                alpha: rand(0.25, 0.75),
+                tw: rand(0.5, 1.6),           // скорость мерцания пылинки
+                ph: rand(0, Math.PI * 2),
+            }));
+
+            let lightMix = state.isLightOn ? 1 : 0; // плавный переход вкл/выкл
+            let last = performance.now();
+
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+                const t = now / 1000;
+
+                lightMix += (roomLightLevel() - lightMix) * Math.min(1, Math.max(0, dt) * 4);
+                if (!Number.isFinite(lightMix)) lightMix = roomLightLevel();
+                const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+                ctx.clearRect(0, 0, W, H);
+                if (lightMix < 0.01 && !beamOn) return;
+
+                const b = state.flashBeam;
+                for (const p of particles) {
+                    // Броуновское блуждание + лёгкий восходящий поток тёплого воздуха
+                    p.vx += rand(-1, 1) * DUST_SPEED * dt * 2;
+                    p.vy += (rand(-1, 1) * DUST_SPEED * 2 - DUST_SPEED * 0.15) * dt;
+                    p.vx *= 1 - dt * 0.5;
+                    p.vy *= 1 - dt * 0.5;
+                    p.x += p.vx * dt;
+                    p.y += p.vy * dt;
+                    if (p.x < -5) p.x = W + 5; else if (p.x > W + 5) p.x = -5;
+                    if (p.y < -5) p.y = H + 5; else if (p.y > H + 5) p.y = -5;
+
+                    // Видимость: свет лампы (ярче внутри конуса света от лампы)
+                    // или близость к центру луча фонарика
+                    let vis = lightMix;
+                    if (vis > 0 && LAMP_BEAM_ENABLED) {
+                        vis *= LAMP_BEAM_DUST_OUTSIDE + (1 - LAMP_BEAM_DUST_OUTSIDE) * lampBeamFactor(p.x, p.y);
+                    }
+                    if (beamOn) {
+                        const d = Math.hypot(p.x - b.x, p.y - b.y) / b.r;
+                        if (d < 1) vis = Math.max(vis, (1 - d * d) * 1.3);
+                    }
+                    if (vis <= 0.01) continue;
+
+                    const twinkle = 0.6 + 0.4 * Math.sin(t * p.tw + p.ph);
+                    ctx.globalAlpha = Math.min(1, p.alpha * twinkle * vis);
+                    ctx.fillStyle = '#fff3dc';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== ГЛАЗА КОШКИ В ТЕМНОТЕ ==========
+        // В темноте глаза кошки слабо светятся, моргают и следят за курсором.
+        // Если на них попадает луч фонарика — вспыхивают ярче, а зрачки
+        // сужаются в щёлочки. При включённой лампе глаза не видны.
+        function setupCatEyes() {
+            if (!CAT_EYES_ENABLED) return;
+            const scene = document.getElementById('scene');
+
+            const wrap = document.createElement('div');
+            wrap.id = 'catEyes';
+            const glows = CAT_EYES.map(cfg => {
+                const eye = document.createElement('div');
+                eye.className = 'cat-eye';
+                eye.style.left = (cfg.x - cfg.w / 2) + 'px';
+                eye.style.top = (cfg.y - cfg.h / 2) + 'px';
+                eye.style.width = cfg.w + 'px';
+                eye.style.height = cfg.h + 'px';
+                eye.style.transform = `rotate(${cfg.rot}deg)`;
+                const glow = document.createElement('div');
+                glow.className = 'eye-glow';
+                const pupil = document.createElement('div');
+                pupil.className = 'pupil';
+                glow.appendChild(pupil);
+                eye.appendChild(glow);
+                wrap.appendChild(eye);
+                return glow;
+            });
+            scene.appendChild(wrap);
+
+            // Точка между глазами — от неё считаем взгляд и попадание луча
+            const cx = CAT_EYES.reduce((s, e) => s + e.x, 0) / CAT_EYES.length;
+            const cy = CAT_EYES.reduce((s, e) => s + e.y, 0) / CAT_EYES.length;
+
+            let cursor = null;
+            scene.addEventListener('pointermove', (e) => {
+                const rect = scene.getBoundingClientRect();
+                cursor = {
+                    x: (e.clientX - rect.left) * state.sceneW / rect.width,
+                    y: (e.clientY - rect.top) * state.sceneH / rect.height,
+                };
+            });
+            scene.addEventListener('pointerleave', () => { cursor = null; });
+
+            let glow = 0, slit = 0.35, lx = 0, ly = 0;
+            let last = performance.now();
+            let visible = false;
+
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+
+                // Насколько луч фонарика попадает на глаза (0..1)
+                let beam = 0;
+                if (!state.isLightOn && FLASHLIGHT_ENABLED && state.flashPointerInside) {
+                    const b = state.flashBeam;
+                    const d = Math.hypot(b.x - cx, b.y - cy) / b.r;
+                    if (d < 1) beam = 1 - d * d;
+                }
+                const target = state.isLightOn ? 0
+                    : CAT_EYES_IDLE_GLOW + (1 - CAT_EYES_IDLE_GLOW) * beam;
+                glow += (target - glow) * Math.min(1, dt * 6);
+
+                if (glow < 0.005 && target === 0) {
+                    if (visible) { wrap.style.visibility = 'hidden'; visible = false; }
+                    return;
+                }
+                if (!visible) { wrap.style.visibility = 'visible'; visible = true; }
+
+                // Зрачки: широкие в темноте, щёлочки в луче
+                slit += ((0.38 - 0.28 * beam) - slit) * Math.min(1, dt * 3);
+
+                // Взгляд следует за курсором (плавно, с ограничением)
+                let tx = 0, ty = 0;
+                if (cursor) {
+                    const dx = cursor.x - cx, dy = cursor.y - cy;
+                    const len = Math.hypot(dx, dy) || 1;
+                    const k = Math.min(1, len / 120);
+                    tx = dx / len * k;
+                    ty = dy / len * k;
+                }
+                lx += (tx - lx) * Math.min(1, dt * 5);
+                ly += (ty - ly) * Math.min(1, dt * 5);
+
+                wrap.style.setProperty('--glow', glow.toFixed(3));
+                wrap.style.setProperty('--slit', (slit * 100).toFixed(1) + '%');
+                wrap.style.setProperty('--lx', lx.toFixed(3));
+                wrap.style.setProperty('--ly', ly.toFixed(3));
+            };
+            requestAnimationFrame(frame);
+
+            // Моргание: иногда двойное
+            const blink = () => {
+                glows.forEach(g => {
+                    if (typeof g.animate !== 'function') return;
+                    g.animate([
+                        { transform: 'scaleY(1)' },
+                        { transform: 'scaleY(0.08)', offset: 0.45 },
+                        { transform: 'scaleY(1)' },
+                    ], { duration: 180, easing: 'ease-in-out' });
+                });
+            };
+            const scheduleBlink = () => {
+                const delay = CAT_BLINK_MIN_DELAY + Math.random() * (CAT_BLINK_MAX_DELAY - CAT_BLINK_MIN_DELAY);
+                setTimeout(() => {
+                    if (visible) {
+                        blink();
+                        if (Math.random() < 0.2) setTimeout(blink, 260);
+                    }
+                    scheduleBlink();
+                }, delay);
+            };
+            scheduleBlink();
+        }
+
         // ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
         function createHotspots() {
             const scene = document.getElementById('scene');
@@ -523,11 +1235,18 @@
                 const finalW = Math.round(naturalW * ratio);
                 const finalH = Math.round(naturalH * ratio);
 
-                const el = document.createElement('img');
+                // Постер — обёртка с картинкой и слоем «старой бумаги» поверх,
+                // чтобы все трансформации (разворот, наклон) применялись к обоим
+                const el = document.createElement('div');
                 el.className = 'poster';
-                el.src = p.src;
                 el.style.width = finalW + 'px';
                 el.style.height = finalH + 'px';
+                const img = document.createElement('img');
+                img.src = p.src;
+                img.alt = '';
+                img.draggable = false;
+                el.appendChild(img);
+                if (POSTER_AGE_ENABLED) el.appendChild(createAgedPaperLayer());
                 el.addEventListener('click', (e) => {
                     e.stopPropagation();
                     collapsePoster();
@@ -536,6 +1255,31 @@
 
                 state.posterById[p.zone.id] = { zone: p.zone, el, finalW, finalH };
             });
+        }
+
+        // Слой «старой бумаги»: желтизна к краям, пятна, потёртости, зерно.
+        // Пятна случайные — у каждого постера свои.
+        function createAgedPaperLayer() {
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const layers = [];
+
+            // Пятна старости (foxing): 2–4 мягких коричневых пятна
+            const spots = 2 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < spots; i++) {
+                const x = rand(5, 95).toFixed(1), y = rand(5, 95).toFixed(1);
+                const r = rand(4, 12).toFixed(1);
+                layers.push(`radial-gradient(circle at ${x}% ${y}%, rgba(140, 90, 40, ${rand(0.12, 0.25).toFixed(2)}) 0%, ` +
+                    `rgba(140, 90, 40, 0.05) ${r}%, transparent ${(r * 1.6).toFixed(1)}%)`);
+            }
+
+            // Желтизна к краям
+            layers.push('radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(150, 105, 45, 0.35) 100%)');
+
+            const layer = document.createElement('div');
+            layer.className = 'poster-age';
+            layer.style.backgroundImage = layers.join(', ') + ', var(--paper-grain)';
+            layer.style.opacity = String(POSTER_AGE_STRENGTH);
+            return layer;
         }
 
         function expandPoster(zoneData) {
@@ -552,6 +1296,10 @@
             const sy = zoneData.zone.height / zoneData.finalH;
             const centerX = (state.sceneW - zoneData.finalW) / 2;
             const centerY = (state.sceneH - zoneData.finalH) / 2;
+            const z = zoneData.zone;
+            puffPosterDust({ x: z.left, y: z.top, w: z.width, h: z.height }, 'wall');
+            setTimeout(() => puffPosterDust(
+                { x: centerX, y: centerY, w: zoneData.finalW, h: zoneData.finalH }, 'unfold'), 240);
 
             poster.style.display = 'block';
             poster.style.filter = getPosterFilter();
@@ -576,14 +1324,236 @@
             const sx = zoneData.zone.width / zoneData.finalW;
             const sy = zoneData.zone.height / zoneData.finalH;
 
+            endPosterTilt(zoneData);
             poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
 
             setTimeout(() => {
+                const z = zoneData.zone;
+                puffPosterDust({ x: z.left, y: z.top, w: z.width, h: z.height }, 'land');
                 poster.style.display = 'none';
                 state.currentExpandedPoster = null;
                 state.isAnimating = false;
                 if (typeof callback === 'function') callback();
             }, 320);
+        }
+
+        // ========== ПЫЛЬ ОТ ПОСТЕРА ==========
+        // Постер снимают со стены — с него сыплется пыль; разворачивается —
+        // с краёв срывается облачко; возвращается на место — ещё немного пыли
+        const POSTER_DUST_ENABLED = true;
+        const POSTER_DUST_AMOUNT = 1; // множитель количества пылинок (0.5 — меньше, 2 — больше)
+
+        // ========== ПЫЛЬ ОТ ПОСТЕРА ==========
+        // Свой холст поверх постеров; цикл анимации крутится, только пока
+        // есть живые пылинки. Мелкие пылинки + несколько мягких «облачков».
+        const posterDust = { canvas: null, ctx: null, sprite: null, parts: [], running: false };
+
+        function puffPosterDust(rect, kind) {
+            if (!POSTER_DUST_ENABLED || POSTER_DUST_AMOUNT <= 0 || !state.sceneW) return;
+            const pd = posterDust;
+            if (!pd.canvas) {
+                const c = document.createElement('canvas');
+                c.id = 'posterDust';
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                c.width = Math.round(state.sceneW * dpr);
+                c.height = Math.round(state.sceneH * dpr);
+                document.getElementById('scene').appendChild(c);
+                pd.canvas = c;
+                pd.ctx = c.getContext('2d');
+                pd.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                // Мягкое пятно для «облачков»
+                const s = document.createElement('canvas');
+                s.width = s.height = 64;
+                const sc = s.getContext('2d');
+                const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
+                g.addColorStop(0, 'rgba(235, 222, 196, 1)');
+                g.addColorStop(0.4, 'rgba(225, 210, 180, 0.45)');
+                g.addColorStop(1, 'rgba(220, 205, 175, 0)');
+                sc.fillStyle = g;
+                sc.fillRect(0, 0, 64, 64);
+                pd.sprite = s;
+            }
+
+            const rand = (a, b) => a + Math.random() * (b - a);
+            // wall — сыплется с места на стене; unfold — срывается с краёв
+            // развёрнутого постера; land — оседает при возвращении
+            const cfg = {
+                wall:   { specks: 22, clouds: 3, speed: 45,  life: [1.2, 2.4], edge: false },
+                unfold: { specks: 55, clouds: 8, speed: 150, life: [1.0, 2.2], edge: true },
+                land:   { specks: 14, clouds: 2, speed: 35,  life: [1.0, 2.0], edge: false },
+            }[kind];
+            const now = performance.now();
+
+            const spawn = (cloud) => {
+                let x, y, nx, ny;
+                if (cfg.edge) {
+                    // Случайная точка на периметре и нормаль наружу
+                    let t = rand(0, 2 * (rect.w + rect.h));
+                    if (t < rect.w) { x = rect.x + t; y = rect.y; nx = 0; ny = -1; }
+                    else if ((t -= rect.w) < rect.h) { x = rect.x + rect.w; y = rect.y + t; nx = 1; ny = 0; }
+                    else if ((t -= rect.h) < rect.w) { x = rect.x + rect.w - t; y = rect.y + rect.h; nx = 0; ny = 1; }
+                    else { t -= rect.w; x = rect.x; y = rect.y + rect.h - t; nx = -1; ny = 0; }
+                } else {
+                    x = rect.x + rand(0, rect.w);
+                    y = rect.y + rand(0, rect.h);
+                    const a = Math.atan2(y - (rect.y + rect.h / 2), x - (rect.x + rect.w / 2));
+                    nx = Math.cos(a); ny = Math.sin(a);
+                }
+                const v = cfg.speed * rand(0.3, 1) * (cloud ? 0.5 : 1);
+                pd.parts.push({
+                    x, y,
+                    vx: nx * v + rand(-1, 1) * cfg.speed * 0.25,
+                    vy: ny * v + rand(-1, 1) * cfg.speed * 0.25,
+                    born: now,
+                    life: rand(cfg.life[0], cfg.life[1]) * (cloud ? 1.3 : 1),
+                    size: cloud ? rand(10, 22) : (Math.random() < 0.8 ? rand(0.5, 1.3) : rand(1.5, 2.3)),
+                    alpha: cloud ? rand(0.12, 0.22) : rand(0.4, 0.85),
+                    cloud,
+                });
+            };
+            const n = (k) => Math.round(k * POSTER_DUST_AMOUNT);
+            for (let i = 0; i < n(cfg.specks); i++) spawn(false);
+            for (let i = 0; i < n(cfg.clouds); i++) spawn(true);
+            if (pd.parts.length > 600) pd.parts.splice(0, pd.parts.length - 600);
+
+            if (pd.running) return;
+            pd.running = true;
+            let last = performance.now();
+            const frame = (t) => {
+                const ctx = pd.ctx;
+                const dt = Math.min((t - last) / 1000, 0.05);
+                last = t;
+                ctx.clearRect(0, 0, state.sceneW, state.sceneH);
+                pd.parts = pd.parts.filter(p => (t - p.born) / 1000 < p.life);
+                if (!pd.parts.length) { pd.running = false; return; }
+
+                // В темноте пыль тусклая, как и сам постер
+                const light = Math.max(roomLightLevel(), POSTER_DARK_BRIGHTNESS);
+                for (const p of pd.parts) {
+                    // Сопротивление воздуха, лёгкое оседание и случайное блуждание
+                    const drag = p.cloud ? 3 : 2.2;
+                    p.vx += (Math.random() * 2 - 1) * 30 * dt - p.vx * drag * dt;
+                    p.vy += (Math.random() * 2 - 1) * 30 * dt - p.vy * drag * dt + (p.cloud ? 2 : 10) * dt;
+                    p.x += p.vx * dt;
+                    p.y += p.vy * dt;
+                    if (p.cloud) p.size += 8 * dt; // облачко расплывается
+
+                    const k = (t - p.born) / 1000 / p.life;
+                    const a = p.alpha * Math.min(1, k * 10) * (1 - k) ** 1.5 * light;
+                    if (a <= 0.005) continue;
+                    ctx.globalAlpha = a;
+                    if (p.cloud) {
+                        ctx.drawImage(pd.sprite, p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
+                    } else {
+                        ctx.fillStyle = '#fff3dc';
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(frame);
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== НАКЛОН ПОСТЕРА ==========
+        // Открытый постер слегка наклоняется в 3D за курсором: сторона под
+        // курсором «уходит» от зрителя, тень смещается, по глянцу скользит блик.
+        function setupPosterTilt() {
+            if (!POSTER_TILT_ENABLED) return;
+            const scene = document.getElementById('scene');
+            const glare = document.createElement('div');
+            glare.id = 'posterGlare';
+            scene.appendChild(glare);
+            state.posterGlare = glare;
+
+            scene.addEventListener('pointermove', (e) => {
+                const zd = state.currentExpandedPoster;
+                if (!zd || state.isAnimating) return;
+                const rect = scene.getBoundingClientRect();
+                const x = (e.clientX - rect.left) * state.sceneW / rect.width;
+                const y = (e.clientY - rect.top) * state.sceneH / rect.height;
+                // Координаты относительно центра постера (без учёта наклона): -1..1
+                const { cx, cy } = posterCenter(zd);
+                const nx = (x - cx) / zd.finalW * 2 - 1;
+                const ny = (y - cy) / zd.finalH * 2 - 1;
+                if (Math.abs(nx) > 1.1 || Math.abs(ny) > 1.1) {
+                    resetPosterTilt(zd);
+                    return;
+                }
+                applyPosterTilt(zd, Math.max(-1, Math.min(1, nx)), Math.max(-1, Math.min(1, ny)));
+            });
+            scene.addEventListener('pointerleave', () => {
+                const zd = state.currentExpandedPoster;
+                if (zd && !state.isAnimating) resetPosterTilt(zd);
+            });
+        }
+
+        function posterCenter(zd) {
+            return {
+                cx: (state.sceneW - zd.finalW) / 2,
+                cy: (state.sceneH - zd.finalH) / 2,
+            };
+        }
+
+        // Трансформация открытого постера с наклоном вокруг его центра
+        function tiltTransform(zd, rx, ry) {
+            const { cx, cy } = posterCenter(zd);
+            const hw = zd.finalW / 2, hh = zd.finalH / 2;
+            return `translate(${cx}px, ${cy}px) translate(${hw}px, ${hh}px) perspective(900px) ` +
+                `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translate(${-hw}px, ${-hh}px)`;
+        }
+
+        function applyPosterTilt(zd, nx, ny) {
+            const el = zd.el;
+            const t = tiltTransform(zd, -ny * POSTER_TILT_MAX, nx * POSTER_TILT_MAX);
+            const fast = 'transform 0.12s ease-out, filter 0.12s ease, box-shadow 0.12s ease-out';
+            el.style.transition = fast;
+            el.style.transform = t;
+            el.style.boxShadow =
+                `${(-nx * 10).toFixed(1)}px ${(16 - ny * 10).toFixed(1)}px 48px rgba(0,0,0,0.85), ` +
+                `${(-nx * 5).toFixed(1)}px ${(8 - ny * 5).toFixed(1)}px 24px rgba(0,0,0,0.7)`;
+
+            const g = state.posterGlare;
+            if (!g) return;
+            if (g.style.display !== 'block') {
+                g.style.display = 'block';
+                g.style.width = zd.finalW + 'px';
+                g.style.height = zd.finalH + 'px';
+            }
+            g.style.transition = 'transform 0.12s ease-out, opacity 0.25s ease';
+            g.style.transform = t;
+            g.style.setProperty('--gx', ((nx + 1) * 50).toFixed(1) + '%');
+            g.style.setProperty('--gy', ((ny + 1) * 50).toFixed(1) + '%');
+            // В темноте блик слабее — свету неоткуда взяться
+            g.style.opacity = String(state.isLightOn ? 1 : 0.3);
+        }
+
+        // Плавно вернуть постер в ровное положение (курсор ушёл с постера)
+        function resetPosterTilt(zd) {
+            const el = zd.el;
+            if (!el.style.boxShadow && !(state.posterGlare && state.posterGlare.style.display === 'block')) return;
+            el.style.transition = 'transform 0.4s ease, filter 0.12s ease, box-shadow 0.4s ease';
+            el.style.transform = tiltTransform(zd, 0, 0);
+            el.style.boxShadow = '';
+            const g = state.posterGlare;
+            if (g && g.style.display === 'block') {
+                g.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
+                g.style.transform = tiltTransform(zd, 0, 0);
+                g.style.opacity = '0';
+            }
+        }
+
+        // Перед сворачиванием: вернуть стандартную анимацию и убрать блик
+        function endPosterTilt(zd) {
+            zd.el.style.transition = '';
+            zd.el.style.boxShadow = '';
+            const g = state.posterGlare;
+            if (g) {
+                g.style.display = 'none';
+                g.style.opacity = '0';
+            }
         }
 
         // Клик мимо постера/областей — свернуть текущий постер
@@ -650,20 +1620,1161 @@
 
             if (state.isLightOn) {
                 stopAmbientFlicker();
+                cancelWarmup();
                 wrap.style.filter = 'brightness(1)';
                 bgOn.style.opacity = '0';
                 bgOff.style.opacity = '1';
                 state.isLightOn = false;
+                playAfterglow();
             } else {
-                bgOff.style.opacity = '0';
-                bgOn.style.opacity = '1';
                 state.isLightOn = true;
                 playRandomLampSound();
-                runFlicker(FLICKER_AMBIENT);   // то же небольшое мерцание, что и в случайном режиме
-                scheduleAmbientFlicker();
+                const startFlicker = () => {
+                    runFlicker(FLICKER_AMBIENT);   // то же небольшое мерцание, что и в случайном режиме
+                    scheduleAmbientFlicker();
+                };
+                if (LAMP_WARMUP_ENABLED) {
+                    runWarmup(startFlicker);
+                } else {
+                    bgOff.style.opacity = '0';
+                    bgOn.style.opacity = '1';
+                    startFlicker();
+                }
             }
             updateExpandedPosterLighting();
             updateCordLighting();
+            updateFlashlight();
+            updateVignette();
+            updateLampBeam();
+        }
+
+        // ========== КОНУС СВЕТА ОТ ЛАМПЫ ==========
+        function setupLampBeam() {
+            const beam = document.getElementById('lampBeam');
+            if (!beam) return;
+            if (!LAMP_BEAM_ENABLED) { beam.remove(); return; }
+            const b = LAMP_BEAM;
+            const H = state.sceneH;
+            const cone = document.getElementById('lampBeamCone');
+            // Трапеция: узко у лампочки, широко у пола
+            cone.style.clipPath = `polygon(` +
+                `${b.x - b.topWidth / 2}px ${b.y}px, ${b.x + b.topWidth / 2}px ${b.y}px, ` +
+                `${b.x + b.bottomWidth / 2}px ${H}px, ${b.x - b.bottomWidth / 2}px ${H}px)`;
+            cone.style.setProperty('--bx', b.x + 'px');
+            cone.style.backgroundPosition = `0 ${b.y}px`;
+            cone.style.backgroundRepeat = 'no-repeat';
+            cone.style.backgroundSize = `100% ${H - b.y}px`;
+            const halo = document.getElementById('lampHalo');
+            halo.style.left = b.x + 'px';
+            halo.style.top = (b.y - 12) + 'px';
+            updateLampBeam();
+        }
+
+        function updateLampBeam() {
+            if (state.warmupActive) return; // во время разогрева яркостью луча управляет runWarmup
+            const beam = document.getElementById('lampBeam');
+            if (beam) beam.style.opacity = String(state.isLightOn ? LAMP_BEAM.strength : 0);
+        }
+
+        // ========== РАЗОГРЕВ ЛАМПЫ ==========
+        function setupFilament() {
+            const fil = document.getElementById('filament');
+            if (!fil) return;
+            // Центр лампочки — чуть выше начала конуса света
+            fil.style.left = LAMP_BEAM.x + 'px';
+            fil.style.top = (LAMP_BEAM.y - 12) + 'px';
+        }
+
+        // Текущая яркость лампы 0..1 (учитывает разогрев) — для пыли и паутины
+        function roomLightLevel() {
+            if (!state.isLightOn) return 0;
+            return state.warmupActive ? state.warmupLevel : 1;
+        }
+
+        // Тёплый фильтр: k = 1 — оранжевый, тусклый; k = 0 — обычный свет
+        function warmFilter(k) {
+            if (k <= 0.001) return '';
+            return `sepia(${(0.7 * k).toFixed(3)}) saturate(${(1 + 0.6 * k).toFixed(3)}) ` +
+                `hue-rotate(${(-12 * k).toFixed(2)}deg) brightness(${(1 - 0.15 * k).toFixed(3)})`;
+        }
+
+        function runWarmup(onDone) {
+            const bgOn = document.getElementById('bgOn');
+            const bgOff = document.getElementById('bgOff');
+            const beam = document.getElementById('lampBeam');
+            const fil = document.getElementById('filament');
+            const gen = ++state.warmupGen;
+            state.warmupActive = true;
+            state.warmupLevel = 0;
+
+            // Освещённый фон плавно проявляется поверх тёмного
+            bgOn.style.transition = 'none';
+            bgOff.style.opacity = '1';
+            if (beam) beam.style.transition = 'none';
+            if (fil) fil.getAnimations().forEach(a => a.cancel());
+
+            // Иногда лампа «не схватывается»: вспыхивает, почти гаснет и только потом загорается
+            const stubborn = Math.random() < LAMP_STUBBORN_CHANCE;
+            const pre = stubborn ? 380 : 0;
+            const total = pre + LAMP_WARMUP_MS;
+            const t0 = performance.now();
+            let retried = false;
+
+            const step = (now) => {
+                if (gen !== state.warmupGen) return;
+                // Метка кадра может быть чуть раньше t0 — не даём времени уйти в минус
+                const e = Math.max(0, now - t0);
+                let room, glow, warm;
+                if (pre > 0 && e < pre) {
+                    const u = e / pre;
+                    const env = u < 0.45 ? u / 0.45 : 1 - (u - 0.45) / 0.55;
+                    glow = 0.85 * env;
+                    room = 0.25 * env * env;
+                    warm = 1;
+                } else {
+                    if (stubborn && !retried) { retried = true; playRandomLampSound(); }
+                    const u = Math.min(1, (e - pre) / LAMP_WARMUP_MS);
+                    // Сначала разгорается спираль, затем свет заливает комнату
+                    glow = u < 0.35 ? u / 0.35 : 1 - (u - 0.35) / 0.65;
+                    room = u < 0.2 ? 0 : Math.pow((u - 0.2) / 0.8, 2);
+                    warm = 1 - room;
+                }
+                state.warmupLevel = room;
+                bgOn.style.opacity = room.toFixed(3);
+                bgOn.style.filter = warmFilter(warm);
+                if (beam) beam.style.opacity = (room * LAMP_BEAM.strength).toFixed(3);
+                if (fil) fil.style.opacity = glow.toFixed(3);
+
+                if (e >= total) {
+                    finishWarmup();
+                    onDone();
+                    return;
+                }
+                requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+
+        // Привести всё в обычное «включённое» состояние
+        function finishWarmup() {
+            const bgOn = document.getElementById('bgOn');
+            const bgOff = document.getElementById('bgOff');
+            const beam = document.getElementById('lampBeam');
+            const fil = document.getElementById('filament');
+            state.warmupActive = false;
+            bgOn.style.transition = '';
+            bgOn.style.filter = '';
+            bgOn.style.opacity = '1';
+            bgOff.style.opacity = '0';
+            if (beam) { beam.style.transition = ''; beam.style.opacity = String(LAMP_BEAM.strength); }
+            if (fil) fil.style.opacity = '0';
+        }
+
+        // Прервать разогрев (свет выключили раньше, чем лампа разгорелась)
+        function cancelWarmup() {
+            state.warmupGen++;
+            if (!state.warmupActive) return;
+            state.warmupActive = false;
+            const bgOn = document.getElementById('bgOn');
+            const beam = document.getElementById('lampBeam');
+            bgOn.style.transition = '';
+            bgOn.style.filter = '';
+            if (beam) beam.style.transition = '';
+        }
+
+        // Остывающая спираль после выключения
+        function playAfterglow() {
+            if (!LAMP_WARMUP_ENABLED) return;
+            const fil = document.getElementById('filament');
+            if (!fil || typeof fil.animate !== 'function') return;
+            fil.style.opacity = '0';
+            fil.animate([
+                { opacity: 0.9, filter: 'hue-rotate(0deg)' },
+                { opacity: 0.35, filter: 'hue-rotate(-12deg)', offset: 0.4 },
+                { opacity: 0, filter: 'hue-rotate(-20deg)' },
+            ], { duration: LAMP_AFTERGLOW_MS, easing: 'ease-out' });
+        }
+
+        // Насколько точка (x, y) внутри конуса света: 1 — в центре, 0 — снаружи
+        function lampBeamFactor(x, y) {
+            const b = LAMP_BEAM;
+            if (y <= b.y) return 0;
+            const k = (y - b.y) / (state.sceneH - b.y);
+            const half = (b.topWidth + (b.bottomWidth - b.topWidth) * k) / 2;
+            const u = Math.abs(x - b.x) / half;
+            return u < 1 ? 1 - u * u : 0;
+        }
+
+        // ========== ПАУТИНА ==========
+        // Радиальные нити + провисающие кольца + пара оборванных висящих нитей.
+        // Узлы — пружинки: курсор рядом расталкивает их и «дует» в сторону
+        // своего движения, после чего паутина покачивается и успокаивается.
+        function setupCobwebs() {
+            const canvas = document.getElementById('cobweb');
+            if (!canvas || !canvas.getContext) return;
+            if (!COBWEB_ENABLED) { canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const RINGS = 7;
+            const SPRING = 55, DAMP = 5, PUSH_R = 70, PUSH = 3500, DRAG = 6, MAX_D = 14;
+
+            const webs = COBWEBS.map(cfg => {
+                const span = cfg.to - cfg.from;
+                const n = Math.max(5, Math.round(span / 13) + 1);
+                const radials = [];
+                for (let i = 0; i < n; i++) {
+                    let a = cfg.from + span * i / (n - 1);
+                    if (i > 0 && i < n - 1) a += rand(-3, 3);
+                    const rad = a * Math.PI / 180;
+                    const len = cfg.r * (i === 0 || i === n - 1 ? 1 : rand(0.8, 1.05));
+                    const nodes = [];
+                    for (let j = 0; j < RINGS; j++) {
+                        const f = 0.16 + 0.84 * j / (RINGS - 1) + (j > 0 ? rand(-0.03, 0.03) : 0);
+                        nodes.push({
+                            bx: cfg.x + Math.cos(rad) * len * f,
+                            by: cfg.y + Math.sin(rad) * len * f,
+                            w: f,                     // чем дальше от угла, тем подвижнее
+                            dx: 0, dy: 0, vx: 0, vy: 0,
+                            ph: rand(0, Math.PI * 2),
+                            x: 0, y: 0,
+                        });
+                    }
+                    radials.push(nodes);
+                }
+                // Порванные участки колец
+                const broken = radials.map(() => Array.from({ length: RINGS }, () => Math.random() < 0.12));
+                // Висящие оборванные нити (цепочки, физика Верле)
+                const chains = Array.from({ length: 2 }, () => {
+                    const i = 1 + Math.floor(Math.random() * (n - 2));
+                    const j = RINGS - 1 - Math.floor(Math.random() * 2);
+                    const node = radials[i][j];
+                    const len = rand(25, 55), segs = 7;
+                    const pts = Array.from({ length: segs }, (_, k) => {
+                        const y = node.by + len * k / (segs - 1);
+                        return { x: node.bx, y, px: node.bx, py: y };
+                    });
+                    return { node, pts, seg: len / (segs - 1) };
+                });
+                return { cfg, radials, broken, chains };
+            });
+
+            // Курсор и его скорость (в координатах фона)
+            const scene = document.getElementById('scene');
+            let cursor = null, cvx = 0, cvy = 0, lastMove = 0;
+            scene.addEventListener('pointermove', (e) => {
+                const rect = scene.getBoundingClientRect();
+                const x = (e.clientX - rect.left) * W / rect.width;
+                const y = (e.clientY - rect.top) * H / rect.height;
+                const now = performance.now();
+                if (cursor && now > lastMove) {
+                    const k = 1000 / Math.max(8, now - lastMove);
+                    cvx = cvx * 0.5 + (x - cursor.x) * k * 0.5;
+                    cvy = cvy * 0.5 + (y - cursor.y) * k * 0.5;
+                }
+                cursor = { x, y };
+                lastMove = now;
+            });
+            scene.addEventListener('pointerleave', () => { cursor = null; });
+
+            let lightMix = state.isLightOn ? 1 : 0;
+            let last = performance.now();
+
+            const physics = (dt, t) => {
+                cvx *= Math.pow(0.02, dt);
+                cvy *= Math.pow(0.02, dt);
+                for (const web of webs) {
+                    for (const nodes of web.radials) {
+                        for (const p of nodes) {
+                            let ax = -SPRING * p.dx - DAMP * p.vx + Math.sin(t * 0.8 + p.ph) * 4;
+                            let ay = -SPRING * p.dy - DAMP * p.vy + Math.cos(t * 0.6 + p.ph) * 2;
+                            if (cursor) {
+                                const ex = p.bx + p.dx * p.w - cursor.x;
+                                const ey = p.by + p.dy * p.w - cursor.y;
+                                const d = Math.hypot(ex, ey);
+                                if (d < PUSH_R) {
+                                    const k = (1 - d / PUSH_R) ** 2;
+                                    ax += (ex / (d || 1)) * PUSH * k + cvx * DRAG * k;
+                                    ay += (ey / (d || 1)) * PUSH * k + cvy * DRAG * k;
+                                }
+                            }
+                            p.vx += ax * dt; p.vy += ay * dt;
+                            p.dx += p.vx * dt; p.dy += p.vy * dt;
+                            const m = Math.hypot(p.dx, p.dy);
+                            if (m > MAX_D) { p.dx *= MAX_D / m; p.dy *= MAX_D / m; }
+                            p.x = p.bx + p.dx * p.w;
+                            p.y = p.by + p.dy * p.w;
+                        }
+                    }
+                    for (const c of web.chains) {
+                        const pts = c.pts;
+                        pts[0].x = c.node.x; pts[0].y = c.node.y;
+                        for (let k = 1; k < pts.length; k++) {
+                            const q = pts[k];
+                            let fx = Math.sin(t * 0.9 + k) * 6, fy = 220;
+                            if (cursor) {
+                                const ex = q.x - cursor.x, ey = q.y - cursor.y;
+                                const d = Math.hypot(ex, ey);
+                                if (d < PUSH_R) {
+                                    const s = (1 - d / PUSH_R) ** 2;
+                                    fx += (ex / (d || 1)) * 900 * s + cvx * 4 * s;
+                                    fy += (ey / (d || 1)) * 900 * s + cvy * 4 * s;
+                                }
+                            }
+                            const nx = q.x + (q.x - q.px) * 0.97 + fx * dt * dt;
+                            const ny = q.y + (q.y - q.py) * 0.97 + fy * dt * dt;
+                            q.px = q.x; q.py = q.y;
+                            q.x = nx; q.y = ny;
+                        }
+                        for (let it = 0; it < 4; it++) {
+                            for (let k = 1; k < pts.length; k++) {
+                                const a = pts[k - 1], b = pts[k];
+                                const dx = b.x - a.x, dy = b.y - a.y;
+                                const d = Math.hypot(dx, dy) || 1;
+                                const diff = (d - c.seg) / d;
+                                if (k === 1) { b.x -= dx * diff; b.y -= dy * diff; }
+                                else {
+                                    a.x += dx * diff / 2; a.y += dy * diff / 2;
+                                    b.x -= dx * diff / 2; b.y -= dy * diff / 2;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const drawWebs = () => {
+                ctx.beginPath();
+                for (const web of webs) {
+                    const { x: ax, y: ay } = web.cfg;
+                    const R = web.radials;
+                    // Радиальные нити
+                    for (const nodes of R) {
+                        ctx.moveTo(ax, ay);
+                        for (const p of nodes) ctx.lineTo(p.x, p.y);
+                    }
+                    // Кольца, слегка провисающие к центру
+                    for (let j = 0; j < RINGS; j++) {
+                        for (let i = 0; i < R.length - 1; i++) {
+                            if (web.broken[i][j]) continue;
+                            const a = R[i][j], b = R[i + 1][j];
+                            const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+                            ctx.moveTo(a.x, a.y);
+                            ctx.quadraticCurveTo(mx + (ax - mx) * 0.12, my + (ay - my) * 0.12, b.x, b.y);
+                        }
+                    }
+                    // Висящие нити
+                    for (const c of web.chains) {
+                        ctx.moveTo(c.pts[0].x, c.pts[0].y);
+                        for (let k = 1; k < c.pts.length; k++) ctx.lineTo(c.pts[k].x, c.pts[k].y);
+                    }
+                }
+                ctx.stroke();
+            };
+
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.033);
+                last = now;
+                lightMix += (roomLightLevel() - lightMix) * Math.min(1, Math.max(0, dt) * 4);
+                if (!Number.isFinite(lightMix)) lightMix = roomLightLevel();
+                const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+                ctx.clearRect(0, 0, W, H);
+                if (lightMix < 0.01 && !beamOn) return;
+
+                physics(dt, now / 1000);
+
+                ctx.lineWidth = 0.7;
+                ctx.strokeStyle = 'rgba(240, 236, 225, 1)';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+                ctx.shadowBlur = 1;
+                ctx.shadowOffsetY = 1;
+                const lit = lightMix * COBWEB_OPACITY;
+                ctx.globalAlpha = beamOn ? 1 : lit;
+                drawWebs();
+                ctx.shadowColor = 'transparent';
+                ctx.globalAlpha = 1;
+
+                if (beamOn) {
+                    // В темноте оставляем только то, что попало в луч фонарика
+                    const b = state.flashBeam;
+                    const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+                    g.addColorStop(0, 'rgba(0,0,0,0.9)');
+                    g.addColorStop(0.6, 'rgba(0,0,0,0.5)');
+                    g.addColorStop(1, `rgba(0,0,0,${lit.toFixed(3)})`);
+                    ctx.globalCompositeOperation = 'destination-in';
+                    ctx.fillStyle = g;
+                    ctx.fillRect(0, 0, W, H);
+                    ctx.globalCompositeOperation = 'source-over';
+                }
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== КОШКА-ТЕНЬ ==========
+        // Силуэт рисуется кодом (тело, голова с ушами, хвост, 4 ноги с шагом).
+        // Появляется только в темноте, считая время, проведённое без света.
+        // Для проверки можно вызвать в консоли: catShadowWalk()
+        function setupCatShadow() {
+            const canvas = document.getElementById('catShadow');
+            if (!canvas || !canvas.getContext) return;
+            if (!CAT_SHADOW_ENABLED) { canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const P = CAT_SHADOW_PATH;
+            const rand = (a, b) => a + Math.random() * (b - a);
+            let darkTime = 0;
+            let nextAt = CAT_SHADOW_FIRST_DELAY;
+            let walk = null;
+            let last = performance.now();
+
+            const start = () => {
+                const dir = Math.random() < 0.5 ? 1 : -1; // 1 — вправо
+                walk = {
+                    dir,
+                    x: dir === 1 ? P.leftX - 70 : P.rightX + 70,
+                    endX: dir === 1 ? P.rightX + 70 : P.leftX - 70,
+                    speed: P.speed,
+                    phase: 0,
+                    mode: 'walk',       // walk → freeze → run
+                    freezeT: 0,
+                    eye: 0,
+                    glintAt: rand(0.3, 0.7), // где на пути блеснут глаза
+                    glintT: -1,
+                    footUp: PAW_LEGS.map(() => true), // лапа в воздухе (для следов)
+                };
+            };
+            window.catShadowWalk = () => { if (!state.isLightOn) start(); };
+
+            const drawCat = (x, y, dir, phase, s, t, eye) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.scale(dir * s, s);
+                ctx.fillStyle = ctx.strokeStyle = 'rgb(5, 5, 8)';
+                ctx.lineCap = 'round';
+                const bob = -Math.abs(Math.sin(phase)) * 1.5;
+
+                // Ноги: диагональные пары шагают вместе.
+                // Передние — почти прямые, задние — с изгибом (скакательный сустав).
+                ctx.lineJoin = 'round';
+                const leg = (hx, off, back, width) => {
+                    const a = phase + off;
+                    const fx = hx + Math.sin(a) * 7;
+                    const fy = -Math.max(0, Math.cos(a)) * 3;
+                    ctx.lineWidth = width;
+                    ctx.beginPath();
+                    ctx.moveTo(hx, -19 + bob);
+                    if (back) {
+                        ctx.lineTo(hx - 4 + (fx - hx) * 0.3, -12 + bob / 2);
+                        ctx.lineTo(hx + 1 + (fx - hx) * 0.7, -6);
+                    } else {
+                        ctx.lineTo((hx + fx) / 2, -10 + bob / 2);
+                    }
+                    ctx.lineTo(fx, fy);
+                    ctx.stroke();
+                };
+                leg(17, Math.PI, false, 3.2); leg(-15, 0, true, 3.6);  // дальние
+                leg(19, 0, false, 3.6);       leg(-13, Math.PI, true, 4.2); // ближние
+
+                // Тело: выгнутая спина, округлый круп, подтянутый живот
+                ctx.beginPath();
+                ctx.moveTo(21, -29 + bob);                                   // грудь/холка
+                ctx.bezierCurveTo(10, -33 + bob, -12, -32 + bob, -21, -29 + bob); // спина
+                ctx.bezierCurveTo(-28, -27 + bob, -28, -18 + bob, -20, -16 + bob); // круп
+                ctx.bezierCurveTo(-8, -13 + bob, 8, -14 + bob, 18, -17 + bob);    // живот
+                ctx.bezierCurveTo(24, -19 + bob, 25, -26 + bob, 21, -29 + bob);   // грудь
+                ctx.fill();
+                // Шея
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(17, -25 + bob);
+                ctx.lineTo(25, -31 + bob);
+                ctx.stroke();
+
+                // Голова и уши
+                const hy = -32 + bob;
+                ctx.beginPath();
+                ctx.arc(28, hy, 7.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(22, hy - 4); ctx.lineTo(23.5, hy - 14); ctx.lineTo(28, hy - 6);
+                ctx.moveTo(28, hy - 6); ctx.lineTo(32.5, hy - 14); ctx.lineTo(34, hy - 3);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(35, hy + 2, 3, 2.5, 0, 0, Math.PI * 2); // мордочка
+                ctx.fill();
+
+                // Хвост трубой, покачивается
+                const sw = Math.sin(t * 3.1) * 4;
+                ctx.lineWidth = 3.5;
+                ctx.beginPath();
+                ctx.moveTo(-22, -25 + bob);
+                ctx.bezierCurveTo(-36, -30 + bob, -40 + sw * 0.5, -48 + bob, -33 + sw, -57 + bob);
+                ctx.stroke();
+
+                // Глаза — в полную яркость, независимо от прозрачности силуэта
+                if (eye > 0.01) {
+                    ctx.globalAlpha = 1;
+                    ctx.fillStyle = `rgba(200, 255, 100, ${eye.toFixed(3)})`;
+                    ctx.shadowColor = 'rgba(180, 255, 80, 0.9)';
+                    ctx.shadowBlur = 6;
+                    ctx.beginPath();
+                    ctx.ellipse(30.5, hy - 1.5, 1.6, 1.1, 0, 0, Math.PI * 2);
+                    ctx.ellipse(34, hy - 1.5, 1.2, 1, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            };
+
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+                const t = now / 1000;
+
+                if (state.isLightOn) {
+                    // Включили свет — кошки как не бывало
+                    if (walk) { walk = null; ctx.clearRect(0, 0, W, H); }
+                    return;
+                }
+                if (!walk) {
+                    darkTime += dt * 1000;
+                    if (darkTime >= nextAt) {
+                        darkTime = 0;
+                        nextAt = rand(CAT_SHADOW_MIN_DELAY, CAT_SHADOW_MAX_DELAY);
+                        start();
+                    }
+                    if (!walk) return;
+                }
+
+                const w = walk;
+                const total = Math.abs(w.endX - (w.dir === 1 ? P.leftX - 70 : P.rightX + 70));
+                const progress = 1 - Math.abs(w.endX - w.x) / total;
+
+                // Попала в луч фонарика?
+                if (w.mode === 'walk' && FLASHLIGHT_ENABLED && state.flashPointerInside) {
+                    const b = state.flashBeam;
+                    if (Math.hypot(b.x - w.x, b.y - (P.y - 25 * P.scale)) < b.r * 0.6) {
+                        w.mode = 'freeze';
+                        w.freezeT = 0.5;
+                    }
+                }
+
+                let eyeTarget = 0;
+                if (w.mode === 'walk') {
+                    w.x += w.dir * w.speed * dt;
+                    w.phase += dt * w.speed * 0.12;
+                    if (w.glintT < 0 && progress >= w.glintAt) w.glintT = 0;
+                    if (w.glintT >= 0 && w.glintT < 0.5) {
+                        w.glintT += dt;
+                        eyeTarget = 0.7;
+                    }
+                } else if (w.mode === 'freeze') {
+                    w.freezeT -= dt;
+                    eyeTarget = 1;
+                    if (w.freezeT <= 0) { w.mode = 'run'; w.speed *= 3.2; }
+                } else {
+                    w.x += w.dir * w.speed * dt;
+                    w.phase += dt * w.speed * 0.06;
+                    eyeTarget = 0.4;
+                }
+                w.eye += (eyeTarget - w.eye) * Math.min(1, dt * 12);
+
+                // Лапа коснулась пола — след (та же походка, что в drawCat.leg)
+                if (state.addPawPrint) {
+                    PAW_LEGS.forEach((l, i) => {
+                        const up = Math.cos(w.phase + l.off) > 0;
+                        if (w.footUp[i] && !up) {
+                            const fx = l.hx + Math.sin(w.phase + l.off) * 7;
+                            state.addPawPrint(w.x + w.dir * P.scale * fx,
+                                P.y + (l.near ? 1.5 : -1) * P.scale, w.dir);
+                        }
+                        w.footUp[i] = up;
+                    });
+                }
+
+                ctx.clearRect(0, 0, W, H);
+                if ((w.dir === 1 && w.x >= w.endX) || (w.dir === -1 && w.x <= w.endX)) {
+                    walk = null;
+                    return;
+                }
+
+                // Видно только между стопками постеров и не поверх настоящей кошки
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(P.leftX, 0, P.rightX - P.leftX, H);
+                CAT_SHADOW_HIDE.forEach(poly => {
+                    ctx.moveTo(poly[0][0], poly[0][1]);
+                    for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
+                    ctx.closePath();
+                });
+                ctx.clip('evenodd');
+                ctx.globalAlpha = CAT_SHADOW_OPACITY;
+                drawCat(w.x, P.y, w.dir, w.phase, P.scale, t, w.eye);
+                ctx.restore();
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== СВЕТ ИЗ ЩЕЛЕЙ В ПОЛУ ==========
+        // Каждая щель — несколько отрезков разной яркости (где-то доски
+        // прилегают плотно). Отрезок: широкое мягкое свечение + тонкая
+        // яркая линия; ближе к зрителю — толще (перспектива).
+        function setupFloorCracks() {
+            const canvas = document.getElementById('floorCracks');
+            if (!canvas || !canvas.getContext) return;
+            if (!FLOOR_CRACKS_ENABLED) { canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const F = FLOOR_CRACKS;
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const xAt = (xb, y) => F.vpX + (xb - F.vpX) * (y - F.vpY) / (F.bottomY - F.vpY);
+
+            // Отрезки щелей: t от 0 (у стены) до 1 (у края сцены)
+            const segments = [];
+            F.xs.forEach(xb => {
+                let t = rand(0, 0.15);
+                while (t < 1) {
+                    const len = rand(0.15, 0.5);
+                    const t2 = Math.min(1, t + len);
+                    const y1 = F.topY + (F.bottomY - F.topY) * t;
+                    const y2 = F.topY + (F.bottomY - F.topY) * t2;
+                    segments.push({
+                        x1: xAt(xb, y1), y1, x2: xAt(xb, y2), y2,
+                        persp: 0.45 + 0.55 * (t + t2) / 2,
+                        bright: rand(0.4, 1),
+                        ph: rand(0, Math.PI * 2),
+                    });
+                    t = t2 + rand(0.03, 0.15); // плотно прилегающий участок
+                }
+            });
+
+            const clipPath = () => {
+                ctx.beginPath();
+                const poly = (pts) => {
+                    ctx.moveTo(pts[0][0], pts[0][1]);
+                    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+                    ctx.closePath();
+                };
+                poly(FLOOR_AREA);
+                CAT_SHADOW_HIDE.forEach(poly);
+                poly(FLOOR_TAIL_HIDE);
+                ctx.clip('evenodd');
+            };
+
+            let level = state.isLightOn ? FLOOR_CRACK_LIT : FLOOR_CRACK_STRENGTH;
+            let walker = null;
+            let darkTime = 0;
+            let nextWalker = rand(FLOOR_WALKER_MIN_DELAY, FLOOR_WALKER_MAX_DELAY);
+            // Для проверки в консоли: floorWalker() — тень пройдёт сразу (в темноте)
+            window.floorWalker = () => { darkTime = nextWalker; };
+            let drawn = false;
+            let last = performance.now();
+
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+                const t = now / 1000;
+
+                const light = roomLightLevel();
+                const target = FLOOR_CRACK_LIT * light + FLOOR_CRACK_STRENGTH * (1 - light);
+                level += (target - level) * Math.min(1, dt * 5);
+
+                // Кто-то проходит внизу — тень плывёт поперёк щелей
+                if (!state.isLightOn) {
+                    if (!walker) {
+                        darkTime += dt * 1000;
+                        if (darkTime >= nextWalker) {
+                            darkTime = 0;
+                            nextWalker = rand(FLOOR_WALKER_MIN_DELAY, FLOOR_WALKER_MAX_DELAY);
+                            const dir = Math.random() < 0.5 ? 1 : -1;
+                            walker = { dir, x: dir === 1 ? -80 : W + 80, speed: rand(110, 170) };
+                        }
+                    }
+                }
+                if (walker) {
+                    walker.x += walker.dir * walker.speed * dt;
+                    if (walker.x < -100 || walker.x > W + 100) walker = null;
+                }
+
+                if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
+                if (level < 0.01) return;
+
+                // Мягкое дрожание, как от лампы или телевизора внизу
+                const flicker = 1 + 0.07 * Math.sin(t * 1.7) + 0.04 * Math.sin(t * 4.3 + 1)
+                    + 0.03 * Math.sin(t * 11.1 + 2);
+
+                ctx.save();
+                clipPath();
+                ctx.lineCap = 'round';
+                for (const s of segments) {
+                    let k = level * flicker * s.bright * (0.85 + 0.15 * Math.sin(t * 0.8 + s.ph));
+                    if (walker) {
+                        // Тень от ног: обе ноги рядом, шаг чуть раскачивает
+                        const mx = (s.x1 + s.x2) / 2;
+                        const sway = Math.sin(walker.x * 0.08) * 12;
+                        const d1 = (mx - walker.x - sway) / 22;
+                        const d2 = (mx - walker.x + sway) / 22;
+                        k *= 1 - 0.9 * Math.max(Math.exp(-d1 * d1), Math.exp(-d2 * d2));
+                    }
+                    if (k <= 0.01) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(s.x1, s.y1);
+                    ctx.lineTo(s.x2, s.y2);
+                    // свечение
+                    ctx.globalAlpha = Math.min(1, 0.18 * k);
+                    ctx.strokeStyle = 'rgb(255, 150, 60)';
+                    ctx.lineWidth = 5 * s.persp;
+                    ctx.stroke();
+                    // яркая сердцевина
+                    ctx.globalAlpha = Math.min(1, 0.85 * k);
+                    ctx.strokeStyle = 'rgb(255, 205, 130)';
+                    ctx.lineWidth = 1.1 * s.persp;
+                    ctx.stroke();
+                }
+                ctx.restore();
+                ctx.globalAlpha = 1;
+                drawn = true;
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== СВЕТЛЯЧКИ ==========
+        function setupFireflies() {
+            const canvas = document.getElementById('fireflies');
+            if (!canvas || !canvas.getContext) return;
+            if (!FIREFLIES_ENABLED || FIREFLY_COUNT <= 0) { canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            // Мягкое жёлто-зелёное свечение (рисуется один раз)
+            const sprite = document.createElement('canvas');
+            sprite.width = sprite.height = 64;
+            const sc = sprite.getContext('2d');
+            const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
+            g.addColorStop(0, 'rgba(250, 255, 200, 1)');
+            g.addColorStop(0.12, 'rgba(225, 255, 130, 0.9)');
+            g.addColorStop(0.35, 'rgba(180, 240, 80, 0.3)');
+            g.addColorStop(1, 'rgba(150, 220, 60, 0)');
+            sc.fillStyle = g;
+            sc.fillRect(0, 0, 64, 64);
+
+            const A = FIREFLY_AREA;
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const flies = Array.from({ length: FIREFLY_COUNT }, () => ({
+                x: rand(A.left, A.right),
+                y: rand(A.top, A.bottom),
+                a: rand(0, Math.PI * 2),     // направление полёта
+                speed: rand(10, 22),
+                period: rand(2.5, 6),        // как часто вспыхивает, с
+                phase: rand(0, 6),
+                bob: rand(0, Math.PI * 2),
+                size: rand(9, 14),
+                glow: 0,                     // текущая яркость 0..1
+                hideUntil: 0,                // погас от фонарика до этого момента
+            }));
+
+            let darkFor = 0;
+            let presence = 0;
+            let drawn = false;
+            let last = performance.now();
+
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+                const t = now / 1000;
+
+                // Появляются, когда глаза привыкнут к темноте
+                if (state.isLightOn) darkFor = 0; else darkFor += dt * 1000;
+                const want = darkFor > FIREFLY_APPEAR_MS ? 1 : 0;
+                presence += (want - presence) * Math.min(1, dt * (want ? 0.6 : 6));
+
+                if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
+                if (presence < 0.01) return;
+
+                const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+                const b = state.flashBeam;
+                ctx.globalCompositeOperation = 'lighter';
+
+                for (const f of flies) {
+                    // Попал в луч — гаснет и улетает от света
+                    if (beamOn) {
+                        const dx = f.x - b.x, dy = f.y - b.y;
+                        if (Math.hypot(dx, dy) < b.r * 0.85) {
+                            if (now >= f.hideUntil) f.a = Math.atan2(dy, dx) + rand(-0.4, 0.4);
+                            f.hideUntil = now + rand(2500, 5000);
+                        }
+                    }
+                    const hidden = now < f.hideUntil;
+
+                    // Медленно блуждает; у границы зоны разворачивается к центру
+                    f.a += rand(-1, 1) * dt * 2.2;
+                    const out = f.x < A.left || f.x > A.right || f.y < A.top || f.y > A.bottom;
+                    if (out) {
+                        const toC = Math.atan2((A.top + A.bottom) / 2 - f.y, (A.left + A.right) / 2 - f.x);
+                        let d = toC - f.a;
+                        d = Math.atan2(Math.sin(d), Math.cos(d));
+                        f.a += d * Math.min(1, dt * 2);
+                    }
+                    const sp = f.speed * (hidden ? 2.5 : 1); // испуганный летит быстрее
+                    f.x += Math.cos(f.a) * sp * dt;
+                    f.y += Math.sin(f.a) * sp * dt + Math.sin(t * 1.3 + f.bob) * 6 * dt;
+
+                    // Слабое свечение + короткие вспышки
+                    const local = ((t + f.phase) % f.period) / f.period;
+                    const flash = local < 0.14 ? Math.sin(Math.PI * local / 0.14) : 0;
+                    const target = hidden ? 0 : 0.15 + 0.85 * flash;
+                    f.glow += (target - f.glow) * Math.min(1, dt * (hidden ? 14 : 8));
+
+                    const k = f.glow * presence * FIREFLY_BRIGHTNESS;
+                    if (k < 0.01) continue;
+                    const s = f.size * (0.7 + 0.3 * f.glow);
+                    ctx.globalAlpha = Math.min(1, k);
+                    ctx.drawImage(sprite, f.x - s, f.y - s, s * 2, s * 2);
+                }
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.globalAlpha = 1;
+                drawn = true;
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== СЛЕДЫ ЛАП ==========
+        // Лапы кошки-тени: точка крепления hx, сдвиг фазы шага, ближняя ли
+        // (совпадает с вызовами leg() в drawCat)
+        const PAW_LEGS = [
+            { hx: 17, off: Math.PI, near: false }, { hx: -15, off: 0, near: false },
+            { hx: 19, off: 0, near: true },        { hx: -13, off: Math.PI, near: true },
+        ];
+
+        function setupPawPrints() {
+            const canvas = document.getElementById('pawPrints');
+            if (!canvas || !canvas.getContext) return;
+            if (!PAW_PRINTS_ENABLED || !CAT_SHADOW_ENABLED) { canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const P = CAT_SHADOW_PATH;
+            const prints = [];
+            state.addPawPrint = (x, y, dir) => {
+                if (x < P.leftX || x > P.rightX) return;
+                prints.push({ x, y, dir, born: performance.now(), rot: (Math.random() - 0.5) * 0.3 });
+                if (prints.length > 300) prints.shift();
+            };
+
+            // След в перспективе: сплющен по вертикали; подушечка + 3 пальца
+            // впереди по направлению шага
+            const drawPrint = (p) => {
+                const s = PAW_PRINT_SIZE * P.scale;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.scale(p.dir * s, s * 0.45);
+                ctx.rotate(p.rot);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 2.2, 2, 0, 0, Math.PI * 2);
+                ctx.moveTo(3.6, -2.2); ctx.arc(2.9, -2.2, 0.75, 0, Math.PI * 2);
+                ctx.moveTo(4.2, 0);    ctx.arc(3.5, 0, 0.75, 0, Math.PI * 2);
+                ctx.moveTo(3.6, 2.2);  ctx.arc(2.9, 2.2, 0.75, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            };
+
+            let drawn = false;
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                while (prints.length && now - prints[0].born > PAW_PRINT_FADE_MS) prints.shift();
+                if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
+                if (!prints.length) return;
+
+                const light = roomLightLevel();
+                const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+                if (light < 0.01 && !beamOn) return;
+                const b = state.flashBeam;
+
+                // Не поверх настоящей кошки на переднем плане
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(0, 0, W, H);
+                CAT_SHADOW_HIDE.forEach(poly => {
+                    ctx.moveTo(poly[0][0], poly[0][1]);
+                    for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
+                    ctx.closePath();
+                });
+                ctx.clip('evenodd');
+                ctx.fillStyle = 'rgb(28, 18, 8)'; // пыль стёрта — проступает тёмный пол
+
+                for (const p of prints) {
+                    let vis = light;
+                    if (beamOn) {
+                        const d = Math.hypot(p.x - b.x, p.y - b.y) / b.r;
+                        if (d < 1) vis = Math.max(vis, 1 - d * d);
+                    }
+                    if (vis <= 0.01) continue;
+                    const age = (now - p.born) / PAW_PRINT_FADE_MS;
+                    const fade = 1 - age * age; // долго держится, потом быстро тает
+                    ctx.globalAlpha = PAW_PRINT_OPACITY * fade * vis;
+                    drawPrint(p);
+                }
+                ctx.restore();
+                ctx.globalAlpha = 1;
+                drawn = true;
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== МОТЫЛЁК ==========
+        // Движение — «пружина» к цели + случайный ветер, поэтому траектория
+        // петляет. Цель: точка на орбите вокруг лампочки (или луча фонарика),
+        // либо точка за краем сцены, когда мотылёк улетает.
+        function setupMoth() {
+            const canvas = document.getElementById('moth');
+            if (!canvas || !canvas.getContext) return;
+            if (!MOTH_ENABLED) { canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            const W = state.sceneW, H = state.sceneH;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const rand = (a, b) => a + Math.random() * (b - a);
+            const randIn = ([a, b]) => rand(a, b);
+            const bulb = { x: LAMP_BEAM.x, y: LAMP_BEAM.y - 12 };
+            const MAX_SPEED = 300;
+
+            const m = {
+                mode: 'away',      // away | lamp | beam | leave
+                x: -50, y: -50, vx: 0, vy: 0,
+                heading: 0,
+                flap: 0,
+                theta: rand(0, Math.PI * 2), // угол на орбите
+                orbitDir: 1,
+                R: 45,
+                wander: rand(0, Math.PI * 2),
+                exit: { x: 0, y: 0 },
+                nextOrbitChange: 0,
+                nextBump: 0,
+                bumpUntil: 0,
+            };
+
+            let start = performance.now();
+            let wasOn = state.isLightOn;
+            let returnAt = start + randIn(MOTH_RETURN_DELAY);
+            let beamAt = Infinity, beamUntil = Infinity;
+            const scheduleBeam = (now) => {
+                beamAt = Math.random() < MOTH_BEAM_CHANCE ? now + randIn(MOTH_BEAM_DELAY) : Infinity;
+                beamUntil = Infinity;
+            };
+            if (!wasOn) scheduleBeam(start);
+
+            // Влетает из-за верхнего или бокового края
+            const spawn = () => {
+                const side = Math.random();
+                if (side < 0.5) { m.x = rand(W * 0.15, W * 0.85); m.y = -20; }
+                else if (side < 0.75) { m.x = -20; m.y = rand(0, H * 0.6); }
+                else { m.x = W + 20; m.y = rand(0, H * 0.6); }
+                const a = Math.atan2(H * 0.4 - m.y, W / 2 - m.x);
+                m.vx = Math.cos(a) * 150;
+                m.vy = Math.sin(a) * 150;
+                m.heading = a;
+            };
+            // Улетает примерно туда, куда летел
+            const startLeaving = () => {
+                m.mode = 'leave';
+                const a = Math.atan2(m.vy, m.vx) + rand(-0.6, 0.6);
+                m.exit = { x: m.x + Math.cos(a) * 2000, y: m.y + Math.sin(a) * 2000 };
+            };
+
+            // Мотылёк в локальных координатах «головой вверх»
+            const drawMoth = (x, y, heading, open, scale, colors) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(heading + Math.PI / 2);
+                ctx.scale(scale, scale);
+                for (const s of [-1, 1]) {
+                    // переднее крыло
+                    ctx.fillStyle = colors.fore;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -1.5);
+                    ctx.quadraticCurveTo(s * 7 * open, -5, s * 8.5 * open, 1);
+                    ctx.quadraticCurveTo(s * 4 * open, 2.5, 0, 1.5);
+                    ctx.fill();
+                    // заднее крыло
+                    ctx.fillStyle = colors.hind;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0.5);
+                    ctx.quadraticCurveTo(s * 5.5 * open, 1.5, s * 4.5 * open, 5);
+                    ctx.quadraticCurveTo(s * 2 * open, 5.5, 0, 3.5);
+                    ctx.fill();
+                }
+                // тельце и усики
+                ctx.fillStyle = colors.body;
+                ctx.beginPath();
+                ctx.ellipse(0, 1, 1.1, 3.8, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = colors.body;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(-0.4, -2.5); ctx.quadraticCurveTo(-1.5, -4.5, -2.5, -5);
+                ctx.moveTo(0.4, -2.5);  ctx.quadraticCurveTo(1.5, -4.5, 2.5, -5);
+                ctx.stroke();
+                ctx.restore();
+            };
+            const MOTH_COLORS = { fore: '#e2d1ab', hind: '#c9b38a', body: '#6e5940' };
+            const SHADOW_COLORS = { fore: '#140d05', hind: '#140d05', body: '#140d05' };
+
+            let last = start;
+            const frame = (now) => {
+                requestAnimationFrame(frame);
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+                if (dt <= 0) return;
+
+                // Реакция на выключатель
+                if (state.isLightOn !== wasOn) {
+                    wasOn = state.isLightOn;
+                    if (wasOn) returnAt = now + randIn(MOTH_RETURN_DELAY);
+                    else scheduleBeam(now);
+                }
+                const light = roomLightLevel();
+                const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+
+                // Чего мотылёк хочет сейчас
+                let want = 'leave';
+                if (state.isLightOn && now >= returnAt) want = 'lamp';
+                else if (beamOn && now >= beamAt && now < beamUntil) want = 'beam';
+
+                if (want !== 'leave') {
+                    if (m.mode === 'away') spawn();
+                    if (want === 'beam' && m.mode !== 'beam') beamUntil = now + randIn(MOTH_BEAM_STAY);
+                    m.mode = want;
+                } else if (m.mode === 'lamp' || m.mode === 'beam') {
+                    // Наскучил фонарик — следующий интерес не раньше чем через 20–40 с
+                    if (m.mode === 'beam' && now >= beamUntil) {
+                        beamAt = Math.random() < MOTH_BEAM_CHANCE ? now + rand(20000, 40000) : Infinity;
+                    }
+                    startLeaving();
+                }
+
+                ctx.clearRect(0, 0, W, H);
+                if (m.mode === 'away') return;
+
+                // Цель и сила притяжения к ней
+                let tx, ty, K = 10, D = 2.4;
+                if (m.mode === 'lamp' || m.mode === 'beam') {
+                    const c = m.mode === 'lamp' ? bulb : state.flashBeam;
+                    if (now >= m.nextOrbitChange) {
+                        if (Math.random() < 0.4) m.orbitDir *= -1;
+                        m.R = m.mode === 'lamp' ? rand(22, 70) : rand(18, 50);
+                        m.nextOrbitChange = now + rand(700, 2200);
+                    }
+                    m.theta += m.orbitDir * dt * (m.mode === 'lamp' ? 3.2 : 2.2);
+                    tx = c.x + Math.cos(m.theta) * m.R;
+                    ty = c.y + Math.sin(m.theta) * m.R * 0.6 + (m.mode === 'lamp' ? 14 : 0);
+
+                    // Время от времени бросается прямо на лампочку и отскакивает
+                    if (m.mode === 'lamp') {
+                        if (!m.nextBump) m.nextBump = now + rand(2000, 5000);
+                        if (now >= m.nextBump && !m.bumpUntil) m.bumpUntil = now + 350;
+                        if (m.bumpUntil) {
+                            tx = bulb.x; ty = bulb.y; K = 28;
+                            if (now >= m.bumpUntil || Math.hypot(m.x - bulb.x, m.y - bulb.y) < 8) {
+                                const a = Math.atan2(m.y - bulb.y, m.x - bulb.x) + rand(-0.5, 0.5);
+                                m.vx = Math.cos(a) * 220;
+                                m.vy = Math.sin(a) * 220;
+                                m.bumpUntil = 0;
+                                m.nextBump = now + rand(2000, 5000);
+                            }
+                        }
+                    } else {
+                        m.bumpUntil = 0; m.nextBump = 0;
+                    }
+                } else { // leave
+                    tx = m.exit.x; ty = m.exit.y; K = 0.6; D = 0.8;
+                }
+
+                // Пружина к цели + блуждающий «ветер»
+                m.wander += rand(-1, 1) * dt * 14;
+                const noise = m.mode === 'leave' ? 250 : 520;
+                let ax = (tx - m.x) * K - m.vx * D + Math.cos(m.wander) * noise;
+                let ay = (ty - m.y) * K - m.vy * D + Math.sin(m.wander) * noise;
+                m.vx += ax * dt;
+                m.vy += ay * dt;
+                const sp = Math.hypot(m.vx, m.vy);
+                if (sp > MAX_SPEED) { m.vx *= MAX_SPEED / sp; m.vy *= MAX_SPEED / sp; }
+                m.x += m.vx * dt;
+                m.y += m.vy * dt;
+
+                if (m.mode === 'leave' &&
+                    (m.x < -40 || m.x > W + 40 || m.y < -40 || m.y > H + 40)) {
+                    m.mode = 'away';
+                    return;
+                }
+
+                // Поворот по направлению полёта (плавно)
+                if (sp > 10) {
+                    let d = Math.atan2(m.vy, m.vx) - m.heading;
+                    d = Math.atan2(Math.sin(d), Math.cos(d));
+                    m.heading += d * Math.min(1, dt * 10);
+                }
+                m.flap += dt * Math.PI * 2 * (13 + sp * 0.02);
+                const open = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(m.flap));
+
+                // Видимость: свет лампы или луч фонарика
+                let vis = light;
+                if (beamOn) {
+                    const b = state.flashBeam;
+                    const d = Math.hypot(m.x - b.x, m.y - b.y) / b.r;
+                    if (d < 1) vis = Math.max(vis, 1 - d * d);
+                }
+                if (vis <= 0.01) return;
+
+                // Тень на стене: отбрасывается от лампочки, крупнее и размытая
+                if (MOTH_SHADOW > 0 && light > 0.05) {
+                    const sx = m.x + (m.x - bulb.x) * 0.6;
+                    const sy = m.y + (m.y - bulb.y) * 0.6 + 6;
+                    ctx.globalAlpha = MOTH_SHADOW * light;
+                    ctx.filter = 'blur(2px)';
+                    drawMoth(sx, sy, m.heading, open, MOTH_SCALE * 1.8, SHADOW_COLORS);
+                    ctx.filter = 'none';
+                }
+                ctx.globalAlpha = Math.min(1, 0.95 * vis);
+                drawMoth(m.x, m.y, m.heading, open, MOTH_SCALE, MOTH_COLORS);
+                ctx.globalAlpha = 1;
+            };
+            requestAnimationFrame(frame);
+        }
+
+        // ========== ВИНЬЕТКА ==========
+        function updateVignette() {
+            const v = document.getElementById('vignette');
+            if (!v) return;
+            v.style.opacity = String(state.isLightOn ? VIGNETTE_LIT : VIGNETTE_DARK);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
