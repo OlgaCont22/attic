@@ -7,7 +7,7 @@
 
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     
-    <!-- Preload hints для крритичных ресурсов -->
+    <!-- Preload hints для критичных ресурсов -->
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/OlgaCont22/VHS/refs/heads/main/images/catModGif.gif">
     <link rel="preload" as="image" href="./images/bgOff.jpg">
     <link rel="preload" as="image" href="./images/bgOn.jpg">
@@ -465,7 +465,12 @@
         const CAT_SHADOW_MAX_DELAY = 90000;
         const CAT_SHADOW_OPACITY = 0.6;       // насколько тёмный силуэт (0..1)
         // Путь: линия пола у задней стены, между стопками постеров
-        const CAT_SHADOW_PATH = { y: 471, leftX: 245, rightX: 835, speed: 120, scale: 1 };
+        const CAT_SHADOW_PATH = { y: 471, leftX: 245, rightX: 835, speed: 70, scale: 1 };
+        const CAT_SHADOW_RUN_SPEEDUP = 4;  // во сколько раз быстрее убегает
+        const CAT_STRIDE_WALK = 12;   // вынос лапы от плеча/бедра при ходьбе, px
+        const CAT_STRIDE_RUN = 16;    // и на галопе
+        const CAT_DUTY_WALK = 0.62;   // доля цикла, когда лапа на полу (шаг)
+        const CAT_DUTY_RUN = 0.4;     // (галоп)
         // Контуры, за которыми силуэт прячется (настоящая кошка на переднем плане).
         // Обведено по фону: спина, пушистая грудь, голова, уши.
         const CAT_SHADOW_HIDE = [[
@@ -2049,6 +2054,10 @@
                     mode: 'walk',       // walk → freeze → run
                     freezeT: 0,
                     eye: 0,
+                    run: 0,             // плавные переходы позы
+                    startle: 0,
+                    stride: CAT_STRIDE_WALK,
+                    duty: CAT_DUTY_WALK,
                     glintAt: rand(0.3, 0.7), // где на пути блеснут глаза
                     glintT: -1,
                     footUp: PAW_LEGS.map(() => true), // лапа в воздухе (для следов)
@@ -2056,84 +2065,287 @@
             };
             window.catShadowWalk = () => { if (!state.isLightOn) start(); };
 
-            const drawCat = (x, y, dir, phase, s, t, eye) => {
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.scale(dir * s, s);
-                ctx.fillStyle = ctx.strokeStyle = 'rgb(5, 5, 8)';
-                ctx.lineCap = 'round';
-                const bob = -Math.abs(Math.sin(phase)) * 1.5;
+            // Силуэт рисуется целиком непрозрачным в маленький буфер, а на сцену
+            // кладётся одним слоем с прозрачностью: иначе в местах, где лапы,
+            // шея и хвост накладываются на тело, проступали бы тёмные пятна.
+            const BUF_W = 140, BUF_H = 100, BUF_OX = 70, BUF_OY = 82; // в единицах кошки
+            const buf = document.createElement('canvas');
+            buf.width = Math.ceil(BUF_W * P.scale * dpr);
+            buf.height = Math.ceil(BUF_H * P.scale * dpr);
+            const bctx = buf.getContext('2d');
+            const lerp = (a, b, k) => a + (b - a) * k;
 
-                // Ноги: диагональные пары шагают вместе.
-                // Передние — почти прямые, задние — с изгибом (скакательный сустав).
-                ctx.lineJoin = 'round';
-                const leg = (hx, off, back, width) => {
-                    const a = phase + off;
-                    const fx = hx + Math.sin(a) * 7;
-                    const fy = -Math.max(0, Math.cos(a)) * 3;
-                    ctx.lineWidth = width;
-                    ctx.beginPath();
-                    ctx.moveTo(hx, -19 + bob);
-                    if (back) {
-                        ctx.lineTo(hx - 4 + (fx - hx) * 0.3, -12 + bob / 2);
-                        ctx.lineTo(hx + 1 + (fx - hx) * 0.7, -6);
-                    } else {
-                        ctx.lineTo((hx + fx) / 2, -10 + bob / 2);
+            // Рисует кошку в локальных координатах: x — вперёд, y — вниз, 0 — пол.
+            // pose: stride — вынос лапы, duty — доля шага на опоре,
+            // run 0..1 — бег (галоп), startle 0..1 — испуг. Возвращает центр головы.
+            // Всё строится из плавных контуров (сплайн через «скелет»), а по краю
+            // идёт шерсть — короткие пряди: пушистые грудь, живот, «штаны» и хвост,
+            // гладкая голова. Круглая голова с короткой мордой и крупными ушами,
+            // компактное глубокое тело, толстый хвост с круглым кончиком.
+            const hash = (i) => { const v = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+            // Плотная ломаная через точки (сплайн Катмулла–Рома)
+            const curve = (pts, per = 5) => {
+                const out = [], n = pts.length;
+                for (let i = 0; i < n; i++) {
+                    const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+                    for (let j = 0; j < per; j++) {
+                        const u = j / per, u2 = u * u, u3 = u2 * u;
+                        const f = (k) => 0.5 * (2 * p1[k] + (p2[k] - p0[k]) * u
+                            + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * u2
+                            + (3 * p1[k] - p0[k] - 3 * p2[k] + p3[k]) * u3);
+                        out.push([f(0), f(1)]);
                     }
-                    ctx.lineTo(fx, fy);
-                    ctx.stroke();
+                }
+                return out;
+            };
+            // Контур конечности/хвоста по цепочке суставов J с полуширинами R
+            const outline = (J, R) => {
+                const a = [], b = [];
+                for (let i = 0; i < J.length; i++) {
+                    const p = J[Math.max(0, i - 1)], q = J[Math.min(J.length - 1, i + 1)];
+                    let tx = q[0] - p[0], ty = q[1] - p[1];
+                    const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+                    a.push([J[i][0] - ty * R[i], J[i][1] + tx * R[i]]);
+                    b.push([J[i][0] + ty * R[i], J[i][1] - tx * R[i]]);
+                }
+                // скругление на конце
+                const e = J[J.length - 1], d = J[J.length - 2], el = Math.hypot(e[0] - d[0], e[1] - d[1]) || 1;
+                const r = R[R.length - 1] * 0.9;
+                a.push([e[0] + (e[0] - d[0]) / el * r, e[1] + (e[1] - d[1]) / el * r]);
+                return a.concat(b.reverse());
+            };
+
+            const drawCatShape = (c, phase, t, pose) => {
+                const { stride, run, startle, duty } = pose;
+                c.fillStyle = c.strokeStyle = 'rgb(5, 5, 8)';
+                c.lineCap = c.lineJoin = 'round';
+                const calm = (1 - run) * (1 - startle);
+                // Шагом кошка движется почти без качки; на галопе тело
+                // подпрыгивает, а спина сжимается и распрямляется
+                const by = Math.sin(phase * 2) * 0.5 * (1 - run) + run * (2.5 + Math.sin(phase) * 1.2) + startle * 1.5;
+                const ext = run * 2.5 * Math.sin(phase);
+                const arch = startle * 4.5;
+
+                const poly = (ps) => {
+                    c.beginPath();
+                    c.moveTo(ps[0][0], ps[0][1]);
+                    for (let i = 1; i < ps.length; i++) c.lineTo(ps[i][0], ps[i][1]);
+                    c.closePath();
+                    c.fill();
                 };
-                leg(17, Math.PI, false, 3.2); leg(-15, 0, true, 3.6);  // дальние
-                leg(19, 0, false, 3.6);       leg(-13, Math.PI, true, 4.2); // ближние
+                // Шерсть: пряди-треугольнички по контуру, наружу и по ходу шерсти.
+                // len(p, nx, ny) — длина пряди в точке с внешней нормалью (nx, ny)
+                const fur = (ps, len, seed, flow = [-0.9, 0.45]) => {
+                    let area = 0;
+                    for (let i = 0; i < ps.length; i++) {
+                        const p = ps[i], q = ps[(i + 1) % ps.length];
+                        area += p[0] * q[1] - q[0] * p[1];
+                    }
+                    const sgn = area > 0 ? 1 : -1, n = ps.length;
+                    for (let i = 0; i < n; i++) {
+                        const p = ps[i], a = ps[(i - 1 + n) % n], b = ps[(i + 1) % n];
+                        let tx = b[0] - a[0], ty = b[1] - a[1];
+                        const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+                        const nx = ty * sgn, ny = -tx * sgn;
+                        const l = len(p, nx, ny) * (0.55 + 0.9 * hash(i + seed));
+                        if (l < 0.2) continue;
+                        const w = 0.55 + l * 0.25;
+                        c.beginPath();
+                        c.moveTo(p[0] - tx * w - nx * 0.4, p[1] - ty * w - ny * 0.4);
+                        c.lineTo(p[0] + nx * l * 0.9 + flow[0] * l * 0.5, p[1] + ny * l * 0.9 + flow[1] * l * 0.5);
+                        c.lineTo(p[0] + tx * w - nx * 0.4, p[1] + ty * w - ny * 0.4);
+                        c.fill();
+                    }
+                };
 
-                // Тело: выгнутая спина, округлый круп, подтянутый живот
-                ctx.beginPath();
-                ctx.moveTo(21, -29 + bob);                                   // грудь/холка
-                ctx.bezierCurveTo(10, -33 + bob, -12, -32 + bob, -21, -29 + bob); // спина
-                ctx.bezierCurveTo(-28, -27 + bob, -28, -18 + bob, -20, -16 + bob); // круп
-                ctx.bezierCurveTo(-8, -13 + bob, 8, -14 + bob, 18, -17 + bob);    // живот
-                ctx.bezierCurveTo(24, -19 + bob, 25, -26 + bob, 21, -29 + bob);   // грудь
-                ctx.fill();
-                // Шея
-                ctx.lineWidth = 8;
-                ctx.beginPath();
-                ctx.moveTo(17, -25 + bob);
-                ctx.lineTo(25, -31 + bob);
-                ctx.stroke();
+                // Мягкая тень под лапами
+                c.globalAlpha = 0.3;
+                c.beginPath();
+                c.ellipse(-1, 0.4, 24 + run * 6, 1.6, 0, 0, Math.PI * 2);
+                c.fill();
+                c.globalAlpha = 1;
 
-                // Голова и уши
-                const hy = -32 + bob;
-                ctx.beginPath();
-                ctx.arc(28, hy, 7.5, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.moveTo(22, hy - 4); ctx.lineTo(23.5, hy - 14); ctx.lineTo(28, hy - 6);
-                ctx.moveTo(28, hy - 6); ctx.lineTo(32.5, hy - 14); ctx.lineTo(34, hy - 3);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.ellipse(35, hy + 2, 3, 2.5, 0, 0, Math.PI * 2); // мордочка
-                ctx.fill();
+                // Двухзвенная инверсная кинематика: где сустав между a и b.
+                // side = 1 — сустав сзади (локоть), -1 — спереди (колено)
+                const ik = (ax, ay, bx, by2, l1, l2, side) => {
+                    const dx = bx - ax, dy = by2 - ay;
+                    const d = Math.min(Math.max(Math.hypot(dx, dy), Math.abs(l1 - l2) + 0.01), l1 + l2 - 0.01);
+                    const a = Math.acos((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d));
+                    const th = Math.atan2(dy, dx) + side * a;
+                    return [ax + Math.cos(th) * l1, ay + Math.sin(th) * l1];
+                };
+                // Сгиб запястья/скакательного сустава: сильнее в начале переноса
+                const flexOf = (f) => (f.swing >= 0 ? Math.sin(Math.PI * Math.min(1, f.swing * 1.3)) : 0);
+                const paw = (x, y, rot, k) => {
+                    c.beginPath();
+                    c.ellipse(x, y, 2.4 * k, 1.5 * k, rot, 0, Math.PI * 2);
+                    c.fill();
+                };
+                const legFur = (ps, seed) => fur(ps, (p) => (p[1] < -15 + by ? 0 : 0.45), seed);
 
-                // Хвост трубой, покачивается
-                const sw = Math.sin(t * 3.1) * 4;
-                ctx.lineWidth = 3.5;
-                ctx.beginPath();
-                ctx.moveTo(-22, -25 + bob);
-                ctx.bezierCurveTo(-36, -30 + bob, -40 + sw * 0.5, -48 + bob, -33 + sw, -57 + bob);
-                ctx.stroke();
+                // Передняя: плечо → локоть (сзади) → запястье → лапа
+                const frontLeg = (l, f, k, near) => {
+                    const sx = l.hx + ext - 1.5, sy = -22 + by;
+                    const fx = l.hx + ext + f.x, fy = -f.lift * (4 + run * 3);
+                    const fl = flexOf(f);
+                    const wx = fx - fl * 1.5, wy = fy - 3 + fl * 0.5;
+                    const [ex, ey] = ik(sx, sy, wx, wy, 8.5, 9.5, 1);
+                    const px = wx + lerp(1, -2.6, fl), py = wy + lerp(1.8, 1.6, fl);
+                    const ps = curve(outline([[sx + 1, sy - 2], [sx, sy], [ex, ey], [wx, wy], [px, py]],
+                        [5.5 * k, 4.6 * k, 2.6 * k, 1.6 * k, 1.6 * k]), 4);
+                    poly(ps);
+                    if (near) legFur(ps, l.hx * 7);
+                    paw(px + 0.9 * (1 - fl), py + 0.1, fl * 0.9, k);
+                };
+                // Задняя: бедро (сливается с крупом) → колено → голень →
+                // скакательный сустав → стопа
+                const hindLeg = (l, f, k, near) => {
+                    const hx0 = l.hx - ext, hy0 = -23 + by;
+                    const fx = hx0 + f.x, fy = -f.lift * (3.5 + run * 3);
+                    const fl = flexOf(f);
+                    const kx = fx - 3.2 - fl * 1.5, ky = fy - 6.5 + fl * 1.5;
+                    const [nx, ny] = ik(hx0, hy0, kx, ky, 10, 11, -1);
+                    const ps = curve(outline([[hx0 - 1, hy0 - 3], [hx0, hy0], [nx, ny], [kx, ky], [fx, fy - 1.3]],
+                        [7 * k, 6.5 * k, 3.8 * k, 1.6 * k, 1.5 * k]), 4);
+                    poly(ps);
+                    if (near) legFur(ps, l.hx * 13);
+                    paw(fx + 1.1, fy - 1.2, fl * 0.6, k);
+                };
 
-                // Глаза — в полную яркость, независимо от прозрачности силуэта
+                const legs = PAW_LEGS.map(l => ({ l, f: catFoot(phase, catLegOff(l, run), stride, duty) }));
+                const drawLeg = ({ l, f }) => (l.front ? frontLeg : hindLeg)(l, f, l.near ? 1 : 0.9, l.near);
+                legs.filter(g => !g.l.near).forEach(drawLeg); // дальние — за телом
+
+                // Хвост: цепочка звеньев, толщина почти постоянная, кончик круглый.
+                // Шагом поднят дугой с загнутым кончиком, по нему бежит волна;
+                // на бегу вытянут назад, при испуге — распушённой трубой
+                const th0 = lerp(lerp(-2.4, -2.95, run), -1.75, startle);
+                const kap = lerp(lerp(0.06, 0.01, run), 0.02, startle);
+                const puff = 1 + startle * 0.8;
+                const J = [[-20.5 - ext, -27 + by]];
+                const TR = [];
+                let x = J[0][0], y = J[0][1], th = th0;
+                const SEG = 12, L = 2.7;
+                for (let i = 1; i <= SEG; i++) {
+                    const u = i / SEG;
+                    th += kap + (u > 0.7 ? 0.2 * calm : 0)
+                        + Math.sin(t * 2.2 - i * 0.45) * 0.045 * (1 - run * 0.7)
+                        + Math.sin(t * 11 - i * 0.6) * 0.04 * run;
+                    x += Math.cos(th) * L; y += Math.sin(th) * L;
+                    J.push([x, y]);
+                }
+                J.forEach((_, i) => TR.push((i === 0 ? 3.2 : 2.4 - Math.max(0, i / SEG - 0.75) * 2.5) * puff));
+                const tailPs = curve(outline(J, TR), 3);
+                poly(tailPs);
+                const tdir = [J[SEG][0] - J[0][0], J[SEG][1] - J[0][1]];
+                const tdl = Math.hypot(tdir[0], tdir[1]) || 1;
+                fur(tailPs, () => (0.75 + startle * 0.5) * puff, 91, [tdir[0] / tdl * 0.8, tdir[1] / tdl * 0.8]);
+
+                // Лопатка и таз выступают над спиной, когда лапа отведена назад
+                const nearF = legs.find(g => g.l.near && g.l.front).f;
+                const nearH = legs.find(g => g.l.near && !g.l.front).f;
+                const sh = Math.max(0, -nearF.x / stride) * 1.4 * (1 - run * 0.5);
+                const hp = Math.max(0, -nearH.x / stride) * 1;
+
+                // Голова: шагом — чуть ниже холки и почти неподвижна,
+                // на бегу вытянута вперёд
+                const Hx = 24.5 + ext + run * 3;
+                const Hy = -32 + by * 0.3 + run * 3 + startle * 0.5 + Math.sin(phase * 2 + 1) * 0.35 * (1 - run);
+
+                // Единый контур: круп → спина → холка → голова → жабо → живот → «штаны»
+                const F = ext, R = -ext; // сдвиг передней и задней половины на галопе
+                const bodyPs = curve([
+                    [-19 + R, -28.5 + by - hp - arch * 0.4],  // крестец
+                    [-8, -29.6 + by - arch],
+                    [4, -29.6 + by - arch * 0.7],
+                    [13 + F, -30.6 + by - sh - arch * 0.2],   // холка
+                    [Hx - 7.5, Hy - 4.2],                     // загривок
+                    [Hx - 4.5, Hy - 6.6],                     // затылок
+                    [Hx + 0.5, Hy - 7.2],                     // темя
+                    [Hx + 4.6, Hy - 5.2],                     // лоб
+                    [Hx + 6.8, Hy - 2.2],                     // переносица
+                    [Hx + 7.8, Hy + 0.4],                     // нос
+                    [Hx + 7.1, Hy + 2.6],                     // губа
+                    [Hx + 4.6, Hy + 4.2],                     // подбородок
+                    [Hx + 0.8, Hy + 5.6],                     // щека
+                    [Hx - 2.5, Hy + 7.8],                     // жабо
+                    [20.5 + F, -21.5 + by],
+                    [20.5 + F, -17.5 + by],                   // грудь
+                    [16 + F, -13.8 + by],
+                    [5, -14.6 + by],                          // живот
+                    [-7, -13.8 + by],                         // складка живота
+                    [-15 + R, -14.5 + by],
+                    [-21 + R, -17 + by],                      // «штаны»
+                    [-24 + R, -21.5 + by],
+                    [-23 + R, -26 + by],                      // круп
+                ], 6);
+                poly(bodyPs);
+                fur(bodyPs, (p, nx, ny) => {
+                    if (p[0] > Hx - 4.5 && p[1] < Hy + 4.5) return 0.25; // голова гладкая
+                    if (ny > 0.55) return 1.2;                          // живот, низ груди
+                    if (p[0] > 12 && nx > 0.2) return 1.3;              // жабо
+                    if (p[0] < -17 && nx < -0.2) return 1.1;            // «штаны»
+                    return 0.5;
+                }, 3);
+
+                // Уши: широкое основание, передний край прямой, задний выпуклый;
+                // на бегу прижаты, при испуге насторожены
+                const flat = run * 0.8 - startle * 0.15;
+                const ear = (b1x, b1y, tx, ty, b2x, b2y) => {
+                    tx += Hx - flat * 4.5; ty += Hy + flat * 4.5;
+                    b1x += Hx; b1y += Hy; b2x += Hx; b2y += Hy;
+                    c.beginPath();
+                    c.moveTo(b1x, b1y);
+                    c.quadraticCurveTo((b1x + tx) / 2 - 1.2, (b1y + ty) / 2 + 0.3, tx, ty);
+                    c.quadraticCurveTo((tx + b2x) / 2 + 0.3, (ty + b2y) / 2, b2x, b2y);
+                    c.closePath();
+                    c.fill();
+                };
+                ear(0.2, -6.8, 3.4, -12.6, 6.2, -4.4);    // дальнее
+                ear(-5.6, -5, -2.6, -13.2, 1.2, -7);      // ближнее
+                // Усы
+                c.lineWidth = 0.32;
+                c.beginPath();
+                c.moveTo(Hx + 6.6, Hy + 1.9); c.quadraticCurveTo(Hx + 10.5, Hy + 0.8, Hx + 14.5, Hy + 1.5);
+                c.moveTo(Hx + 6.6, Hy + 2.4); c.quadraticCurveTo(Hx + 10.5, Hy + 2.7, Hx + 14, Hy + 4.3);
+                c.moveTo(Hx + 6.2, Hy + 2.8); c.quadraticCurveTo(Hx + 9.5, Hy + 4.2, Hx + 12.5, Hy + 6.6);
+                c.stroke();
+
+                legs.filter(g => g.l.near).forEach(drawLeg);
+                return { hx: Hx, hy: Hy };
+            };
+
+            const drawCat = (x, y, dir, phase, s, t, eye, pose) => {
+                // 1) непрозрачный силуэт в буфер
+                bctx.setTransform(1, 0, 0, 1, 0, 0);
+                bctx.clearRect(0, 0, buf.width, buf.height);
+                bctx.setTransform(dpr * s * dir, 0, 0, dpr * s, buf.width / 2 + dir * dpr * s * (BUF_OX - BUF_W / 2), dpr * s * BUF_OY);
+                const head = drawCatShape(bctx, phase, t, pose);
+
+                // 2) на сцену — одним слоем, с чуть размытым краем, как у тени
+                ctx.save();
+                ctx.globalAlpha = CAT_SHADOW_OPACITY;
+                if ('filter' in ctx) ctx.filter = 'blur(0.5px)';
+                const bx = x - s * (dir === 1 ? BUF_OX : BUF_W - BUF_OX);
+                ctx.drawImage(buf, bx, y - s * BUF_OY, BUF_W * s, BUF_H * s);
+                ctx.restore();
+
+                // 3) глаза — в полную яркость, независимо от прозрачности силуэта
                 if (eye > 0.01) {
-                    ctx.globalAlpha = 1;
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.scale(dir * s, s);
                     ctx.fillStyle = `rgba(200, 255, 100, ${eye.toFixed(3)})`;
                     ctx.shadowColor = 'rgba(180, 255, 80, 0.9)';
                     ctx.shadowBlur = 6;
+                    const { hx, hy } = head;
+                    const open = 1 - pose.run * 0.3; // на бегу прищурены
                     ctx.beginPath();
-                    ctx.ellipse(30.5, hy - 1.5, 1.6, 1.1, 0, 0, Math.PI * 2);
-                    ctx.ellipse(34, hy - 1.5, 1.2, 1, 0, 0, Math.PI * 2);
+                    ctx.ellipse(hx + 4, hy - 1.8, 1.7, 1.15 * open, -0.2, 0, Math.PI * 2);
+                    ctx.ellipse(hx + 6.6, hy - 1.9, 0.6, 0.9 * open, -0.2, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.restore();
                 }
-                ctx.restore();
             };
 
             const frame = (now) => {
@@ -2173,7 +2385,7 @@
                 let eyeTarget = 0;
                 if (w.mode === 'walk') {
                     w.x += w.dir * w.speed * dt;
-                    w.phase += dt * w.speed * 0.12;
+                    w.phase += catPhaseRate(w) * dt;
                     if (w.glintT < 0 && progress >= w.glintAt) w.glintT = 0;
                     if (w.glintT >= 0 && w.glintT < 0.5) {
                         w.glintT += dt;
@@ -2182,20 +2394,25 @@
                 } else if (w.mode === 'freeze') {
                     w.freezeT -= dt;
                     eyeTarget = 1;
-                    if (w.freezeT <= 0) { w.mode = 'run'; w.speed *= 3.2; }
+                    if (w.freezeT <= 0) { w.mode = 'run'; w.speed *= CAT_SHADOW_RUN_SPEEDUP; }
                 } else {
                     w.x += w.dir * w.speed * dt;
-                    w.phase += dt * w.speed * 0.06;
+                    w.phase += catPhaseRate(w) * dt;
                     eyeTarget = 0.4;
                 }
                 w.eye += (eyeTarget - w.eye) * Math.min(1, dt * 12);
+                w.run += ((w.mode === 'run' ? 1 : 0) - w.run) * Math.min(1, dt * 8);
+                w.startle += ((w.mode === 'freeze' ? 1 : 0) - w.startle) * Math.min(1, dt * (w.mode === 'freeze' ? 14 : 4));
+                w.stride = lerp(CAT_STRIDE_WALK, CAT_STRIDE_RUN, w.run);
+                w.duty = lerp(CAT_DUTY_WALK, CAT_DUTY_RUN, w.run);
 
-                // Лапа коснулась пола — след (та же походка, что в drawCat.leg)
+                // Лапа коснулась пола — след (та же походка, что в drawCatShape)
                 if (state.addPawPrint) {
                     PAW_LEGS.forEach((l, i) => {
-                        const up = Math.cos(w.phase + l.off) > 0;
+                        const f = catFoot(w.phase, catLegOff(l, w.run), w.stride, w.duty);
+                        const up = f.swing >= 0;
                         if (w.footUp[i] && !up) {
-                            const fx = l.hx + Math.sin(w.phase + l.off) * 7;
+                            const fx = l.hx + f.x;
                             state.addPawPrint(w.x + w.dir * P.scale * fx,
                                 P.y + (l.near ? 1.5 : -1) * P.scale, w.dir);
                         }
@@ -2220,7 +2437,7 @@
                 });
                 ctx.clip('evenodd');
                 ctx.globalAlpha = CAT_SHADOW_OPACITY;
-                drawCat(w.x, P.y, w.dir, w.phase, P.scale, t, w.eye);
+                drawCat(w.x, P.y, w.dir, w.phase, P.scale, t, w.eye, w);
                 ctx.restore();
             };
             requestAnimationFrame(frame);
@@ -2461,12 +2678,32 @@
         }
 
         // ========== СЛЕДЫ ЛАП ==========
-        // Лапы кошки-тени: точка крепления hx, сдвиг фазы шага, ближняя ли
-        // (совпадает с вызовами leg() в drawCat)
+        // Лапы кошки-тени: точка крепления hx, сдвиг фазы шага (offW — шагом,
+        // offR — галопом), ближняя ли, передняя ли. Шагом кошка переставляет
+        // лапы по кругу: левая задняя → левая передняя → правая задняя → правая
+        // передняя (через четверть цикла). Галопом задние приземляются почти
+        // вместе, передние — тоже, со сдвигом на полцикла.
         const PAW_LEGS = [
-            { hx: 17, off: Math.PI, near: false }, { hx: -15, off: 0, near: false },
-            { hx: 19, off: 0, near: true },        { hx: -13, off: Math.PI, near: true },
+            { hx: 13,  offW: Math.PI / 2,   offR: Math.PI * 1.2, near: false, front: true },
+            { hx: -16, offW: Math.PI,       offR: Math.PI * 0.2, near: false, front: false },
+            { hx: 15,  offW: Math.PI * 1.5, offR: Math.PI,       near: true,  front: true },
+            { hx: -14, offW: 0,             offR: 0,             near: true,  front: false },
         ];
+        const catLegOff = (l, run) => l.offW + (l.offR - l.offW) * run;
+
+        // Положение лапы в цикле шага относительно плеча/бедра. На опоре
+        // (доля duty) лапа равномерно уходит назад — с той же скоростью, с какой
+        // идёт кошка, поэтому не скользит; в переносе — плавно выносится вперёд
+        // и приподнимается. swing: -1 на опоре, иначе 0..1 — ход переноса.
+        function catFoot(phase, off, stride, duty) {
+            let u = ((phase + off) / (Math.PI * 2)) % 1;
+            if (u < 0) u += 1;
+            if (u < duty) return { x: stride * (1 - 2 * u / duty), lift: 0, swing: -1 };
+            const k = (u - duty) / (1 - duty);
+            return { x: stride * -Math.cos(Math.PI * k), lift: Math.sin(Math.PI * k), swing: k };
+        }
+        // Скорость фазы, при которой лапа на опоре проходит 2·stride за время опоры
+        const catPhaseRate = (w) => w.speed * w.duty * Math.PI / w.stride;
 
         function setupPawPrints() {
             const canvas = document.getElementById('pawPrints');
