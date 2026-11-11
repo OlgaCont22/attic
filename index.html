@@ -298,43 +298,46 @@ const CORD_HEIGHT = 240;
 const CORD_RIGHT = 26;
 // ========== АУДИО ==========
 const AUDIO_URLS = {
-backgroundMusicOptions: [
-'./sounds/attic-ambience.ogg',
-'./sounds/attic-ambience2.ogg',
-],
-switchSound: './sounds/light.mp3',
-posterUnfoldSound: './sounds/poster_unf.mp3',
-posterFoldSound: './sounds/poster_f.mp3',
-catPurr: './sounds/murr.mp3',
-catHiss: './sounds/cat_hiss.mp3', // <--- ДОБАВЛЕНО: звук шипения кошки
-lampSounds: [
-'./sounds/lamp1.mp3',
-'./sounds/lamp2.mp3',
-'./sounds/lamp3.mp3',
-],
+  backgroundMusicOptions: [
+    './sounds/attic-ambience.ogg',
+    './sounds/attic-ambience2.ogg',
+  ],
+  switchSound: './sounds/light.mp3',
+  posterUnfoldSound: './sounds/poster_unf.mp3',
+  posterFoldSound: './sounds/poster_f.mp3',
+  catPurr: './sounds/murr.mp3',
+  catHiss: [
+    './sounds/cat_hiss1.mp3',
+    './sounds/cat_hiss2.mp3'
+  ],
+  lampSounds: [
+    './sounds/lamp1.mp3',
+    './sounds/lamp2.mp3',
+    './sounds/lamp3.mp3',
+  ],
 };
 const CAT_PURR_MIN_DELAY = 15000;
 const CAT_PURR_MAX_DELAY = 30000;
 const HOTSPOTS = [
-{ id: 1, left: 35, top: 307,  width: 95, height: 230, poster: './images/motor_poster.jpg' },
-{ id: 2, left: 344, top: 138, width: 88, height: 133, poster: './images/casino_poster.JPG' },
-{ id: 3, left: 492, top: 136, width: 88, height: 133, poster: './images/wicker_poster.JPG' },
-{ id: 4, left: 645, top: 136, width: 88, height: 133, poster: './images/horse_poster.JPG' },
-{ id: 5, left: 165, top: 300, width: 68, height: 180, poster: './images/vic_poster.JPG' },
-{ id: 6, left: 348, top: 311, width: 65, height: 100, poster: './images/aida_poster.JPG' },
-{ id: 7, left: 492, top: 309, width: 88, height: 133, poster: './images/wer_poster.jpg' },
-{ id: 8, left: 645, top: 309, width: 88, height: 133, poster: './images/blade_poster.jpg' },
-{ id: 9, left: 842, top: 300, width: 56, height: 180, poster: './images/terr_poster.jpg' },
-{ id: 10, left: 930, top: 307, width: 90, height: 220, poster: './images/tigr_poster.jpg' },
+  { id: 1, left: 35, top: 307,  width: 95, height: 230, poster: './images/motor_poster.jpg' },
+  { id: 2, left: 344, top: 138, width: 88, height: 133, poster: './images/casino_poster.JPG' },
+  { id: 3, left: 492, top: 136, width: 88, height: 133, poster: './images/wicker_poster.JPG' },
+  { id: 4, left: 645, top: 136, width: 88, height: 133, poster: './images/horse_poster.JPG' },
+  { id: 5, left: 165, top: 300, width: 68, height: 180, poster: './images/vic_poster.JPG' },
+  { id: 6, left: 348, top: 311, width: 65, height: 100, poster: './images/aida_poster.JPG' },
+  { id: 7, left: 492, top: 309, width: 88, height: 133, poster: './images/wer_poster.jpg' },
+  { id: 8, left: 645, top: 309, width: 88, height: 133, poster: './images/blade_poster.jpg' },
+  { id: 9, left: 842, top: 300, width: 56, height: 180, poster: './images/terr_poster.jpg' },
+  { id: 10, left: 930, top: 307, width: 90, height: 220, poster: './images/tigr_poster.jpg' },
 ];
 const POSTER_MAX_W = 360;
 const POSTER_MAX_H = 460;
 const POSTER_DARK_BRIGHTNESS = 0.3;
 const FLICKER_AMBIENT = {
-duration: 1000,
-levels: [0.9, 0.96, 1.05, 0.93, 1.03, 1],
-minGap: 40,
-maxGap: 180,
+  duration: 1000,
+  levels: [0.9, 0.96, 1.05, 0.93, 1.03, 1],
+  minGap: 40,
+  maxGap: 180,
 };
 const FLASHLIGHT_ENABLED = true;
 const FLASHLIGHT_RADIUS = 200;
@@ -348,11 +351,11 @@ const VIGNETTE_DARK = 0.85;
 const VIGNETTE_LIT = 0.35;
 const LAMP_BEAM_ENABLED = true;
 const LAMP_BEAM = {
-x: 546,
-y: 88,
-topWidth: 26,
-bottomWidth: 680,
-strength: 0.7,
+  x: 546,
+  y: 88,
+  topWidth: 26,
+  bottomWidth: 680,
+  strength: 0.7,
 };
 const LAMP_BEAM_DUST_OUTSIDE = 0.35;
 const LAMP_WARMUP_ENABLED = true;
@@ -362,8 +365,8 @@ const LAMP_STUBBORN_CHANCE = 0.12;
 const COBWEB_ENABLED = true;
 const COBWEB_OPACITY = 0.5;
 const COBWEBS = [
-{ x: 428, y: 52, r: 85,  from: 6, to: 126 },
-{ x: 0,   y: 0,  r: 165, from: 2, to: 88 },
+  { x: 428, y: 52, r: 85,  from: 6, to: 126 },
+  { x: 0,   y: 0,  r: 165, from: 2, to: 88 },
 ];
 const CAT_SHADOW_ENABLED = true;
 const CAT_SHADOW_FIRST_DELAY = 15000;
@@ -377,27 +380,27 @@ const CAT_STRIDE_RUN = 16;
 const CAT_DUTY_WALK = 0.62;
 const CAT_DUTY_RUN = 0.4;
 const CAT_SHADOW_HIDE = [[
-[300, 614], [304, 490], [309, 475], [315, 465], [320, 455], [326, 446], [330, 438], [340, 428],
-[360, 415], [385, 400], [405, 385], [412, 360], [418, 334],
-[432, 342], [452, 350], [470, 342], [484, 331],
-[487, 360], [490, 380], [492, 396], [486, 410], [480, 425],
-[486, 445], [492, 470], [495, 614],
+  [300, 614], [304, 490], [309, 475], [315, 465], [320, 455], [326, 446], [330, 438], [340, 428],
+  [360, 415], [385, 400], [405, 385], [412, 360], [418, 334],
+  [432, 342], [452, 350], [470, 342], [484, 331],
+  [487, 360], [490, 380], [492, 396], [486, 410], [480, 425],
+  [486, 445], [492, 470], [495, 614],
 ]];
 const FLOOR_CRACKS_ENABLED = true;
 const FLOOR_CRACK_STRENGTH = 0.25;
 const FLOOR_CRACK_LIT = 0;
 const FLOOR_CRACKS = {
-vpX: 550, vpY: 270,
-topY: 472, bottomY: 614,
-xs: [120, 190, 250, 527, 578, 640, 700, 761, 831, 895, 960],
+  vpX: 550, vpY: 270,
+  topY: 472, bottomY: 614,
+  xs: [120, 190, 250, 527, 578, 640, 700, 761, 831, 895, 960],
 };
 const FLOOR_AREA = [
-[245, 472], [832, 472], [888, 522], [905, 560], [1000, 600], [1010, 614],
-[40, 614], [160, 590], [160, 520], [245, 490],
+  [245, 472], [832, 472], [888, 522], [905, 560], [1000, 600], [1010, 614],
+  [40, 614], [160, 590], [160, 520], [245, 490],
 ];
 const FLOOR_TAIL_HIDE = [
-[162, 541], [172, 529], [205, 525], [262, 531], [300, 532],
-[300, 596], [245, 581], [205, 577], [178, 570], [162, 558],
+  [162, 541], [172, 529], [205, 525], [262, 531], [300, 532],
+  [300, 596], [245, 581], [205, 577], [178, 570], [162, 558],
 ];
 const FLOOR_WALKER_MIN_DELAY = 25000;
 const FLOOR_WALKER_MAX_DELAY = 60000;
@@ -423,8 +426,8 @@ const POSTER_TILT_ENABLED = true;
 const POSTER_TILT_MAX = 8;
 const CAT_EYES_ENABLED = true;
 const CAT_EYES = [
-{ x: 449, y: 383, w: 11, h: 7, rot: -8 },
-{ x: 474, y: 381, w: 8,  h: 6, rot: -14 },
+  { x: 449, y: 383, w: 11, h: 7, rot: -8 },
+  { x: 474, y: 381, w: 8,  h: 6, rot: -14 },
 ];
 const CAT_EYES_IDLE_GLOW = 0.3;
 const CAT_BLINK_MIN_DELAY = 2500;
@@ -434,2089 +437,2093 @@ const DUST_SPEED = 12;
 const AMBIENT_MIN_DELAY = 10000;
 const AMBIENT_MAX_DELAY = 20000;
 const state = {
-isLightOn: false,
-allAssetsLoaded: false,
-flickerGeneration: 0,
-ambientFlickerTimer: null,
-audioEnabled: false,
-audioElements: null,
-sceneW: 0,
-sceneH: 0,
-loadedPosters: [],
-posterById: {},
-currentExpandedPoster: null,
-isAnimating: false,
-cordImg: null,
-flashPointerInside: false,
-warmupGen: 0,
-warmupActive: false,
-warmupLevel: 0,
-flashBeam: { x: -9999, y: -9999, r: 150 },
-catPurrTimer: null,
-catPurrCycleStarted: false,
-addPawPrint: null,
-selectedBackgroundMusicUrl: null,
+  isLightOn: false,
+  allAssetsLoaded: false,
+  flickerGeneration: 0,
+  ambientFlickerTimer: null,
+  audioEnabled: false,
+  audioElements: null,
+  sceneW: 0,
+  sceneH: 0,
+  loadedPosters: [],
+  posterById: {},
+  currentExpandedPoster: null,
+  isAnimating: false,
+  cordImg: null,
+  flashPointerInside: false,
+  warmupGen: 0,
+  warmupActive: false,
+  warmupLevel: 0,
+  flashBeam: { x: -9999, y: -9999, r: 150 },
+  catPurrTimer: null,
+  catPurrCycleStarted: false,
+  addPawPrint: null,
+  selectedBackgroundMusicUrl: null,
 };
 // ========== ЗАГРУЗКА ИЗОБРАЖЕНИЙ ==========
 function preloadImg(src) {
-return new Promise(resolve => {
-const img = new Image();
-img.onload = () => resolve(img);
-img.onerror = () => resolve(null);
-img.src = src;
-});
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
 }
 function preloadPosters() {
-return Promise.all(HOTSPOTS.map(zone => {
-const src = zone.poster;
-return preloadImg(src).then(img => ({ zone, src, img }));
-}));
+  return Promise.all(HOTSPOTS.map(zone => {
+    const src = zone.poster;
+    return preloadImg(src).then(img => ({ zone, src, img }));
+  }));
 }
 // ========== АУДИО ==========
 function initAudio() {
-const options = AUDIO_URLS.backgroundMusicOptions;
-const selectedUrl = options[Math.floor(Math.random() * options.length)];
-state.selectedBackgroundMusicUrl = selectedUrl;
-state.audioElements = {
-backgroundMusic: new Audio(selectedUrl),
-switchSound: new Audio(AUDIO_URLS.switchSound),
-posterUnfoldSound: new Audio(AUDIO_URLS.posterUnfoldSound),
-posterFoldSound: new Audio(AUDIO_URLS.posterFoldSound),
-catPurr: new Audio(AUDIO_URLS.catPurr),
-catHiss: new Audio(AUDIO_URLS.catHiss), // <--- ДОБАВЛЕНО
-lampSounds: AUDIO_URLS.lampSounds.map(url => new Audio(url)),
-};
-state.audioElements.backgroundMusic.loop = true;
-state.audioElements.backgroundMusic.volume = 0.6;
-state.audioElements.catHiss.volume = 0.7; // <--- ДОБАВЛЕНО: громкость шипения
+  const options = AUDIO_URLS.backgroundMusicOptions;
+  const selectedUrl = options[Math.floor(Math.random() * options.length)];
+  state.selectedBackgroundMusicUrl = selectedUrl;
+  state.audioElements = {
+    backgroundMusic: new Audio(selectedUrl),
+    switchSound: new Audio(AUDIO_URLS.switchSound),
+    posterUnfoldSound: new Audio(AUDIO_URLS.posterUnfoldSound),
+    posterFoldSound: new Audio(AUDIO_URLS.posterFoldSound),
+    catPurr: new Audio(AUDIO_URLS.catPurr),
+    catHissSounds: AUDIO_URLS.catHiss.map(url => {
+      const audio = new Audio(url);
+      audio.volume = 0.7;
+      return audio;
+    }),
+    lampSounds: AUDIO_URLS.lampSounds.map(url => new Audio(url)),
+  };
+  state.audioElements.backgroundMusic.loop = true;
+  state.audioElements.backgroundMusic.volume = 0.6;
 }
 function preloadAudio() {
-return new Promise(resolve => {
-initAudio();
-const elements = [
-state.audioElements.backgroundMusic,
-state.audioElements.switchSound,
-state.audioElements.posterUnfoldSound,
-state.audioElements.posterFoldSound,
-state.audioElements.catPurr,
-state.audioElements.catHiss, // <--- ДОБАВЛЕНО
-...state.audioElements.lampSounds,
-];
-let loaded = 0;
-let settled = false;
-const total = elements.length;
-const finish = () => {
-if (settled) return;
-settled = true;
-resolve();
-};
-if (total === 0) { finish(); return; }
-setTimeout(finish, 25000);
-elements.forEach(audio => {
-audio.addEventListener('canplaythrough', () => {
-if (settled) return;
-loaded++;
-if (loaded === total) finish();
-}, { once: true });
-audio.addEventListener('error', () => {
-if (settled) return;
-loaded++;
-if (loaded === total) finish();
-}, { once: true });
-audio.load();
-});
-});
+  return new Promise(resolve => {
+    initAudio();
+    const elements = [
+      state.audioElements.backgroundMusic,
+      state.audioElements.switchSound,
+      state.audioElements.posterUnfoldSound,
+      state.audioElements.posterFoldSound,
+      state.audioElements.catPurr,
+      ...state.audioElements.catHissSounds,
+      ...state.audioElements.lampSounds,
+    ];
+    let loaded = 0;
+    let settled = false;
+    const total = elements.length;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+    if (total === 0) { finish(); return; }
+    setTimeout(finish, 25000);
+    elements.forEach(audio => {
+      audio.addEventListener('canplaythrough', () => {
+        if (settled) return;
+        loaded++;
+        if (loaded === total) finish();
+      }, { once: true });
+      audio.addEventListener('error', () => {
+        if (settled) return;
+        loaded++;
+        if (loaded === total) finish();
+      }, { once: true });
+      audio.load();
+    });
+  });
 }
 function tryPlayBackgroundMusic() {
-const music = state.audioElements && state.audioElements.backgroundMusic;
-if (!music) return;
-const promise = music.play();
-if (!promise || typeof promise.catch !== 'function') return;
-promise.catch(() => {
-const handleInteraction = () => music.play().catch(() => {});
-document.addEventListener('click', handleInteraction, { once: true });
-document.addEventListener('keydown', handleInteraction, { once: true });
-});
+  const music = state.audioElements && state.audioElements.backgroundMusic;
+  if (!music) return;
+  const promise = music.play();
+  if (!promise || typeof promise.catch !== 'function') return;
+  promise.catch(() => {
+    const handleInteraction = () => music.play().catch(() => {});
+    document.addEventListener('click', handleInteraction, { once: true });
+    document.addEventListener('keydown', handleInteraction, { once: true });
+  });
 }
 function playSwitchSound() {
-if (!state.audioEnabled || !state.audioElements) return;
-const s = state.audioElements.switchSound;
-if (!s) return;
-s.currentTime = 0;
-s.play().catch(() => {});
+  if (!state.audioEnabled || !state.audioElements) return;
+  const s = state.audioElements.switchSound;
+  if (!s) return;
+  s.currentTime = 0;
+  s.play().catch(() => {});
 }
 function playPosterUnfoldSound() {
-if (!state.audioEnabled || !state.audioElements) return;
-const s = state.audioElements.posterUnfoldSound;
-if (!s) return;
-s.currentTime = 0;
-s.play().catch(() => {});
+  if (!state.audioEnabled || !state.audioElements) return;
+  const s = state.audioElements.posterUnfoldSound;
+  if (!s) return;
+  s.currentTime = 0;
+  s.play().catch(() => {});
 }
 function playPosterFoldSound() {
-if (!state.audioEnabled || !state.audioElements) return;
-const s = state.audioElements.posterFoldSound;
-if (!s) return;
-s.currentTime = 0;
-s.play().catch(() => {});
+  if (!state.audioEnabled || !state.audioElements) return;
+  const s = state.audioElements.posterFoldSound;
+  if (!s) return;
+  s.currentTime = 0;
+  s.play().catch(() => {});
 }
 function playRandomLampSound() {
-if (!state.audioEnabled || !state.audioElements) return;
-const sounds = state.audioElements.lampSounds;
-if (!sounds || sounds.length === 0) return;
-const s = sounds[Math.floor(Math.random() * sounds.length)];
-if (!s) return;
-s.currentTime = 0;
-s.play().catch(() => {});
+  if (!state.audioEnabled || !state.audioElements) return;
+  const sounds = state.audioElements.lampSounds;
+  if (!sounds || sounds.length === 0) return;
+  const s = sounds[Math.floor(Math.random() * sounds.length)];
+  if (!s) return;
+  s.currentTime = 0;
+  s.play().catch(() => {});
 }
 // ========== ШИПЕНИЕ КОШКИ ==========
-// <--- ДОБАВЛЕНО: новая функция воспроизведения шипения
 function playCatHiss() {
-if (!state.audioEnabled || !state.audioElements) return;
-const hiss = state.audioElements.catHiss;
-if (!hiss) return;
-// Если шипение ещё играет с предыдущего раза — перезапускаем
-if (!hiss.paused) {
-hiss.pause();
-hiss.currentTime = 0;
-}
-hiss.play().catch(() => {});
+  if (!state.audioEnabled || !state.audioElements) return;
+  const hisses = state.audioElements.catHissSounds;
+  if (!hisses || hisses.length === 0) return;
+  const hiss = hisses[Math.floor(Math.random() * hisses.length)];
+  if (!hiss) return;
+  // Если шипение ещё играет с предыдущего раза — перезапускаем
+  if (!hiss.paused) {
+    hiss.pause();
+    hiss.currentTime = 0;
+  }
+  hiss.play().catch(() => {});
 }
 // ========== МУРЧАНИЕ КОШКИ ==========
 function scheduleNextPurr() {
-if (state.catPurrTimer) clearTimeout(state.catPurrTimer);
-const delay = CAT_PURR_MIN_DELAY + Math.random() * (CAT_PURR_MAX_DELAY - CAT_PURR_MIN_DELAY);
-state.catPurrTimer = setTimeout(() => playCatPurr(), delay);
+  if (state.catPurrTimer) clearTimeout(state.catPurrTimer);
+  const delay = CAT_PURR_MIN_DELAY + Math.random() * (CAT_PURR_MAX_DELAY - CAT_PURR_MIN_DELAY);
+  state.catPurrTimer = setTimeout(() => playCatPurr(), delay);
 }
 function playCatPurr() {
-if (!state.audioEnabled || !state.audioElements) return;
-const purr = state.audioElements.catPurr;
-if (!purr) return;
-purr.currentTime = 0;
-const promise = purr.play();
-if (promise && typeof promise.catch === 'function') {
-promise.catch(() => {
-scheduleNextPurr();
-});
-}
+  if (!state.audioEnabled || !state.audioElements) return;
+  const purr = state.audioElements.catPurr;
+  if (!purr) return;
+  purr.currentTime = 0;
+  const promise = purr.play();
+  if (promise && typeof promise.catch === 'function') {
+    promise.catch(() => {
+      scheduleNextPurr();
+    });
+  }
 }
 function startCatPurrCycle() {
-if (state.catPurrCycleStarted) return;
-const purr = state.audioElements && state.audioElements.catPurr;
-if (!purr) return;
-state.catPurrCycleStarted = true;
-purr.addEventListener('ended', () => scheduleNextPurr());
-scheduleNextPurr();
+  if (state.catPurrCycleStarted) return;
+  const purr = state.audioElements && state.audioElements.catPurr;
+  if (!purr) return;
+  state.catPurrCycleStarted = true;
+  purr.addEventListener('ended', () => scheduleNextPurr());
+  scheduleNextPurr();
 }
 function applySceneSize(width, height) {
-const scene = document.getElementById('scene');
-scene.style.width = width + 'px';
-scene.style.height = height + 'px';
+  const scene = document.getElementById('scene');
+  scene.style.width = width + 'px';
+  scene.style.height = height + 'px';
 }
 async function initialize() {
-const [bgImgs, loadedPosters, , cordImg] = await Promise.all([
-Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]),
-preloadPosters(),
-preloadAudio(),
-preloadImg(PULL_CORD_URL),
-]);
-const offImg = bgImgs[0];
-const w = offImg ? offImg.naturalWidth : 1265;
-const h = offImg ? offImg.naturalHeight : 550;
-applySceneSize(w, h);
-state.sceneW = w;
-state.sceneH = h;
-state.loadedPosters = loadedPosters;
-state.cordImg = cordImg;
-document.getElementById('bgOff').src = BG_OFF;
-document.getElementById('bgOn').src = BG_ON;
-document.getElementById('bgFlash').src = BG_ON;
-state.allAssetsLoaded = true;
-const loadingText = document.getElementById('loadingText');
-const loadingScreen = document.getElementById('loadingScreen');
-loadingText.firstChild.nodeValue = 'ЗАЛЕЗТЬ НА ЧЕРДАК';
-loadingText.classList.add('ready');
-loadingScreen.classList.add('ready');
-loadingScreen.addEventListener('click', enterScene);
+  const [bgImgs, loadedPosters, , cordImg] = await Promise.all([
+    Promise.all([preloadImg(BG_OFF), preloadImg(BG_ON)]),
+    preloadPosters(),
+    preloadAudio(),
+    preloadImg(PULL_CORD_URL),
+  ]);
+  const offImg = bgImgs[0];
+  const w = offImg ? offImg.naturalWidth : 1265;
+  const h = offImg ? offImg.naturalHeight : 550;
+  applySceneSize(w, h);
+  state.sceneW = w;
+  state.sceneH = h;
+  state.loadedPosters = loadedPosters;
+  state.cordImg = cordImg;
+  document.getElementById('bgOff').src = BG_OFF;
+  document.getElementById('bgOn').src = BG_ON;
+  document.getElementById('bgFlash').src = BG_ON;
+  state.allAssetsLoaded = true;
+  const loadingText = document.getElementById('loadingText');
+  const loadingScreen = document.getElementById('loadingScreen');
+  loadingText.firstChild.nodeValue = 'ЗАЛЕЗТЬ НА ЧЕРДАК';
+  loadingText.classList.add('ready');
+  loadingScreen.classList.add('ready');
+  loadingScreen.addEventListener('click', enterScene);
 }
 function enterScene() {
-if (!state.allAssetsLoaded) return;
-document.getElementById('loadingScreen').style.display = 'none';
-document.getElementById('scene').style.display = 'block';
-setupPullCord();
-setupFlashlight();
-setupLampBeam();
-setupFilament();
-setupCobwebs();
-setupFloorCracks();
-setupPawPrints();
-setupCatShadow();
-setupDust();
-setupMoth();
-setupFireflies();
-setupCatEyes();
-updateVignette();
-setupPosterTilt();
-createHotspots();
-createPosterElements();
-state.audioEnabled = true;
-tryPlayBackgroundMusic();
-startCatPurrCycle();
+  if (!state.allAssetsLoaded) return;
+  document.getElementById('loadingScreen').style.display = 'none';
+  document.getElementById('scene').style.display = 'block';
+  setupPullCord();
+  setupFlashlight();
+  setupLampBeam();
+  setupFilament();
+  setupCobwebs();
+  setupFloorCracks();
+  setupPawPrints();
+  setupCatShadow();
+  setupDust();
+  setupMoth();
+  setupFireflies();
+  setupCatEyes();
+  updateVignette();
+  setupPosterTilt();
+  createHotspots();
+  createPosterElements();
+  state.audioEnabled = true;
+  tryPlayBackgroundMusic();
+  startCatPurrCycle();
 }
 // ========== ВЫКЛЮЧАТЕЛЬ-ШНУРОК ==========
 function setupPullCord() {
-const cord = document.getElementById('pullCord');
-if (!cord) return;
-cord.src = PULL_CORD_URL;
-const img = state.cordImg;
-const naturalW = img ? img.naturalWidth : 60;
-const naturalH = img ? img.naturalHeight : CORD_HEIGHT;
-const ratio = naturalW / naturalH;
-const height = CORD_HEIGHT;
-const width = Math.round(height * ratio);
-cord.style.width = width + 'px';
-cord.style.height = height + 'px';
-cord.style.right = CORD_RIGHT + 'px';
-cord.style.top = Math.round(-height / 3) + 'px';
-updateCordLighting();
+  const cord = document.getElementById('pullCord');
+  if (!cord) return;
+  cord.src = PULL_CORD_URL;
+  const img = state.cordImg;
+  const naturalW = img ? img.naturalWidth : 60;
+  const naturalH = img ? img.naturalHeight : CORD_HEIGHT;
+  const ratio = naturalW / naturalH;
+  const height = CORD_HEIGHT;
+  const width = Math.round(height * ratio);
+  cord.style.width = width + 'px';
+  cord.style.height = height + 'px';
+  cord.style.right = CORD_RIGHT + 'px';
+  cord.style.top = Math.round(-height / 3) + 'px';
+  updateCordLighting();
 }
 function updateCordLighting() {
-const cord = document.getElementById('pullCord');
-if (!cord) return;
-const light = state.isLightOn ? 1 : POSTER_DARK_BRIGHTNESS;
-cord.style.setProperty('--light', String(light));
+  const cord = document.getElementById('pullCord');
+  if (!cord) return;
+  const light = state.isLightOn ? 1 : POSTER_DARK_BRIGHTNESS;
+  cord.style.setProperty('--light', String(light));
 }
 function playCordAnimation() {
-const cord = document.getElementById('pullCord');
-if (!cord || typeof cord.animate !== 'function') return;
-const h = cord.offsetHeight || CORD_HEIGHT;
-const pull = Math.round(h * 0.24);
-const keyframes = [
-{ transform: 'translateY(0px)', easing: 'cubic-bezier(0.55, 0, 1, 0.45)' },
-{ transform: `translateY(${pull}px)`, offset: 0.16, easing: 'cubic-bezier(0, 0.4, 0.5, 1)' },
-{ transform: `translateY(${Math.round(-pull * 0.10)}px)`, offset: 0.40, easing: 'ease-in-out' },
-{ transform: `translateY(${Math.round(pull * 0.16)}px)`, offset: 0.58, easing: 'ease-in-out' },
-{ transform: `translateY(${Math.round(-pull * 0.05)}px)`, offset: 0.74, easing: 'ease-in-out' },
-{ transform: `translateY(${Math.round(pull * 0.06)}px)`, offset: 0.87, easing: 'ease-out' },
-{ transform: 'translateY(0px)' }
-];
-cord.animate(keyframes, { duration: 475 });
+  const cord = document.getElementById('pullCord');
+  if (!cord || typeof cord.animate !== 'function') return;
+  const h = cord.offsetHeight || CORD_HEIGHT;
+  const pull = Math.round(h * 0.24);
+  const keyframes = [
+    { transform: 'translateY(0px)', easing: 'cubic-bezier(0.55, 0, 1, 0.45)' },
+    { transform: `translateY(${pull}px)`, offset: 0.16, easing: 'cubic-bezier(0, 0.4, 0.5, 1)' },
+    { transform: `translateY(${Math.round(-pull * 0.10)}px)`, offset: 0.40, easing: 'ease-in-out' },
+    { transform: `translateY(${Math.round(pull * 0.16)}px)`, offset: 0.58, easing: 'ease-in-out' },
+    { transform: `translateY(${Math.round(-pull * 0.05)}px)`, offset: 0.74, easing: 'ease-in-out' },
+    { transform: `translateY(${Math.round(pull * 0.06)}px)`, offset: 0.87, easing: 'ease-out' },
+    { transform: 'translateY(0px)' }
+  ];
+  cord.animate(keyframes, { duration: 475 });
 }
 // ========== ФОНАРИК ==========
 function setupFlashlight() {
-const scene = document.getElementById('scene');
-const flash = document.getElementById('bgFlash');
-if (!FLASHLIGHT_ENABLED) {
-flash.remove();
-return;
-}
-flash.style.setProperty('--fr', FLASHLIGHT_RADIUS + 'px');
-if (FLASHLIGHT_TINT > 0) {
-const k = FLASHLIGHT_TINT;
-flash.style.filter = `sepia(${0.45 * k}) saturate(${1 + 0.35 * k}) ` +
-`hue-rotate(${-6 * k}deg) brightness(${1 + 0.06 * k})`;
-}
-let pos = { x: 0, y: 0 };
-const ph = Array.from({ length: 5 }, () => Math.random() * Math.PI * 2);
-const rand = (a, b) => a + Math.random() * (b - a);
-const batt = {
-mode: 'ok', power: 1, usage: 0, modeT: 0, flickT: 0, dimLevel: 0.25,
-nextAt: rand(FLASHLIGHT_BATTERY_MIN_DELAY, FLASHLIGHT_BATTERY_MAX_DELAY) / 1000,
-reversals: [], lastSx: 0, lastSy: 0,
-};
-const revive = () => {
-if (batt.mode !== 'stutter' && batt.mode !== 'dim') return;
-batt.mode = 'revive';
-batt.modeT = 0.35;
-};
-const trackShake = (dx, dy, now) => {
-if (batt.mode !== 'stutter' && batt.mode !== 'dim') return;
-const check = (d, key) => {
-if (Math.abs(d) < 4) return;
-if (batt[key] && Math.sign(d) !== Math.sign(batt[key])) batt.reversals.push(now);
-batt[key] = d;
-};
-check(dx, 'lastSx');
-check(dy, 'lastSy');
-batt.reversals = batt.reversals.filter(r => now - r < 600);
-if (batt.reversals.length >= 3) { batt.reversals = []; revive(); }
-};
-const updateBattery = (dt) => {
-if (!FLASHLIGHT_BATTERY_ENABLED) return;
-const b = batt;
-if (b.mode === 'ok') {
-b.usage += dt;
-if (b.usage >= b.nextAt) {
-b.mode = 'stutter';
-b.modeT = rand(0.6, 1.2);
-b.dimLevel = rand(0.15, 0.3);
-}
-} else if (b.mode === 'stutter') {
-b.modeT -= dt;
-b.flickT -= dt;
-if (b.flickT <= 0) {
-b.power = Math.random() < 0.5 ? rand(0.05, 0.4) : rand(0.7, 1);
-b.flickT = rand(0.03, 0.12);
-}
-if (b.modeT <= 0) { b.mode = 'dim'; b.modeT = FLASHLIGHT_BATTERY_AUTO_RECOVER / 1000; }
-} else if (b.mode === 'dim') {
-b.modeT -= dt;
-b.power = Math.random() < dt * 1.2 ? 0.04 : b.dimLevel * rand(0.85, 1.1);
-if (b.modeT <= 0) revive();
-} else if (b.mode === 'revive') {
-b.modeT -= dt;
-b.power = Math.random() < 0.5 ? rand(0.3, 0.6) : 1;
-if (b.modeT <= 0) {
-b.mode = 'ok';
-b.power = 1;
-b.usage = 0;
-b.nextAt = rand(FLASHLIGHT_BATTERY_MIN_DELAY, FLASHLIGHT_BATTERY_MAX_DELAY) / 1000;
-}
-}
-flash.style.setProperty('--fp', b.power.toFixed(3));
-flash.style.transition = b.mode === 'ok' ? '' : 'opacity 0.04s linear';
-};
-window.flashlightBattery = () => { batt.usage = batt.nextAt; };
-let lastTick = performance.now();
-const tick = (now) => {
-requestAnimationFrame(tick);
-const dt = Math.min((now - lastTick) / 1000, 0.05);
-lastTick = now;
-if (!flash.classList.contains('active')) return;
-updateBattery(dt);
-const t = now / 1000;
-const a = FLASHLIGHT_SHAKE;
-const dx = a * (Math.sin(t * 7.3 + ph[0]) * 0.6 + Math.sin(t * 13.1 + ph[1]) * 0.4);
-const dy = a * (Math.sin(t * 6.1 + ph[2]) * 0.6 + Math.sin(t * 11.7 + ph[3]) * 0.4);
-const r = FLASHLIGHT_RADIUS * (1 + 0.02 * Math.sin(t * 9.4 + ph[4]))
-* (0.6 + 0.4 * batt.power);
-flash.style.setProperty('--fx', (pos.x + dx).toFixed(1) + 'px');
-flash.style.setProperty('--fy', (pos.y + dy).toFixed(1) + 'px');
-flash.style.setProperty('--fr', r.toFixed(1) + 'px');
-state.flashBeam.x = pos.x + dx;
-state.flashBeam.y = pos.y + dy;
-state.flashBeam.r = r;
-};
-requestAnimationFrame(tick);
-const move = (e) => {
-const rect = scene.getBoundingClientRect();
-const kx = state.sceneW / rect.width;
-const ky = state.sceneH / rect.height;
-const nx = (e.clientX - rect.left) * kx, ny = (e.clientY - rect.top) * ky;
-trackShake(nx - pos.x, ny - pos.y, performance.now());
-pos = { x: nx, y: ny };
-updateFlashlight(true);
-};
-scene.addEventListener('pointermove', move);
-scene.addEventListener('pointerdown', move);
-scene.addEventListener('pointerleave', () => updateFlashlight(false));
+  const scene = document.getElementById('scene');
+  const flash = document.getElementById('bgFlash');
+  if (!FLASHLIGHT_ENABLED) {
+    flash.remove();
+    return;
+  }
+  flash.style.setProperty('--fr', FLASHLIGHT_RADIUS + 'px');
+  if (FLASHLIGHT_TINT > 0) {
+    const k = FLASHLIGHT_TINT;
+    flash.style.filter = `sepia(${0.45 * k}) saturate(${1 + 0.35 * k}) ` +
+      `hue-rotate(${-6 * k}deg) brightness(${1 + 0.06 * k})`;
+  }
+  let pos = { x: 0, y: 0 };
+  const ph = Array.from({ length: 5 }, () => Math.random() * Math.PI * 2);
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const batt = {
+    mode: 'ok', power: 1, usage: 0, modeT: 0, flickT: 0, dimLevel: 0.25,
+    nextAt: rand(FLASHLIGHT_BATTERY_MIN_DELAY, FLASHLIGHT_BATTERY_MAX_DELAY) / 1000,
+    reversals: [], lastSx: 0, lastSy: 0,
+  };
+  const revive = () => {
+    if (batt.mode !== 'stutter' && batt.mode !== 'dim') return;
+    batt.mode = 'revive';
+    batt.modeT = 0.35;
+  };
+  const trackShake = (dx, dy, now) => {
+    if (batt.mode !== 'stutter' && batt.mode !== 'dim') return;
+    const check = (d, key) => {
+      if (Math.abs(d) < 4) return;
+      if (batt[key] && Math.sign(d) !== Math.sign(batt[key])) batt.reversals.push(now);
+      batt[key] = d;
+    };
+    check(dx, 'lastSx');
+    check(dy, 'lastSy');
+    batt.reversals = batt.reversals.filter(r => now - r < 600);
+    if (batt.reversals.length >= 3) { batt.reversals = []; revive(); }
+  };
+  const updateBattery = (dt) => {
+    if (!FLASHLIGHT_BATTERY_ENABLED) return;
+    const b = batt;
+    if (b.mode === 'ok') {
+      b.usage += dt;
+      if (b.usage >= b.nextAt) {
+        b.mode = 'stutter';
+        b.modeT = rand(0.6, 1.2);
+        b.dimLevel = rand(0.15, 0.3);
+      }
+    } else if (b.mode === 'stutter') {
+      b.modeT -= dt;
+      b.flickT -= dt;
+      if (b.flickT <= 0) {
+        b.power = Math.random() < 0.5 ? rand(0.05, 0.4) : rand(0.7, 1);
+        b.flickT = rand(0.03, 0.12);
+      }
+      if (b.modeT <= 0) { b.mode = 'dim'; b.modeT = FLASHLIGHT_BATTERY_AUTO_RECOVER / 1000; }
+    } else if (b.mode === 'dim') {
+      b.modeT -= dt;
+      b.power = Math.random() < dt * 1.2 ? 0.04 : b.dimLevel * rand(0.85, 1.1);
+      if (b.modeT <= 0) revive();
+    } else if (b.mode === 'revive') {
+      b.modeT -= dt;
+      b.power = Math.random() < 0.5 ? rand(0.3, 0.6) : 1;
+      if (b.modeT <= 0) {
+        b.mode = 'ok';
+        b.power = 1;
+        b.usage = 0;
+        b.nextAt = rand(FLASHLIGHT_BATTERY_MIN_DELAY, FLASHLIGHT_BATTERY_MAX_DELAY) / 1000;
+      }
+    }
+    flash.style.setProperty('--fp', b.power.toFixed(3));
+    flash.style.transition = b.mode === 'ok' ? '' : 'opacity 0.04s linear';
+  };
+  window.flashlightBattery = () => { batt.usage = batt.nextAt; };
+  let lastTick = performance.now();
+  const tick = (now) => {
+    requestAnimationFrame(tick);
+    const dt = Math.min((now - lastTick) / 1000, 0.05);
+    lastTick = now;
+    if (!flash.classList.contains('active')) return;
+    updateBattery(dt);
+    const t = now / 1000;
+    const a = FLASHLIGHT_SHAKE;
+    const dx = a * (Math.sin(t * 7.3 + ph[0]) * 0.6 + Math.sin(t * 13.1 + ph[1]) * 0.4);
+    const dy = a * (Math.sin(t * 6.1 + ph[2]) * 0.6 + Math.sin(t * 11.7 + ph[3]) * 0.4);
+    const r = FLASHLIGHT_RADIUS * (1 + 0.02 * Math.sin(t * 9.4 + ph[4]))
+      * (0.6 + 0.4 * batt.power);
+    flash.style.setProperty('--fx', (pos.x + dx).toFixed(1) + 'px');
+    flash.style.setProperty('--fy', (pos.y + dy).toFixed(1) + 'px');
+    flash.style.setProperty('--fr', r.toFixed(1) + 'px');
+    state.flashBeam.x = pos.x + dx;
+    state.flashBeam.y = pos.y + dy;
+    state.flashBeam.r = r;
+  };
+  requestAnimationFrame(tick);
+  const move = (e) => {
+    const rect = scene.getBoundingClientRect();
+    const kx = state.sceneW / rect.width;
+    const ky = state.sceneH / rect.height;
+    const nx = (e.clientX - rect.left) * kx, ny = (e.clientY - rect.top) * ky;
+    trackShake(nx - pos.x, ny - pos.y, performance.now());
+    pos = { x: nx, y: ny };
+    updateFlashlight(true);
+  };
+  scene.addEventListener('pointermove', move);
+  scene.addEventListener('pointerdown', move);
+  scene.addEventListener('pointerleave', () => updateFlashlight(false));
 }
 function updateFlashlight(pointerInside) {
-const flash = document.getElementById('bgFlash');
-if (!flash) return;
-if (typeof pointerInside === 'boolean') state.flashPointerInside = pointerInside;
-flash.classList.toggle('active', !state.isLightOn && !!state.flashPointerInside);
+  const flash = document.getElementById('bgFlash');
+  if (!flash) return;
+  if (typeof pointerInside === 'boolean') state.flashPointerInside = pointerInside;
+  flash.classList.toggle('active', !state.isLightOn && !!state.flashPointerInside);
 }
 // ========== ПЫЛЬ В СВЕТЕ ==========
 function setupDust() {
-const canvas = document.getElementById('dust');
-if (!canvas || !canvas.getContext) return;
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const rand = (a, b) => a + Math.random() * (b - a);
-const particles = Array.from({ length: DUST_COUNT }, () => ({
-x: rand(0, W),
-y: rand(0, H),
-vx: rand(-1, 1) * DUST_SPEED,
-vy: rand(-1, 1) * DUST_SPEED * 0.6,
-size: Math.random() < 0.85 ? rand(0.5, 1.4) : rand(1.6, 2.6),
-alpha: rand(0.25, 0.75),
-tw: rand(0.5, 1.6),
-ph: rand(0, Math.PI * 2),
-}));
-let lightMix = state.isLightOn ? 1 : 0;
-let last = performance.now();
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.05);
-last = now;
-const t = now / 1000;
-lightMix += (roomLightLevel() - lightMix) * Math.min(1, Math.max(0, dt) * 4);
-if (!Number.isFinite(lightMix)) lightMix = roomLightLevel();
-const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
-ctx.clearRect(0, 0, W, H);
-if (lightMix < 0.01 && !beamOn) return;
-const b = state.flashBeam;
-for (const p of particles) {
-p.vx += rand(-1, 1) * DUST_SPEED * dt * 2;
-p.vy += (rand(-1, 1) * DUST_SPEED * 2 - DUST_SPEED * 0.15) * dt;
-p.vx *= 1 - dt * 0.5;
-p.vy *= 1 - dt * 0.5;
-p.x += p.vx * dt;
-p.y += p.vy * dt;
-if (p.x < -5) p.x = W + 5; else if (p.x > W + 5) p.x = -5;
-if (p.y < -5) p.y = H + 5; else if (p.y > H + 5) p.y = -5;
-let vis = lightMix;
-if (vis > 0 && LAMP_BEAM_ENABLED) {
-vis *= LAMP_BEAM_DUST_OUTSIDE + (1 - LAMP_BEAM_DUST_OUTSIDE) * lampBeamFactor(p.x, p.y);
-}
-if (beamOn) {
-const d = Math.hypot(p.x - b.x, p.y - b.y) / b.r;
-if (d < 1) vis = Math.max(vis, (1 - d * d) * 1.3);
-}
-if (vis <= 0.01) continue;
-const twinkle = 0.6 + 0.4 * Math.sin(t * p.tw + p.ph);
-ctx.globalAlpha = Math.min(1, p.alpha * twinkle * vis);
-ctx.fillStyle = '#fff3dc';
-ctx.beginPath();
-ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-ctx.fill();
-}
-ctx.globalAlpha = 1;
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('dust');
+  if (!canvas || !canvas.getContext) return;
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const particles = Array.from({ length: DUST_COUNT }, () => ({
+    x: rand(0, W),
+    y: rand(0, H),
+    vx: rand(-1, 1) * DUST_SPEED,
+    vy: rand(-1, 1) * DUST_SPEED * 0.6,
+    size: Math.random() < 0.85 ? rand(0.5, 1.4) : rand(1.6, 2.6),
+    alpha: rand(0.25, 0.75),
+    tw: rand(0.5, 1.6),
+    ph: rand(0, Math.PI * 2),
+  }));
+  let lightMix = state.isLightOn ? 1 : 0;
+  let last = performance.now();
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    const t = now / 1000;
+    lightMix += (roomLightLevel() - lightMix) * Math.min(1, Math.max(0, dt) * 4);
+    if (!Number.isFinite(lightMix)) lightMix = roomLightLevel();
+    const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+    ctx.clearRect(0, 0, W, H);
+    if (lightMix < 0.01 && !beamOn) return;
+    const b = state.flashBeam;
+    for (const p of particles) {
+      p.vx += rand(-1, 1) * DUST_SPEED * dt * 2;
+      p.vy += (rand(-1, 1) * DUST_SPEED * 2 - DUST_SPEED * 0.15) * dt;
+      p.vx *= 1 - dt * 0.5;
+      p.vy *= 1 - dt * 0.5;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      if (p.x < -5) p.x = W + 5; else if (p.x > W + 5) p.x = -5;
+      if (p.y < -5) p.y = H + 5; else if (p.y > H + 5) p.y = -5;
+      let vis = lightMix;
+      if (vis > 0 && LAMP_BEAM_ENABLED) {
+        vis *= LAMP_BEAM_DUST_OUTSIDE + (1 - LAMP_BEAM_DUST_OUTSIDE) * lampBeamFactor(p.x, p.y);
+      }
+      if (beamOn) {
+        const d = Math.hypot(p.x - b.x, p.y - b.y) / b.r;
+        if (d < 1) vis = Math.max(vis, (1 - d * d) * 1.3);
+      }
+      if (vis <= 0.01) continue;
+      const twinkle = 0.6 + 0.4 * Math.sin(t * p.tw + p.ph);
+      ctx.globalAlpha = Math.min(1, p.alpha * twinkle * vis);
+      ctx.fillStyle = '#fff3dc';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+  requestAnimationFrame(frame);
 }
 // ========== ГЛАЗА КОШКИ В ТЕМНОТЕ ==========
 function setupCatEyes() {
-if (!CAT_EYES_ENABLED) return;
-const scene = document.getElementById('scene');
-const wrap = document.createElement('div');
-wrap.id = 'catEyes';
-const glows = CAT_EYES.map(cfg => {
-const eye = document.createElement('div');
-eye.className = 'cat-eye';
-eye.style.left = (cfg.x - cfg.w / 2) + 'px';
-eye.style.top = (cfg.y - cfg.h / 2) + 'px';
-eye.style.width = cfg.w + 'px';
-eye.style.height = cfg.h + 'px';
-eye.style.transform = `rotate(${cfg.rot}deg)`;
-const glow = document.createElement('div');
-glow.className = 'eye-glow';
-const pupil = document.createElement('div');
-pupil.className = 'pupil';
-glow.appendChild(pupil);
-eye.appendChild(glow);
-wrap.appendChild(eye);
-return glow;
-});
-scene.appendChild(wrap);
-const cx = CAT_EYES.reduce((s, e) => s + e.x, 0) / CAT_EYES.length;
-const cy = CAT_EYES.reduce((s, e) => s + e.y, 0) / CAT_EYES.length;
-let cursor = null;
-scene.addEventListener('pointermove', (e) => {
-const rect = scene.getBoundingClientRect();
-cursor = {
-x: (e.clientX - rect.left) * state.sceneW / rect.width,
-y: (e.clientY - rect.top) * state.sceneH / rect.height,
-};
-});
-scene.addEventListener('pointerleave', () => { cursor = null; });
-let glow = 0, slit = 0.35, lx = 0, ly = 0;
-let last = performance.now();
-let visible = false;
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.05);
-last = now;
-let beam = 0;
-if (!state.isLightOn && FLASHLIGHT_ENABLED && state.flashPointerInside) {
-const b = state.flashBeam;
-const d = Math.hypot(b.x - cx, b.y - cy) / b.r;
-if (d < 1) beam = 1 - d * d;
-}
-const target = state.isLightOn ? 0
-: CAT_EYES_IDLE_GLOW + (1 - CAT_EYES_IDLE_GLOW) * beam;
-glow += (target - glow) * Math.min(1, dt * 6);
-if (glow < 0.005 && target === 0) {
-if (visible) { wrap.style.visibility = 'hidden'; visible = false; }
-return;
-}
-if (!visible) { wrap.style.visibility = 'visible'; visible = true; }
-slit += ((0.38 - 0.28 * beam) - slit) * Math.min(1, dt * 3);
-let tx = 0, ty = 0;
-if (cursor) {
-const dx = cursor.x - cx, dy = cursor.y - cy;
-const len = Math.hypot(dx, dy) || 1;
-const k = Math.min(1, len / 120);
-tx = dx / len * k;
-ty = dy / len * k;
-}
-lx += (tx - lx) * Math.min(1, dt * 5);
-ly += (ty - ly) * Math.min(1, dt * 5);
-wrap.style.setProperty('--glow', glow.toFixed(3));
-wrap.style.setProperty('--slit', (slit * 100).toFixed(1) + '%');
-wrap.style.setProperty('--lx', lx.toFixed(3));
-wrap.style.setProperty('--ly', ly.toFixed(3));
-};
-requestAnimationFrame(frame);
-const blink = () => {
-glows.forEach(g => {
-if (typeof g.animate !== 'function') return;
-g.animate([
-{ transform: 'scaleY(1)' },
-{ transform: 'scaleY(0.08)', offset: 0.45 },
-{ transform: 'scaleY(1)' },
-], { duration: 180, easing: 'ease-in-out' });
-});
-};
-const scheduleBlink = () => {
-const delay = CAT_BLINK_MIN_DELAY + Math.random() * (CAT_BLINK_MAX_DELAY - CAT_BLINK_MIN_DELAY);
-setTimeout(() => {
-if (visible) {
-blink();
-if (Math.random() < 0.2) setTimeout(blink, 260);
-}
-scheduleBlink();
-}, delay);
-};
-scheduleBlink();
+  if (!CAT_EYES_ENABLED) return;
+  const scene = document.getElementById('scene');
+  const wrap = document.createElement('div');
+  wrap.id = 'catEyes';
+  const glows = CAT_EYES.map(cfg => {
+    const eye = document.createElement('div');
+    eye.className = 'cat-eye';
+    eye.style.left = (cfg.x - cfg.w / 2) + 'px';
+    eye.style.top = (cfg.y - cfg.h / 2) + 'px';
+    eye.style.width = cfg.w + 'px';
+    eye.style.height = cfg.h + 'px';
+    eye.style.transform = `rotate(${cfg.rot}deg)`;
+    const glow = document.createElement('div');
+    glow.className = 'eye-glow';
+    const pupil = document.createElement('div');
+    pupil.className = 'pupil';
+    glow.appendChild(pupil);
+    eye.appendChild(glow);
+    wrap.appendChild(eye);
+    return glow;
+  });
+  scene.appendChild(wrap);
+  const cx = CAT_EYES.reduce((s, e) => s + e.x, 0) / CAT_EYES.length;
+  const cy = CAT_EYES.reduce((s, e) => s + e.y, 0) / CAT_EYES.length;
+  let cursor = null;
+  scene.addEventListener('pointermove', (e) => {
+    const rect = scene.getBoundingClientRect();
+    cursor = {
+      x: (e.clientX - rect.left) * state.sceneW / rect.width,
+      y: (e.clientY - rect.top) * state.sceneH / rect.height,
+    };
+  });
+  scene.addEventListener('pointerleave', () => { cursor = null; });
+  let glow = 0, slit = 0.35, lx = 0, ly = 0;
+  let last = performance.now();
+  let visible = false;
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    let beam = 0;
+    if (!state.isLightOn && FLASHLIGHT_ENABLED && state.flashPointerInside) {
+      const b = state.flashBeam;
+      const d = Math.hypot(b.x - cx, b.y - cy) / b.r;
+      if (d < 1) beam = 1 - d * d;
+    }
+    const target = state.isLightOn ? 0
+      : CAT_EYES_IDLE_GLOW + (1 - CAT_EYES_IDLE_GLOW) * beam;
+    glow += (target - glow) * Math.min(1, dt * 6);
+    if (glow < 0.005 && target === 0) {
+      if (visible) { wrap.style.visibility = 'hidden'; visible = false; }
+      return;
+    }
+    if (!visible) { wrap.style.visibility = 'visible'; visible = true; }
+    slit += ((0.38 - 0.28 * beam) - slit) * Math.min(1, dt * 3);
+    let tx = 0, ty = 0;
+    if (cursor) {
+      const dx = cursor.x - cx, dy = cursor.y - cy;
+      const len = Math.hypot(dx, dy) || 1;
+      const k = Math.min(1, len / 120);
+      tx = dx / len * k;
+      ty = dy / len * k;
+    }
+    lx += (tx - lx) * Math.min(1, dt * 5);
+    ly += (ty - ly) * Math.min(1, dt * 5);
+    wrap.style.setProperty('--glow', glow.toFixed(3));
+    wrap.style.setProperty('--slit', (slit * 100).toFixed(1) + '%');
+    wrap.style.setProperty('--lx', lx.toFixed(3));
+    wrap.style.setProperty('--ly', ly.toFixed(3));
+  };
+  requestAnimationFrame(frame);
+  const blink = () => {
+    glows.forEach(g => {
+      if (typeof g.animate !== 'function') return;
+      g.animate([
+        { transform: 'scaleY(1)' },
+        { transform: 'scaleY(0.08)', offset: 0.45 },
+        { transform: 'scaleY(1)' },
+      ], { duration: 180, easing: 'ease-in-out' });
+    });
+  };
+  const scheduleBlink = () => {
+    const delay = CAT_BLINK_MIN_DELAY + Math.random() * (CAT_BLINK_MAX_DELAY - CAT_BLINK_MIN_DELAY);
+    setTimeout(() => {
+      if (visible) {
+        blink();
+        if (Math.random() < 0.2) setTimeout(blink, 260);
+      }
+      scheduleBlink();
+    }, delay);
+  };
+  scheduleBlink();
 }
 // ========== КЛИКАБЕЛЬНЫЕ ОБЛАСТИ ==========
 function createHotspots() {
-const scene = document.getElementById('scene');
-HOTSPOTS.forEach(zone => {
-const el = document.createElement('div');
-el.className = 'hotspot';
-el.dataset.id = zone.id;
-el.style.left = zone.left + 'px';
-el.style.top = zone.top + 'px';
-el.style.width = zone.width + 'px';
-el.style.height = zone.height + 'px';
-el.addEventListener('click', () => onHotspotClick(zone));
-scene.appendChild(el);
-});
+  const scene = document.getElementById('scene');
+  HOTSPOTS.forEach(zone => {
+    const el = document.createElement('div');
+    el.className = 'hotspot';
+    el.dataset.id = zone.id;
+    el.style.left = zone.left + 'px';
+    el.style.top = zone.top + 'px';
+    el.style.width = zone.width + 'px';
+    el.style.height = zone.height + 'px';
+    el.addEventListener('click', () => onHotspotClick(zone));
+    scene.appendChild(el);
+  });
 }
 function onHotspotClick(zone) {
-const zoneData = state.posterById[zone.id];
-if (!zoneData) return;
-if (state.currentExpandedPoster === zoneData) {
-collapsePoster();
-return;
-}
-expandPoster(zoneData);
+  const zoneData = state.posterById[zone.id];
+  if (!zoneData) return;
+  if (state.currentExpandedPoster === zoneData) {
+    collapsePoster();
+    return;
+  }
+  expandPoster(zoneData);
 }
 // ========== ОСВЕЩЕНИЕ ПОСТЕРА ==========
 function getPosterFilter() {
-return state.isLightOn ? 'brightness(1)' : `brightness(${POSTER_DARK_BRIGHTNESS})`;
+  return state.isLightOn ? 'brightness(1)' : `brightness(${POSTER_DARK_BRIGHTNESS})`;
 }
 function updateExpandedPosterLighting() {
-if (state.currentExpandedPoster) {
-state.currentExpandedPoster.el.style.filter = getPosterFilter();
-}
+  if (state.currentExpandedPoster) {
+    state.currentExpandedPoster.el.style.filter = getPosterFilter();
+  }
 }
 // ========== ПОСТЕРЫ ==========
 function createPosterElements() {
-const scene = document.getElementById('scene');
-const maxW = Math.min(POSTER_MAX_W, state.sceneW * 0.5);
-const maxH = Math.min(POSTER_MAX_H, state.sceneH * 0.85);
-state.loadedPosters.forEach(p => {
-if (!p.img) return;
-const naturalW = p.img.naturalWidth || 300;
-const naturalH = p.img.naturalHeight || 420;
-const ratio = Math.min(maxW / naturalW, maxH / naturalH);
-const finalW = Math.round(naturalW * ratio);
-const finalH = Math.round(naturalH * ratio);
-const el = document.createElement('div');
-el.className = 'poster';
-el.style.width = finalW + 'px';
-el.style.height = finalH + 'px';
-const img = document.createElement('img');
-img.src = p.src;
-img.alt = '';
-img.draggable = false;
-el.appendChild(img);
-if (POSTER_AGE_ENABLED) el.appendChild(createAgedPaperLayer());
-el.addEventListener('click', (e) => {
-e.stopPropagation();
-collapsePoster();
-});
-scene.appendChild(el);
-state.posterById[p.zone.id] = { zone: p.zone, el, finalW, finalH };
-});
+  const scene = document.getElementById('scene');
+  const maxW = Math.min(POSTER_MAX_W, state.sceneW * 0.5);
+  const maxH = Math.min(POSTER_MAX_H, state.sceneH * 0.85);
+  state.loadedPosters.forEach(p => {
+    if (!p.img) return;
+    const naturalW = p.img.naturalWidth || 300;
+    const naturalH = p.img.naturalHeight || 420;
+    const ratio = Math.min(maxW / naturalW, maxH / naturalH);
+    const finalW = Math.round(naturalW * ratio);
+    const finalH = Math.round(naturalH * ratio);
+    const el = document.createElement('div');
+    el.className = 'poster';
+    el.style.width = finalW + 'px';
+    el.style.height = finalH + 'px';
+    const img = document.createElement('img');
+    img.src = p.src;
+    img.alt = '';
+    img.draggable = false;
+    el.appendChild(img);
+    if (POSTER_AGE_ENABLED) el.appendChild(createAgedPaperLayer());
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      collapsePoster();
+    });
+    scene.appendChild(el);
+    state.posterById[p.zone.id] = { zone: p.zone, el, finalW, finalH };
+  });
 }
 function createAgedPaperLayer() {
-const rand = (a, b) => a + Math.random() * (b - a);
-const layers = [];
-const spots = 2 + Math.floor(Math.random() * 3);
-for (let i = 0; i < spots; i++) {
-const x = rand(5, 95).toFixed(1), y = rand(5, 95).toFixed(1);
-const r = rand(4, 12).toFixed(1);
-layers.push(`radial-gradient(circle at ${x}% ${y}%, rgba(140, 90, 40, ${rand(0.12, 0.25).toFixed(2)}) 0%, ` +
-`rgba(140, 90, 40, 0.05) ${r}%, transparent ${(r * 1.6).toFixed(1)}%)`);
-}
-layers.push('radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(150, 105, 45, 0.35) 100%)');
-const layer = document.createElement('div');
-layer.className = 'poster-age';
-layer.style.backgroundImage = layers.join(', ') + ', var(--paper-grain)';
-layer.style.opacity = String(POSTER_AGE_STRENGTH);
-return layer;
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const layers = [];
+  const spots = 2 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < spots; i++) {
+    const x = rand(5, 95).toFixed(1), y = rand(5, 95).toFixed(1);
+    const r = rand(4, 12).toFixed(1);
+    layers.push(`radial-gradient(circle at ${x}% ${y}%, rgba(140, 90, 40, ${rand(0.12, 0.25).toFixed(2)}) 0%, ` +
+      `rgba(140, 90, 40, 0.05) ${r}%, transparent ${(r * 1.6).toFixed(1)}%)`);
+  }
+  layers.push('radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(150, 105, 45, 0.35) 100%)');
+  const layer = document.createElement('div');
+  layer.className = 'poster-age';
+  layer.style.backgroundImage = layers.join(', ') + ', var(--paper-grain)';
+  layer.style.opacity = String(POSTER_AGE_STRENGTH);
+  return layer;
 }
 function expandPoster(zoneData) {
-if (state.isAnimating) return;
-if (state.currentExpandedPoster) {
-collapsePoster(() => expandPoster(zoneData));
-return;
-}
-state.isAnimating = true;
-playPosterUnfoldSound();
-const poster = zoneData.el;
-const sx = zoneData.zone.width / zoneData.finalW;
-const sy = zoneData.zone.height / zoneData.finalH;
-const centerX = (state.sceneW - zoneData.finalW) / 2;
-const centerY = (state.sceneH - zoneData.finalH) / 2;
-const z = zoneData.zone;
-puffPosterDust({ x: z.left, y: z.top, w: z.width, h: z.height }, 'wall');
-setTimeout(() => puffPosterDust(
-{ x: centerX, y: centerY, w: zoneData.finalW, h: zoneData.finalH }, 'unfold'), 240);
-poster.style.display = 'block';
-poster.style.filter = getPosterFilter();
-poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
-state.currentExpandedPoster = zoneData;
-requestAnimationFrame(() => {
-setTimeout(() => {
-poster.style.transform = `translate(${centerX}px, ${centerY}px) scale(1, 1)`;
-setTimeout(() => { state.isAnimating = false; }, 320);
-}, 20);
-});
+  if (state.isAnimating) return;
+  if (state.currentExpandedPoster) {
+    collapsePoster(() => expandPoster(zoneData));
+    return;
+  }
+  state.isAnimating = true;
+  playPosterUnfoldSound();
+  const poster = zoneData.el;
+  const sx = zoneData.zone.width / zoneData.finalW;
+  const sy = zoneData.zone.height / zoneData.finalH;
+  const centerX = (state.sceneW - zoneData.finalW) / 2;
+  const centerY = (state.sceneH - zoneData.finalH) / 2;
+  const z = zoneData.zone;
+  puffPosterDust({ x: z.left, y: z.top, w: z.width, h: z.height }, 'wall');
+  setTimeout(() => puffPosterDust(
+    { x: centerX, y: centerY, w: zoneData.finalW, h: zoneData.finalH }, 'unfold'), 240);
+  poster.style.display = 'block';
+  poster.style.filter = getPosterFilter();
+  poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
+  state.currentExpandedPoster = zoneData;
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      poster.style.transform = `translate(${centerX}px, ${centerY}px) scale(1, 1)`;
+      setTimeout(() => { state.isAnimating = false; }, 320);
+    }, 20);
+  });
 }
 function collapsePoster(callback) {
-if (!state.currentExpandedPoster || state.isAnimating) return;
-state.isAnimating = true;
-playPosterFoldSound();
-const zoneData = state.currentExpandedPoster;
-const poster = zoneData.el;
-const sx = zoneData.zone.width / zoneData.finalW;
-const sy = zoneData.zone.height / zoneData.finalH;
-endPosterTilt(zoneData);
-poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
-setTimeout(() => {
-const z = zoneData.zone;
-puffPosterDust({ x: z.left, y: z.top, w: z.width, h: z.height }, 'land');
-poster.style.display = 'none';
-state.currentExpandedPoster = null;
-state.isAnimating = false;
-if (typeof callback === 'function') callback();
-}, 320);
+  if (!state.currentExpandedPoster || state.isAnimating) return;
+  state.isAnimating = true;
+  playPosterFoldSound();
+  const zoneData = state.currentExpandedPoster;
+  const poster = zoneData.el;
+  const sx = zoneData.zone.width / zoneData.finalW;
+  const sy = zoneData.zone.height / zoneData.finalH;
+  endPosterTilt(zoneData);
+  poster.style.transform = `translate(${zoneData.zone.left}px, ${zoneData.zone.top}px) scale(${sx}, ${sy})`;
+  setTimeout(() => {
+    const z = zoneData.zone;
+    puffPosterDust({ x: z.left, y: z.top, w: z.width, h: z.height }, 'land');
+    poster.style.display = 'none';
+    state.currentExpandedPoster = null;
+    state.isAnimating = false;
+    if (typeof callback === 'function') callback();
+  }, 320);
 }
 // ========== ПЫЛЬ ОТ ПОСТЕРА ==========
 const POSTER_DUST_ENABLED = true;
 const POSTER_DUST_AMOUNT = 1;
 const posterDust = { canvas: null, ctx: null, sprite: null, parts: [], running: false };
 function puffPosterDust(rect, kind) {
-if (!POSTER_DUST_ENABLED || POSTER_DUST_AMOUNT <= 0 || !state.sceneW) return;
-const pd = posterDust;
-if (!pd.canvas) {
-const c = document.createElement('canvas');
-c.id = 'posterDust';
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-c.width = Math.round(state.sceneW * dpr);
-c.height = Math.round(state.sceneH * dpr);
-document.getElementById('scene').appendChild(c);
-pd.canvas = c;
-pd.ctx = c.getContext('2d');
-pd.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const s = document.createElement('canvas');
-s.width = s.height = 64;
-const sc = s.getContext('2d');
-const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
-g.addColorStop(0, 'rgba(235, 222, 196, 1)');
-g.addColorStop(0.4, 'rgba(225, 210, 180, 0.45)');
-g.addColorStop(1, 'rgba(220, 205, 175, 0)');
-sc.fillStyle = g;
-sc.fillRect(0, 0, 64, 64);
-pd.sprite = s;
-}
-const rand = (a, b) => a + Math.random() * (b - a);
-const cfg = {
-wall:   { specks: 22, clouds: 3, speed: 45,  life: [1.2, 2.4], edge: false },
-unfold: { specks: 55, clouds: 8, speed: 150, life: [1.0, 2.2], edge: true },
-land:   { specks: 14, clouds: 2, speed: 35,  life: [1.0, 2.0], edge: false },
-}[kind];
-const now = performance.now();
-const spawn = (cloud) => {
-let x, y, nx, ny;
-if (cfg.edge) {
-let t = rand(0, 2 * (rect.w + rect.h));
-if (t < rect.w) { x = rect.x + t; y = rect.y; nx = 0; ny = -1; }
-else if ((t -= rect.w) < rect.h) { x = rect.x + rect.w; y = rect.y + t; nx = 1; ny = 0; }
-else if ((t -= rect.h) < rect.w) { x = rect.x + rect.w - t; y = rect.y + rect.h; nx = 0; ny = 1; }
-else { t -= rect.w; x = rect.x; y = rect.y + rect.h - t; nx = -1; ny = 0; }
-} else {
-x = rect.x + rand(0, rect.w);
-y = rect.y + rand(0, rect.h);
-const a = Math.atan2(y - (rect.y + rect.h / 2), x - (rect.x + rect.w / 2));
-nx = Math.cos(a); ny = Math.sin(a);
-}
-const v = cfg.speed * rand(0.3, 1) * (cloud ? 0.5 : 1);
-pd.parts.push({
-x, y,
-vx: nx * v + rand(-1, 1) * cfg.speed * 0.25,
-vy: ny * v + rand(-1, 1) * cfg.speed * 0.25,
-born: now,
-life: rand(cfg.life[0], cfg.life[1]) * (cloud ? 1.3 : 1),
-size: cloud ? rand(10, 22) : (Math.random() < 0.8 ? rand(0.5, 1.3) : rand(1.5, 2.3)),
-alpha: cloud ? rand(0.12, 0.22) : rand(0.4, 0.85),
-cloud,
-});
-};
-const n = (k) => Math.round(k * POSTER_DUST_AMOUNT);
-for (let i = 0; i < n(cfg.specks); i++) spawn(false);
-for (let i = 0; i < n(cfg.clouds); i++) spawn(true);
-if (pd.parts.length > 600) pd.parts.splice(0, pd.parts.length - 600);
-if (pd.running) return;
-pd.running = true;
-let last = performance.now();
-const frame = (t) => {
-const ctx = pd.ctx;
-const dt = Math.min((t - last) / 1000, 0.05);
-last = t;
-ctx.clearRect(0, 0, state.sceneW, state.sceneH);
-pd.parts = pd.parts.filter(p => (t - p.born) / 1000 < p.life);
-if (!pd.parts.length) { pd.running = false; return; }
-const light = Math.max(roomLightLevel(), POSTER_DARK_BRIGHTNESS);
-for (const p of pd.parts) {
-const drag = p.cloud ? 3 : 2.2;
-p.vx += (Math.random() * 2 - 1) * 30 * dt - p.vx * drag * dt;
-p.vy += (Math.random() * 2 - 1) * 30 * dt - p.vy * drag * dt + (p.cloud ? 2 : 10) * dt;
-p.x += p.vx * dt;
-p.y += p.vy * dt;
-if (p.cloud) p.size += 8 * dt;
-const k = (t - p.born) / 1000 / p.life;
-const a = p.alpha * Math.min(1, k * 10) * (1 - k) ** 1.5 * light;
-if (a <= 0.005) continue;
-ctx.globalAlpha = a;
-if (p.cloud) {
-ctx.drawImage(pd.sprite, p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
-} else {
-ctx.fillStyle = '#fff3dc';
-ctx.beginPath();
-ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-ctx.fill();
-}
-}
-ctx.globalAlpha = 1;
-requestAnimationFrame(frame);
-};
-requestAnimationFrame(frame);
+  if (!POSTER_DUST_ENABLED || POSTER_DUST_AMOUNT <= 0 || !state.sceneW) return;
+  const pd = posterDust;
+  if (!pd.canvas) {
+    const c = document.createElement('canvas');
+    c.id = 'posterDust';
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    c.width = Math.round(state.sceneW * dpr);
+    c.height = Math.round(state.sceneH * dpr);
+    document.getElementById('scene').appendChild(c);
+    pd.canvas = c;
+    pd.ctx = c.getContext('2d');
+    pd.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const s = document.createElement('canvas');
+    s.width = s.height = 64;
+    const sc = s.getContext('2d');
+    const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(235, 222, 196, 1)');
+    g.addColorStop(0.4, 'rgba(225, 210, 180, 0.45)');
+    g.addColorStop(1, 'rgba(220, 205, 175, 0)');
+    sc.fillStyle = g;
+    sc.fillRect(0, 0, 64, 64);
+    pd.sprite = s;
+  }
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const cfg = {
+    wall:   { specks: 22, clouds: 3, speed: 45,  life: [1.2, 2.4], edge: false },
+    unfold: { specks: 55, clouds: 8, speed: 150, life: [1.0, 2.2], edge: true },
+    land:   { specks: 14, clouds: 2, speed: 35,  life: [1.0, 2.0], edge: false },
+  }[kind];
+  const now = performance.now();
+  const spawn = (cloud) => {
+    let x, y, nx, ny;
+    if (cfg.edge) {
+      let t = rand(0, 2 * (rect.w + rect.h));
+      if (t < rect.w) { x = rect.x + t; y = rect.y; nx = 0; ny = -1; }
+      else if ((t -= rect.w) < rect.h) { x = rect.x + rect.w; y = rect.y + t; nx = 1; ny = 0; }
+      else if ((t -= rect.h) < rect.w) { x = rect.x + rect.w - t; y = rect.y + rect.h; nx = 0; ny = 1; }
+      else { t -= rect.w; x = rect.x; y = rect.y + rect.h - t; nx = -1; ny = 0; }
+    } else {
+      x = rect.x + rand(0, rect.w);
+      y = rect.y + rand(0, rect.h);
+      const a = Math.atan2(y - (rect.y + rect.h / 2), x - (rect.x + rect.w / 2));
+      nx = Math.cos(a); ny = Math.sin(a);
+    }
+    const v = cfg.speed * rand(0.3, 1) * (cloud ? 0.5 : 1);
+    pd.parts.push({
+      x, y,
+      vx: nx * v + rand(-1, 1) * cfg.speed * 0.25,
+      vy: ny * v + rand(-1, 1) * cfg.speed * 0.25,
+      born: now,
+      life: rand(cfg.life[0], cfg.life[1]) * (cloud ? 1.3 : 1),
+      size: cloud ? rand(10, 22) : (Math.random() < 0.8 ? rand(0.5, 1.3) : rand(1.5, 2.3)),
+      alpha: cloud ? rand(0.12, 0.22) : rand(0.4, 0.85),
+      cloud,
+    });
+  };
+  const n = (k) => Math.round(k * POSTER_DUST_AMOUNT);
+  for (let i = 0; i < n(cfg.specks); i++) spawn(false);
+  for (let i = 0; i < n(cfg.clouds); i++) spawn(true);
+  if (pd.parts.length > 600) pd.parts.splice(0, pd.parts.length - 600);
+  if (pd.running) return;
+  pd.running = true;
+  let last = performance.now();
+  const frame = (t) => {
+    const ctx = pd.ctx;
+    const dt = Math.min((t - last) / 1000, 0.05);
+    last = t;
+    ctx.clearRect(0, 0, state.sceneW, state.sceneH);
+    pd.parts = pd.parts.filter(p => (t - p.born) / 1000 < p.life);
+    if (!pd.parts.length) { pd.running = false; return; }
+    const light = Math.max(roomLightLevel(), POSTER_DARK_BRIGHTNESS);
+    for (const p of pd.parts) {
+      const drag = p.cloud ? 3 : 2.2;
+      p.vx += (Math.random() * 2 - 1) * 30 * dt - p.vx * drag * dt;
+      p.vy += (Math.random() * 2 - 1) * 30 * dt - p.vy * drag * dt + (p.cloud ? 2 : 10) * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      if (p.cloud) p.size += 8 * dt;
+      const k = (t - p.born) / 1000 / p.life;
+      const a = p.alpha * Math.min(1, k * 10) * (1 - k) ** 1.5 * light;
+      if (a <= 0.005) continue;
+      ctx.globalAlpha = a;
+      if (p.cloud) {
+        ctx.drawImage(pd.sprite, p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
+      } else {
+        ctx.fillStyle = '#fff3dc';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
 }
 // ========== НАКЛОН ПОСТЕРА ==========
 function setupPosterTilt() {
-if (!POSTER_TILT_ENABLED) return;
-const scene = document.getElementById('scene');
-const glare = document.createElement('div');
-glare.id = 'posterGlare';
-scene.appendChild(glare);
-state.posterGlare = glare;
-scene.addEventListener('pointermove', (e) => {
-const zd = state.currentExpandedPoster;
-if (!zd || state.isAnimating) return;
-const rect = scene.getBoundingClientRect();
-const x = (e.clientX - rect.left) * state.sceneW / rect.width;
-const y = (e.clientY - rect.top) * state.sceneH / rect.height;
-const { cx, cy } = posterCenter(zd);
-const nx = (x - cx) / zd.finalW * 2 - 1;
-const ny = (y - cy) / zd.finalH * 2 - 1;
-if (Math.abs(nx) > 1.1 || Math.abs(ny) > 1.1) {
-resetPosterTilt(zd);
-return;
-}
-applyPosterTilt(zd, Math.max(-1, Math.min(1, nx)), Math.max(-1, Math.min(1, ny)));
-});
-scene.addEventListener('pointerleave', () => {
-const zd = state.currentExpandedPoster;
-if (zd && !state.isAnimating) resetPosterTilt(zd);
-});
+  if (!POSTER_TILT_ENABLED) return;
+  const scene = document.getElementById('scene');
+  const glare = document.createElement('div');
+  glare.id = 'posterGlare';
+  scene.appendChild(glare);
+  state.posterGlare = glare;
+  scene.addEventListener('pointermove', (e) => {
+    const zd = state.currentExpandedPoster;
+    if (!zd || state.isAnimating) return;
+    const rect = scene.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * state.sceneW / rect.width;
+    const y = (e.clientY - rect.top) * state.sceneH / rect.height;
+    const { cx, cy } = posterCenter(zd);
+    const nx = (x - cx) / zd.finalW * 2 - 1;
+    const ny = (y - cy) / zd.finalH * 2 - 1;
+    if (Math.abs(nx) > 1.1 || Math.abs(ny) > 1.1) {
+      resetPosterTilt(zd);
+      return;
+    }
+    applyPosterTilt(zd, Math.max(-1, Math.min(1, nx)), Math.max(-1, Math.min(1, ny)));
+  });
+  scene.addEventListener('pointerleave', () => {
+    const zd = state.currentExpandedPoster;
+    if (zd && !state.isAnimating) resetPosterTilt(zd);
+  });
 }
 function posterCenter(zd) {
-return {
-cx: (state.sceneW - zd.finalW) / 2,
-cy: (state.sceneH - zd.finalH) / 2,
-};
+  return {
+    cx: (state.sceneW - zd.finalW) / 2,
+    cy: (state.sceneH - zd.finalH) / 2,
+  };
 }
 function tiltTransform(zd, rx, ry) {
-const { cx, cy } = posterCenter(zd);
-const hw = zd.finalW / 2, hh = zd.finalH / 2;
-return `translate(${cx}px, ${cy}px) translate(${hw}px, ${hh}px) perspective(900px) ` +
-`rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translate(${-hw}px, ${-hh}px)`;
+  const { cx, cy } = posterCenter(zd);
+  const hw = zd.finalW / 2, hh = zd.finalH / 2;
+  return `translate(${cx}px, ${cy}px) translate(${hw}px, ${hh}px) perspective(900px) ` +
+    `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translate(${-hw}px, ${-hh}px)`;
 }
 function applyPosterTilt(zd, nx, ny) {
-const el = zd.el;
-const t = tiltTransform(zd, -ny * POSTER_TILT_MAX, nx * POSTER_TILT_MAX);
-const fast = 'transform 0.12s ease-out, filter 0.12s ease, box-shadow 0.12s ease-out';
-el.style.transition = fast;
-el.style.transform = t;
-el.style.boxShadow =
-`${(-nx * 10).toFixed(1)}px ${(16 - ny * 10).toFixed(1)}px 48px rgba(0,0,0,0.85), ` +
-`${(-nx * 5).toFixed(1)}px ${(8 - ny * 5).toFixed(1)}px 24px rgba(0,0,0,0.7)`;
-const g = state.posterGlare;
-if (!g) return;
-if (g.style.display !== 'block') {
-g.style.display = 'block';
-g.style.width = zd.finalW + 'px';
-g.style.height = zd.finalH + 'px';
-}
-g.style.transition = 'transform 0.12s ease-out, opacity 0.25s ease';
-g.style.transform = t;
-g.style.setProperty('--gx', ((nx + 1) * 50).toFixed(1) + '%');
-g.style.setProperty('--gy', ((ny + 1) * 50).toFixed(1) + '%');
-g.style.opacity = String(state.isLightOn ? 1 : 0.3);
+  const el = zd.el;
+  const t = tiltTransform(zd, -ny * POSTER_TILT_MAX, nx * POSTER_TILT_MAX);
+  const fast = 'transform 0.12s ease-out, filter 0.12s ease, box-shadow 0.12s ease-out';
+  el.style.transition = fast;
+  el.style.transform = t;
+  el.style.boxShadow =
+    `${(-nx * 10).toFixed(1)}px ${(16 - ny * 10).toFixed(1)}px 48px rgba(0,0,0,0.85), ` +
+    `${(-nx * 5).toFixed(1)}px ${(8 - ny * 5).toFixed(1)}px 24px rgba(0,0,0,0.7)`;
+  const g = state.posterGlare;
+  if (!g) return;
+  if (g.style.display !== 'block') {
+    g.style.display = 'block';
+    g.style.width = zd.finalW + 'px';
+    g.style.height = zd.finalH + 'px';
+  }
+  g.style.transition = 'transform 0.12s ease-out, opacity 0.25s ease';
+  g.style.transform = t;
+  g.style.setProperty('--gx', ((nx + 1) * 50).toFixed(1) + '%');
+  g.style.setProperty('--gy', ((ny + 1) * 50).toFixed(1) + '%');
+  g.style.opacity = String(state.isLightOn ? 1 : 0.3);
 }
 function resetPosterTilt(zd) {
-const el = zd.el;
-if (!el.style.boxShadow && !(state.posterGlare && state.posterGlare.style.display === 'block')) return;
-el.style.transition = 'transform 0.4s ease, filter 0.12s ease, box-shadow 0.4s ease';
-el.style.transform = tiltTransform(zd, 0, 0);
-el.style.boxShadow = '';
-const g = state.posterGlare;
-if (g && g.style.display === 'block') {
-g.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
-g.style.transform = tiltTransform(zd, 0, 0);
-g.style.opacity = '0';
-}
+  const el = zd.el;
+  if (!el.style.boxShadow && !(state.posterGlare && state.posterGlare.style.display === 'block')) return;
+  el.style.transition = 'transform 0.4s ease, filter 0.12s ease, box-shadow 0.4s ease';
+  el.style.transform = tiltTransform(zd, 0, 0);
+  el.style.boxShadow = '';
+  const g = state.posterGlare;
+  if (g && g.style.display === 'block') {
+    g.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
+    g.style.transform = tiltTransform(zd, 0, 0);
+    g.style.opacity = '0';
+  }
 }
 function endPosterTilt(zd) {
-zd.el.style.transition = '';
-zd.el.style.boxShadow = '';
-const g = state.posterGlare;
-if (g) {
-g.style.display = 'none';
-g.style.opacity = '0';
-}
+  zd.el.style.transition = '';
+  zd.el.style.boxShadow = '';
+  const g = state.posterGlare;
+  if (g) {
+    g.style.display = 'none';
+    g.style.opacity = '0';
+  }
 }
 document.addEventListener('click', (e) => {
-if (!state.currentExpandedPoster) return;
-if (e.target.closest('.hotspot')) return;
-if (e.target.closest('.poster')) return;
-if (e.target.closest('.pull-cord')) return;
-collapsePoster();
+  if (!state.currentExpandedPoster) return;
+  if (e.target.closest('.hotspot')) return;
+  if (e.target.closest('.poster')) return;
+  if (e.target.closest('.pull-cord')) return;
+  collapsePoster();
 });
 // ========== МЕРЦАНИЕ ==========
 function runFlicker(config) {
-const wrap = document.getElementById('bgWrap');
-const generation = ++state.flickerGeneration;
-const startTime = performance.now();
-function step() {
-if (generation !== state.flickerGeneration) return;
-const elapsed = performance.now() - startTime;
-if (elapsed >= config.duration) {
-wrap.style.filter = 'brightness(1)';
-return;
-}
-const level = config.levels[Math.floor(Math.random() * config.levels.length)];
-wrap.style.filter = `brightness(${level})`;
-setTimeout(step, config.minGap + Math.random() * (config.maxGap - config.minGap));
-}
-step();
+  const wrap = document.getElementById('bgWrap');
+  const generation = ++state.flickerGeneration;
+  const startTime = performance.now();
+  function step() {
+    if (generation !== state.flickerGeneration) return;
+    const elapsed = performance.now() - startTime;
+    if (elapsed >= config.duration) {
+      wrap.style.filter = 'brightness(1)';
+      return;
+    }
+    const level = config.levels[Math.floor(Math.random() * config.levels.length)];
+    wrap.style.filter = `brightness(${level})`;
+    setTimeout(step, config.minGap + Math.random() * (config.maxGap - config.minGap));
+  }
+  step();
 }
 function scheduleAmbientFlicker() {
-if (state.ambientFlickerTimer) {
-clearTimeout(state.ambientFlickerTimer);
-state.ambientFlickerTimer = null;
-}
-if (!state.isLightOn) return;
-const delay = AMBIENT_MIN_DELAY + Math.random() * (AMBIENT_MAX_DELAY - AMBIENT_MIN_DELAY);
-state.ambientFlickerTimer = setTimeout(() => {
-if (!state.isLightOn) return;
-playRandomLampSound();
-runFlicker(FLICKER_AMBIENT);
-scheduleAmbientFlicker();
-}, delay);
+  if (state.ambientFlickerTimer) {
+    clearTimeout(state.ambientFlickerTimer);
+    state.ambientFlickerTimer = null;
+  }
+  if (!state.isLightOn) return;
+  const delay = AMBIENT_MIN_DELAY + Math.random() * (AMBIENT_MAX_DELAY - AMBIENT_MIN_DELAY);
+  state.ambientFlickerTimer = setTimeout(() => {
+    if (!state.isLightOn) return;
+    playRandomLampSound();
+    runFlicker(FLICKER_AMBIENT);
+    scheduleAmbientFlicker();
+  }, delay);
 }
 function stopAmbientFlicker() {
-if (state.ambientFlickerTimer) {
-clearTimeout(state.ambientFlickerTimer);
-state.ambientFlickerTimer = null;
-}
-state.flickerGeneration++;
+  if (state.ambientFlickerTimer) {
+    clearTimeout(state.ambientFlickerTimer);
+    state.ambientFlickerTimer = null;
+  }
+  state.flickerGeneration++;
 }
 // ========== СВЕТ ==========
 function toggleLight() {
-const bgOff = document.getElementById('bgOff');
-const bgOn = document.getElementById('bgOn');
-const wrap = document.getElementById('bgWrap');
-playSwitchSound();
-playCordAnimation();
-if (state.isLightOn) {
-stopAmbientFlicker();
-cancelWarmup();
-wrap.style.filter = 'brightness(1)';
-bgOn.style.opacity = '0';
-bgOff.style.opacity = '1';
-state.isLightOn = false;
-playAfterglow();
-} else {
-state.isLightOn = true;
-playRandomLampSound();
-const startFlicker = () => {
-runFlicker(FLICKER_AMBIENT);
-scheduleAmbientFlicker();
-};
-if (LAMP_WARMUP_ENABLED) {
-runWarmup(startFlicker);
-} else {
-bgOff.style.opacity = '0';
-bgOn.style.opacity = '1';
-startFlicker();
-}
-}
-updateExpandedPosterLighting();
-updateCordLighting();
-updateFlashlight();
-updateVignette();
-updateLampBeam();
+  const bgOff = document.getElementById('bgOff');
+  const bgOn = document.getElementById('bgOn');
+  const wrap = document.getElementById('bgWrap');
+  playSwitchSound();
+  playCordAnimation();
+  if (state.isLightOn) {
+    stopAmbientFlicker();
+    cancelWarmup();
+    wrap.style.filter = 'brightness(1)';
+    bgOn.style.opacity = '0';
+    bgOff.style.opacity = '1';
+    state.isLightOn = false;
+    playAfterglow();
+  } else {
+    state.isLightOn = true;
+    playRandomLampSound();
+    const startFlicker = () => {
+      runFlicker(FLICKER_AMBIENT);
+      scheduleAmbientFlicker();
+    };
+    if (LAMP_WARMUP_ENABLED) {
+      runWarmup(startFlicker);
+    } else {
+      bgOff.style.opacity = '0';
+      bgOn.style.opacity = '1';
+      startFlicker();
+    }
+  }
+  updateExpandedPosterLighting();
+  updateCordLighting();
+  updateFlashlight();
+  updateVignette();
+  updateLampBeam();
 }
 // ========== КОНУС СВЕТА ОТ ЛАМПЫ ==========
 function setupLampBeam() {
-const beam = document.getElementById('lampBeam');
-if (!beam) return;
-if (!LAMP_BEAM_ENABLED) { beam.remove(); return; }
-const b = LAMP_BEAM;
-const H = state.sceneH;
-const cone = document.getElementById('lampBeamCone');
-cone.style.clipPath = `polygon(` +
-`${b.x - b.topWidth / 2}px ${b.y}px, ${b.x + b.topWidth / 2}px ${b.y}px, ` +
-`${b.x + b.bottomWidth / 2}px ${H}px, ${b.x - b.bottomWidth / 2}px ${H}px)`;
-cone.style.setProperty('--bx', b.x + 'px');
-cone.style.backgroundPosition = `0 ${b.y}px`;
-cone.style.backgroundRepeat = 'no-repeat';
-cone.style.backgroundSize = `100% ${H - b.y}px`;
-const halo = document.getElementById('lampHalo');
-halo.style.left = b.x + 'px';
-halo.style.top = (b.y - 12) + 'px';
-updateLampBeam();
+  const beam = document.getElementById('lampBeam');
+  if (!beam) return;
+  if (!LAMP_BEAM_ENABLED) { beam.remove(); return; }
+  const b = LAMP_BEAM;
+  const H = state.sceneH;
+  const cone = document.getElementById('lampBeamCone');
+  cone.style.clipPath = `polygon(` +
+    `${b.x - b.topWidth / 2}px ${b.y}px, ${b.x + b.topWidth / 2}px ${b.y}px, ` +
+    `${b.x + b.bottomWidth / 2}px ${H}px, ${b.x - b.bottomWidth / 2}px ${H}px)`;
+  cone.style.setProperty('--bx', b.x + 'px');
+  cone.style.backgroundPosition = `0 ${b.y}px`;
+  cone.style.backgroundRepeat = 'no-repeat';
+  cone.style.backgroundSize = `100% ${H - b.y}px`;
+  const halo = document.getElementById('lampHalo');
+  halo.style.left = b.x + 'px';
+  halo.style.top = (b.y - 12) + 'px';
+  updateLampBeam();
 }
 function updateLampBeam() {
-if (state.warmupActive) return;
-const beam = document.getElementById('lampBeam');
-if (beam) beam.style.opacity = String(state.isLightOn ? LAMP_BEAM.strength : 0);
+  if (state.warmupActive) return;
+  const beam = document.getElementById('lampBeam');
+  if (beam) beam.style.opacity = String(state.isLightOn ? LAMP_BEAM.strength : 0);
 }
 // ========== РАЗОГРЕВ ЛАМПЫ ==========
 function setupFilament() {
-const fil = document.getElementById('filament');
-if (!fil) return;
-fil.style.left = LAMP_BEAM.x + 'px';
-fil.style.top = (LAMP_BEAM.y - 12) + 'px';
+  const fil = document.getElementById('filament');
+  if (!fil) return;
+  fil.style.left = LAMP_BEAM.x + 'px';
+  fil.style.top = (LAMP_BEAM.y - 12) + 'px';
 }
 function roomLightLevel() {
-if (!state.isLightOn) return 0;
-return state.warmupActive ? state.warmupLevel : 1;
+  if (!state.isLightOn) return 0;
+  return state.warmupActive ? state.warmupLevel : 1;
 }
 function warmFilter(k) {
-if (k <= 0.001) return '';
-return `sepia(${(0.7 * k).toFixed(3)}) saturate(${(1 + 0.6 * k).toFixed(3)}) ` +
-`hue-rotate(${(-12 * k).toFixed(2)}deg) brightness(${(1 - 0.15 * k).toFixed(3)})`;
+  if (k <= 0.001) return '';
+  return `sepia(${(0.7 * k).toFixed(3)}) saturate(${(1 + 0.6 * k).toFixed(3)}) ` +
+    `hue-rotate(${(-12 * k).toFixed(2)}deg) brightness(${(1 - 0.15 * k).toFixed(3)})`;
 }
 function runWarmup(onDone) {
-const bgOn = document.getElementById('bgOn');
-const bgOff = document.getElementById('bgOff');
-const beam = document.getElementById('lampBeam');
-const fil = document.getElementById('filament');
-const gen = ++state.warmupGen;
-state.warmupActive = true;
-state.warmupLevel = 0;
-bgOn.style.transition = 'none';
-bgOff.style.opacity = '1';
-if (beam) beam.style.transition = 'none';
-if (fil) fil.getAnimations().forEach(a => a.cancel());
-const stubborn = Math.random() < LAMP_STUBBORN_CHANCE;
-const pre = stubborn ? 380 : 0;
-const total = pre + LAMP_WARMUP_MS;
-const t0 = performance.now();
-let retried = false;
-const step = (now) => {
-if (gen !== state.warmupGen) return;
-const e = Math.max(0, now - t0);
-let room, glow, warm;
-if (pre > 0 && e < pre) {
-const u = e / pre;
-const env = u < 0.45 ? u / 0.45 : 1 - (u - 0.45) / 0.55;
-glow = 0.85 * env;
-room = 0.25 * env * env;
-warm = 1;
-} else {
-if (stubborn && !retried) { retried = true; playRandomLampSound(); }
-const u = Math.min(1, (e - pre) / LAMP_WARMUP_MS);
-glow = u < 0.35 ? u / 0.35 : 1 - (u - 0.35) / 0.65;
-room = u < 0.2 ? 0 : Math.pow((u - 0.2) / 0.8, 2);
-warm = 1 - room;
-}
-state.warmupLevel = room;
-bgOn.style.opacity = room.toFixed(3);
-bgOn.style.filter = warmFilter(warm);
-if (beam) beam.style.opacity = (room * LAMP_BEAM.strength).toFixed(3);
-if (fil) fil.style.opacity = glow.toFixed(3);
-if (e >= total) {
-finishWarmup();
-onDone();
-return;
-}
-requestAnimationFrame(step);
-};
-requestAnimationFrame(step);
+  const bgOn = document.getElementById('bgOn');
+  const bgOff = document.getElementById('bgOff');
+  const beam = document.getElementById('lampBeam');
+  const fil = document.getElementById('filament');
+  const gen = ++state.warmupGen;
+  state.warmupActive = true;
+  state.warmupLevel = 0;
+  bgOn.style.transition = 'none';
+  bgOff.style.opacity = '1';
+  if (beam) beam.style.transition = 'none';
+  if (fil) fil.getAnimations().forEach(a => a.cancel());
+  const stubborn = Math.random() < LAMP_STUBBORN_CHANCE;
+  const pre = stubborn ? 380 : 0;
+  const total = pre + LAMP_WARMUP_MS;
+  const t0 = performance.now();
+  let retried = false;
+  const step = (now) => {
+    if (gen !== state.warmupGen) return;
+    const e = Math.max(0, now - t0);
+    let room, glow, warm;
+    if (pre > 0 && e < pre) {
+      const u = e / pre;
+      const env = u < 0.45 ? u / 0.45 : 1 - (u - 0.45) / 0.55;
+      glow = 0.85 * env;
+      room = 0.25 * env * env;
+      warm = 1;
+    } else {
+      if (stubborn && !retried) { retried = true; playRandomLampSound(); }
+      const u = Math.min(1, (e - pre) / LAMP_WARMUP_MS);
+      glow = u < 0.35 ? u / 0.35 : 1 - (u - 0.35) / 0.65;
+      room = u < 0.2 ? 0 : Math.pow((u - 0.2) / 0.8, 2);
+      warm = 1 - room;
+    }
+    state.warmupLevel = room;
+    bgOn.style.opacity = room.toFixed(3);
+    bgOn.style.filter = warmFilter(warm);
+    if (beam) beam.style.opacity = (room * LAMP_BEAM.strength).toFixed(3);
+    if (fil) fil.style.opacity = glow.toFixed(3);
+    if (e >= total) {
+      finishWarmup();
+      onDone();
+      return;
+    }
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 function finishWarmup() {
-const bgOn = document.getElementById('bgOn');
-const bgOff = document.getElementById('bgOff');
-const beam = document.getElementById('lampBeam');
-const fil = document.getElementById('filament');
-state.warmupActive = false;
-bgOn.style.transition = '';
-bgOn.style.filter = '';
-bgOn.style.opacity = '1';
-bgOff.style.opacity = '0';
-if (beam) { beam.style.transition = ''; beam.style.opacity = String(LAMP_BEAM.strength); }
-if (fil) fil.style.opacity = '0';
+  const bgOn = document.getElementById('bgOn');
+  const bgOff = document.getElementById('bgOff');
+  const beam = document.getElementById('lampBeam');
+  const fil = document.getElementById('filament');
+  state.warmupActive = false;
+  bgOn.style.transition = '';
+  bgOn.style.filter = '';
+  bgOn.style.opacity = '1';
+  bgOff.style.opacity = '0';
+  if (beam) { beam.style.transition = ''; beam.style.opacity = String(LAMP_BEAM.strength); }
+  if (fil) fil.style.opacity = '0';
 }
 function cancelWarmup() {
-state.warmupGen++;
-if (!state.warmupActive) return;
-state.warmupActive = false;
-const bgOn = document.getElementById('bgOn');
-const beam = document.getElementById('lampBeam');
-bgOn.style.transition = '';
-bgOn.style.filter = '';
-if (beam) beam.style.transition = '';
+  state.warmupGen++;
+  if (!state.warmupActive) return;
+  state.warmupActive = false;
+  const bgOn = document.getElementById('bgOn');
+  const beam = document.getElementById('lampBeam');
+  bgOn.style.transition = '';
+  bgOn.style.filter = '';
+  if (beam) beam.style.transition = '';
 }
 function playAfterglow() {
-if (!LAMP_WARMUP_ENABLED) return;
-const fil = document.getElementById('filament');
-if (!fil || typeof fil.animate !== 'function') return;
-fil.style.opacity = '0';
-fil.animate([
-{ opacity: 0.9, filter: 'hue-rotate(0deg)' },
-{ opacity: 0.35, filter: 'hue-rotate(-12deg)', offset: 0.4 },
-{ opacity: 0, filter: 'hue-rotate(-20deg)' },
-], { duration: LAMP_AFTERGLOW_MS, easing: 'ease-out' });
+  if (!LAMP_WARMUP_ENABLED) return;
+  const fil = document.getElementById('filament');
+  if (!fil || typeof fil.animate !== 'function') return;
+  fil.style.opacity = '0';
+  fil.animate([
+    { opacity: 0.9, filter: 'hue-rotate(0deg)' },
+    { opacity: 0.35, filter: 'hue-rotate(-12deg)', offset: 0.4 },
+    { opacity: 0, filter: 'hue-rotate(-20deg)' },
+  ], { duration: LAMP_AFTERGLOW_MS, easing: 'ease-out' });
 }
 function lampBeamFactor(x, y) {
-const b = LAMP_BEAM;
-if (y <= b.y) return 0;
-const k = (y - b.y) / (state.sceneH - b.y);
-const half = (b.topWidth + (b.bottomWidth - b.topWidth) * k) / 2;
-const u = Math.abs(x - b.x) / half;
-return u < 1 ? 1 - u * u : 0;
+  const b = LAMP_BEAM;
+  if (y <= b.y) return 0;
+  const k = (y - b.y) / (state.sceneH - b.y);
+  const half = (b.topWidth + (b.bottomWidth - b.topWidth) * k) / 2;
+  const u = Math.abs(x - b.x) / half;
+  return u < 1 ? 1 - u * u : 0;
 }
 // ========== ПАУТИНА ==========
 function setupCobwebs() {
-const canvas = document.getElementById('cobweb');
-if (!canvas || !canvas.getContext) return;
-if (!COBWEB_ENABLED) { canvas.remove(); return; }
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const rand = (a, b) => a + Math.random() * (b - a);
-const RINGS = 7;
-const SPRING = 55, DAMP = 5, PUSH_R = 70, PUSH = 3500, DRAG = 6, MAX_D = 14;
-const webs = COBWEBS.map(cfg => {
-const span = cfg.to - cfg.from;
-const n = Math.max(5, Math.round(span / 13) + 1);
-const radials = [];
-for (let i = 0; i < n; i++) {
-let a = cfg.from + span * i / (n - 1);
-if (i > 0 && i < n - 1) a += rand(-3, 3);
-const rad = a * Math.PI / 180;
-const len = cfg.r * (i === 0 || i === n - 1 ? 1 : rand(0.8, 1.05));
-const nodes = [];
-for (let j = 0; j < RINGS; j++) {
-const f = 0.16 + 0.84 * j / (RINGS - 1) + (j > 0 ? rand(-0.03, 0.03) : 0);
-nodes.push({
-bx: cfg.x + Math.cos(rad) * len * f,
-by: cfg.y + Math.sin(rad) * len * f,
-w: f,
-dx: 0, dy: 0, vx: 0, vy: 0,
-ph: rand(0, Math.PI * 2),
-x: 0, y: 0,
-});
-}
-radials.push(nodes);
-}
-const broken = radials.map(() => Array.from({ length: RINGS }, () => Math.random() < 0.12));
-const chains = Array.from({ length: 2 }, () => {
-const i = 1 + Math.floor(Math.random() * (n - 2));
-const j = RINGS - 1 - Math.floor(Math.random() * 2);
-const node = radials[i][j];
-const len = rand(25, 55), segs = 7;
-const pts = Array.from({ length: segs }, (_, k) => {
-const y = node.by + len * k / (segs - 1);
-return { x: node.bx, y, px: node.bx, py: y };
-});
-return { node, pts, seg: len / (segs - 1) };
-});
-return { cfg, radials, broken, chains };
-});
-const scene = document.getElementById('scene');
-let cursor = null, cvx = 0, cvy = 0, lastMove = 0;
-scene.addEventListener('pointermove', (e) => {
-const rect = scene.getBoundingClientRect();
-const x = (e.clientX - rect.left) * W / rect.width;
-const y = (e.clientY - rect.top) * H / rect.height;
-const now = performance.now();
-if (cursor && now > lastMove) {
-const k = 1000 / Math.max(8, now - lastMove);
-cvx = cvx * 0.5 + (x - cursor.x) * k * 0.5;
-cvy = cvy * 0.5 + (y - cursor.y) * k * 0.5;
-}
-cursor = { x, y };
-lastMove = now;
-});
-scene.addEventListener('pointerleave', () => { cursor = null; });
-let lightMix = state.isLightOn ? 1 : 0;
-let last = performance.now();
-const physics = (dt, t) => {
-cvx *= Math.pow(0.02, dt);
-cvy *= Math.pow(0.02, dt);
-for (const web of webs) {
-for (const nodes of web.radials) {
-for (const p of nodes) {
-let ax = -SPRING * p.dx - DAMP * p.vx + Math.sin(t * 0.8 + p.ph) * 4;
-let ay = -SPRING * p.dy - DAMP * p.vy + Math.cos(t * 0.6 + p.ph) * 2;
-if (cursor) {
-const ex = p.bx + p.dx * p.w - cursor.x;
-const ey = p.by + p.dy * p.w - cursor.y;
-const d = Math.hypot(ex, ey);
-if (d < PUSH_R) {
-const k = (1 - d / PUSH_R) ** 2;
-ax += (ex / (d || 1)) * PUSH * k + cvx * DRAG * k;
-ay += (ey / (d || 1)) * PUSH * k + cvy * DRAG * k;
-}
-}
-p.vx += ax * dt; p.vy += ay * dt;
-p.dx += p.vx * dt; p.dy += p.vy * dt;
-const m = Math.hypot(p.dx, p.dy);
-if (m > MAX_D) { p.dx *= MAX_D / m; p.dy *= MAX_D / m; }
-p.x = p.bx + p.dx * p.w;
-p.y = p.by + p.dy * p.w;
-}
-}
-for (const c of web.chains) {
-const pts = c.pts;
-pts[0].x = c.node.x; pts[0].y = c.node.y;
-for (let k = 1; k < pts.length; k++) {
-const q = pts[k];
-let fx = Math.sin(t * 0.9 + k) * 6, fy = 220;
-if (cursor) {
-const ex = q.x - cursor.x, ey = q.y - cursor.y;
-const d = Math.hypot(ex, ey);
-if (d < PUSH_R) {
-const s = (1 - d / PUSH_R) ** 2;
-fx += (ex / (d || 1)) * 900 * s + cvx * 4 * s;
-fy += (ey / (d || 1)) * 900 * s + cvy * 4 * s;
-}
-}
-const nx = q.x + (q.x - q.px) * 0.97 + fx * dt * dt;
-const ny = q.y + (q.y - q.py) * 0.97 + fy * dt * dt;
-q.px = q.x; q.py = q.y;
-q.x = nx; q.y = ny;
-}
-for (let it = 0; it < 4; it++) {
-for (let k = 1; k < pts.length; k++) {
-const a = pts[k - 1], b = pts[k];
-const dx = b.x - a.x, dy = b.y - a.y;
-const d = Math.hypot(dx, dy) || 1;
-const diff = (d - c.seg) / d;
-if (k === 1) { b.x -= dx * diff; b.y -= dy * diff; }
-else {
-a.x += dx * diff / 2; a.y += dy * diff / 2;
-b.x -= dx * diff / 2; b.y -= dy * diff / 2;
-}
-}
-}
-}
-}
-};
-const drawWebs = () => {
-ctx.beginPath();
-for (const web of webs) {
-const { x: ax, y: ay } = web.cfg;
-const R = web.radials;
-for (const nodes of R) {
-ctx.moveTo(ax, ay);
-for (const p of nodes) ctx.lineTo(p.x, p.y);
-}
-for (let j = 0; j < RINGS; j++) {
-for (let i = 0; i < R.length - 1; i++) {
-if (web.broken[i][j]) continue;
-const a = R[i][j], b = R[i + 1][j];
-const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-ctx.moveTo(a.x, a.y);
-ctx.quadraticCurveTo(mx + (ax - mx) * 0.12, my + (ay - my) * 0.12, b.x, b.y);
-}
-}
-for (const c of web.chains) {
-ctx.moveTo(c.pts[0].x, c.pts[0].y);
-for (let k = 1; k < c.pts.length; k++) ctx.lineTo(c.pts[k].x, c.pts[k].y);
-}
-}
-ctx.stroke();
-};
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.033);
-last = now;
-lightMix += (roomLightLevel() - lightMix) * Math.min(1, Math.max(0, dt) * 4);
-if (!Number.isFinite(lightMix)) lightMix = roomLightLevel();
-const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
-ctx.clearRect(0, 0, W, H);
-if (lightMix < 0.01 && !beamOn) return;
-physics(dt, now / 1000);
-ctx.lineWidth = 0.7;
-ctx.strokeStyle = 'rgba(240, 236, 225, 1)';
-ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
-ctx.shadowBlur = 1;
-ctx.shadowOffsetY = 1;
-const lit = lightMix * COBWEB_OPACITY;
-ctx.globalAlpha = beamOn ? 1 : lit;
-drawWebs();
-ctx.shadowColor = 'transparent';
-ctx.globalAlpha = 1;
-if (beamOn) {
-const b = state.flashBeam;
-const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-g.addColorStop(0, 'rgba(0,0,0,0.9)');
-g.addColorStop(0.6, 'rgba(0,0,0,0.5)');
-g.addColorStop(1, `rgba(0,0,0,${lit.toFixed(3)})`);
-ctx.globalCompositeOperation = 'destination-in';
-ctx.fillStyle = g;
-ctx.fillRect(0, 0, W, H);
-ctx.globalCompositeOperation = 'source-over';
-}
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('cobweb');
+  if (!canvas || !canvas.getContext) return;
+  if (!COBWEB_ENABLED) { canvas.remove(); return; }
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const RINGS = 7;
+  const SPRING = 55, DAMP = 5, PUSH_R = 70, PUSH = 3500, DRAG = 6, MAX_D = 14;
+  const webs = COBWEBS.map(cfg => {
+    const span = cfg.to - cfg.from;
+    const n = Math.max(5, Math.round(span / 13) + 1);
+    const radials = [];
+    for (let i = 0; i < n; i++) {
+      let a = cfg.from + span * i / (n - 1);
+      if (i > 0 && i < n - 1) a += rand(-3, 3);
+      const rad = a * Math.PI / 180;
+      const len = cfg.r * (i === 0 || i === n - 1 ? 1 : rand(0.8, 1.05));
+      const nodes = [];
+      for (let j = 0; j < RINGS; j++) {
+        const f = 0.16 + 0.84 * j / (RINGS - 1) + (j > 0 ? rand(-0.03, 0.03) : 0);
+        nodes.push({
+          bx: cfg.x + Math.cos(rad) * len * f,
+          by: cfg.y + Math.sin(rad) * len * f,
+          w: f,
+          dx: 0, dy: 0, vx: 0, vy: 0,
+          ph: rand(0, Math.PI * 2),
+          x: 0, y: 0,
+        });
+      }
+      radials.push(nodes);
+    }
+    const broken = radials.map(() => Array.from({ length: RINGS }, () => Math.random() < 0.12));
+    const chains = Array.from({ length: 2 }, () => {
+      const i = 1 + Math.floor(Math.random() * (n - 2));
+      const j = RINGS - 1 - Math.floor(Math.random() * 2);
+      const node = radials[i][j];
+      const len = rand(25, 55), segs = 7;
+      const pts = Array.from({ length: segs }, (_, k) => {
+        const y = node.by + len * k / (segs - 1);
+        return { x: node.bx, y, px: node.bx, py: y };
+      });
+      return { node, pts, seg: len / (segs - 1) };
+    });
+    return { cfg, radials, broken, chains };
+  });
+  const scene = document.getElementById('scene');
+  let cursor = null, cvx = 0, cvy = 0, lastMove = 0;
+  scene.addEventListener('pointermove', (e) => {
+    const rect = scene.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * W / rect.width;
+    const y = (e.clientY - rect.top) * H / rect.height;
+    const now = performance.now();
+    if (cursor && now > lastMove) {
+      const k = 1000 / Math.max(8, now - lastMove);
+      cvx = cvx * 0.5 + (x - cursor.x) * k * 0.5;
+      cvy = cvy * 0.5 + (y - cursor.y) * k * 0.5;
+    }
+    cursor = { x, y };
+    lastMove = now;
+  });
+  scene.addEventListener('pointerleave', () => { cursor = null; });
+  let lightMix = state.isLightOn ? 1 : 0;
+  let last = performance.now();
+  const physics = (dt, t) => {
+    cvx *= Math.pow(0.02, dt);
+    cvy *= Math.pow(0.02, dt);
+    for (const web of webs) {
+      for (const nodes of web.radials) {
+        for (const p of nodes) {
+          let ax = -SPRING * p.dx - DAMP * p.vx + Math.sin(t * 0.8 + p.ph) * 4;
+          let ay = -SPRING * p.dy - DAMP * p.vy + Math.cos(t * 0.6 + p.ph) * 2;
+          if (cursor) {
+            const ex = p.bx + p.dx * p.w - cursor.x;
+            const ey = p.by + p.dy * p.w - cursor.y;
+            const d = Math.hypot(ex, ey);
+            if (d < PUSH_R) {
+              const k = (1 - d / PUSH_R) ** 2;
+              ax += (ex / (d || 1)) * PUSH * k + cvx * DRAG * k;
+              ay += (ey / (d || 1)) * PUSH * k + cvy * DRAG * k;
+            }
+          }
+          p.vx += ax * dt; p.vy += ay * dt;
+          p.dx += p.vx * dt; p.dy += p.vy * dt;
+          const m = Math.hypot(p.dx, p.dy);
+          if (m > MAX_D) { p.dx *= MAX_D / m; p.dy *= MAX_D / m; }
+          p.x = p.bx + p.dx * p.w;
+          p.y = p.by + p.dy * p.w;
+        }
+      }
+      for (const c of web.chains) {
+        const pts = c.pts;
+        pts[0].x = c.node.x; pts[0].y = c.node.y;
+        for (let k = 1; k < pts.length; k++) {
+          const q = pts[k];
+          let fx = Math.sin(t * 0.9 + k) * 6, fy = 220;
+          if (cursor) {
+            const ex = q.x - cursor.x, ey = q.y - cursor.y;
+            const d = Math.hypot(ex, ey);
+            if (d < PUSH_R) {
+              const s = (1 - d / PUSH_R) ** 2;
+              fx += (ex / (d || 1)) * 900 * s + cvx * 4 * s;
+              fy += (ey / (d || 1)) * 900 * s + cvy * 4 * s;
+            }
+          }
+          const nx = q.x + (q.x - q.px) * 0.97 + fx * dt * dt;
+          const ny = q.y + (q.y - q.py) * 0.97 + fy * dt * dt;
+          q.px = q.x; q.py = q.y;
+          q.x = nx; q.y = ny;
+        }
+        for (let it = 0; it < 4; it++) {
+          for (let k = 1; k < pts.length; k++) {
+            const a = pts[k - 1], b = pts[k];
+            const dx = b.x - a.x, dy = b.y - a.y;
+            const d = Math.hypot(dx, dy) || 1;
+            const diff = (d - c.seg) / d;
+            if (k === 1) { b.x -= dx * diff; b.y -= dy * diff; }
+            else {
+              a.x += dx * diff / 2; a.y += dy * diff / 2;
+              b.x -= dx * diff / 2; b.y -= dy * diff / 2;
+            }
+          }
+        }
+      }
+    }
+  };
+  const drawWebs = () => {
+    ctx.beginPath();
+    for (const web of webs) {
+      const { x: ax, y: ay } = web.cfg;
+      const R = web.radials;
+      for (const nodes of R) {
+        ctx.moveTo(ax, ay);
+        for (const p of nodes) ctx.lineTo(p.x, p.y);
+      }
+      for (let j = 0; j < RINGS; j++) {
+        for (let i = 0; i < R.length - 1; i++) {
+          if (web.broken[i][j]) continue;
+          const a = R[i][j], b = R[i + 1][j];
+          const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+          ctx.moveTo(a.x, a.y);
+          ctx.quadraticCurveTo(mx + (ax - mx) * 0.12, my + (ay - my) * 0.12, b.x, b.y);
+        }
+      }
+      for (const c of web.chains) {
+        ctx.moveTo(c.pts[0].x, c.pts[0].y);
+        for (let k = 1; k < c.pts.length; k++) ctx.lineTo(c.pts[k].x, c.pts[k].y);
+      }
+    }
+    ctx.stroke();
+  };
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.033);
+    last = now;
+    lightMix += (roomLightLevel() - lightMix) * Math.min(1, Math.max(0, dt) * 4);
+    if (!Number.isFinite(lightMix)) lightMix = roomLightLevel();
+    const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+    ctx.clearRect(0, 0, W, H);
+    if (lightMix < 0.01 && !beamOn) return;
+    physics(dt, now / 1000);
+    ctx.lineWidth = 0.7;
+    ctx.strokeStyle = 'rgba(240, 236, 225, 1)';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+    ctx.shadowBlur = 1;
+    ctx.shadowOffsetY = 1;
+    const lit = lightMix * COBWEB_OPACITY;
+    ctx.globalAlpha = beamOn ? 1 : lit;
+    drawWebs();
+    ctx.shadowColor = 'transparent';
+    ctx.globalAlpha = 1;
+    if (beamOn) {
+      const b = state.flashBeam;
+      const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+      g.addColorStop(0, 'rgba(0,0,0,0.9)');
+      g.addColorStop(0.6, 'rgba(0,0,0,0.5)');
+      g.addColorStop(1, `rgba(0,0,0,${lit.toFixed(3)})`);
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+  };
+  requestAnimationFrame(frame);
 }
 // ========== КОШКА-ТЕНЬ ==========
 function setupCatShadow() {
-const canvas = document.getElementById('catShadow');
-if (!canvas || !canvas.getContext) return;
-if (!CAT_SHADOW_ENABLED) { canvas.remove(); return; }
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const P = CAT_SHADOW_PATH;
-const rand = (a, b) => a + Math.random() * (b - a);
-let darkTime = 0;
-let nextAt = CAT_SHADOW_FIRST_DELAY;
-let walk = null;
-let last = performance.now();
-const start = () => {
-const dir = Math.random() < 0.5 ? 1 : -1;
-walk = {
-dir,
-x: dir === 1 ? P.leftX - 70 : P.rightX + 70,
-endX: dir === 1 ? P.rightX + 70 : P.leftX - 70,
-speed: P.speed,
-phase: 0,
-mode: 'walk',
-freezeT: 0,
-eye: 0,
-run: 0,
-startle: 0,
-stride: CAT_STRIDE_WALK,
-duty: CAT_DUTY_WALK,
-glintAt: rand(0.3, 0.7),
-glintT: -1,
-footUp: PAW_LEGS.map(() => true),
-};
-};
-window.catShadowWalk = () => { if (!state.isLightOn) start(); };
-const BUF_W = 140, BUF_H = 100, BUF_OX = 70, BUF_OY = 82;
-const buf = document.createElement('canvas');
-buf.width = Math.ceil(BUF_W * P.scale * dpr);
-buf.height = Math.ceil(BUF_H * P.scale * dpr);
-const bctx = buf.getContext('2d');
-const lerp = (a, b, k) => a + (b - a) * k;
-const hash = (i) => { const v = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
-const curve = (pts, per = 5) => {
-const out = [], n = pts.length;
-for (let i = 0; i < n; i++) {
-const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
-for (let j = 0; j < per; j++) {
-const u = j / per, u2 = u * u, u3 = u2 * u;
-const f = (k) => 0.5 * (2 * p1[k] + (p2[k] - p0[k]) * u
-+ (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * u2
-+ (3 * p1[k] - p0[k] - 3 * p2[k] + p3[k]) * u3);
-out.push([f(0), f(1)]);
-}
-}
-return out;
-};
-const outline = (J, R) => {
-const a = [], b = [];
-for (let i = 0; i < J.length; i++) {
-const p = J[Math.max(0, i - 1)], q = J[Math.min(J.length - 1, i + 1)];
-let tx = q[0] - p[0], ty = q[1] - p[1];
-const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
-a.push([J[i][0] - ty * R[i], J[i][1] + tx * R[i]]);
-b.push([J[i][0] + ty * R[i], J[i][1] - tx * R[i]]);
-}
-const e = J[J.length - 1], d = J[J.length - 2], el = Math.hypot(e[0] - d[0], e[1] - d[1]) || 1;
-const r = R[R.length - 1] * 0.9;
-a.push([e[0] + (e[0] - d[0]) / el * r, e[1] + (e[1] - d[1]) / el * r]);
-return a.concat(b.reverse());
-};
-const drawCatShape = (c, phase, t, pose) => {
-const { stride, run, startle, duty } = pose;
-c.fillStyle = c.strokeStyle = 'rgb(5, 5, 8)';
-c.lineCap = c.lineJoin = 'round';
-const calm = (1 - run) * (1 - startle);
-const by = Math.sin(phase * 2) * 0.5 * (1 - run) + run * (2.5 + Math.sin(phase) * 1.2) + startle * 1.5;
-const ext = run * 2.5 * Math.sin(phase);
-const arch = startle * 4.5;
-const poly = (ps) => {
-c.beginPath();
-c.moveTo(ps[0][0], ps[0][1]);
-for (let i = 1; i < ps.length; i++) c.lineTo(ps[i][0], ps[i][1]);
-c.closePath();
-c.fill();
-};
-const fur = (ps, len, seed, flow = [-0.9, 0.45]) => {
-let area = 0;
-for (let i = 0; i < ps.length; i++) {
-const p = ps[i], q = ps[(i + 1) % ps.length];
-area += p[0] * q[1] - q[0] * p[1];
-}
-const sgn = area > 0 ? 1 : -1, n = ps.length;
-for (let i = 0; i < n; i++) {
-const p = ps[i], a = ps[(i - 1 + n) % n], b = ps[(i + 1) % n];
-let tx = b[0] - a[0], ty = b[1] - a[1];
-const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
-const nx = ty * sgn, ny = -tx * sgn;
-const l = len(p, nx, ny) * (0.55 + 0.9 * hash(i + seed));
-if (l < 0.2) continue;
-const w = 0.55 + l * 0.25;
-c.beginPath();
-c.moveTo(p[0] - tx * w - nx * 0.4, p[1] - ty * w - ny * 0.4);
-c.lineTo(p[0] + nx * l * 0.9 + flow[0] * l * 0.5, p[1] + ny * l * 0.9 + flow[1] * l * 0.5);
-c.lineTo(p[0] + tx * w - nx * 0.4, p[1] + ty * w - ny * 0.4);
-c.fill();
-}
-};
-c.globalAlpha = 0.3;
-c.beginPath();
-c.ellipse(-1, 0.4, 24 + run * 6, 1.6, 0, 0, Math.PI * 2);
-c.fill();
-c.globalAlpha = 1;
-const ik = (ax, ay, bx, by2, l1, l2, side) => {
-const dx = bx - ax, dy = by2 - ay;
-const d = Math.min(Math.max(Math.hypot(dx, dy), Math.abs(l1 - l2) + 0.01), l1 + l2 - 0.01);
-const a = Math.acos((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d));
-const th = Math.atan2(dy, dx) + side * a;
-return [ax + Math.cos(th) * l1, ay + Math.sin(th) * l1];
-};
-const flexOf = (f) => (f.swing >= 0 ? Math.sin(Math.PI * Math.min(1, f.swing * 1.3)) : 0);
-const paw = (x, y, rot, k) => {
-c.beginPath();
-c.ellipse(x, y, 2.4 * k, 1.5 * k, rot, 0, Math.PI * 2);
-c.fill();
-};
-const legFur = (ps, seed) => fur(ps, (p) => (p[1] < -15 + by ? 0 : 0.45), seed);
-const frontLeg = (l, f, k, near) => {
-const sx = l.hx + ext - 1.5, sy = -22 + by;
-const fx = l.hx + ext + f.x, fy = -f.lift * (4 + run * 3);
-const fl = flexOf(f);
-const wx = fx - fl * 1.5, wy = fy - 3 + fl * 0.5;
-const [ex, ey] = ik(sx, sy, wx, wy, 8.5, 9.5, 1);
-const px = wx + lerp(1, -2.6, fl), py = wy + lerp(1.8, 1.6, fl);
-const ps = curve(outline([[sx + 1, sy - 2], [sx, sy], [ex, ey], [wx, wy], [px, py]],
-[5.5 * k, 4.6 * k, 2.6 * k, 1.6 * k, 1.6 * k]), 4);
-poly(ps);
-if (near) legFur(ps, l.hx * 7);
-paw(px + 0.9 * (1 - fl), py + 0.1, fl * 0.9, k);
-};
-const hindLeg = (l, f, k, near) => {
-const hx0 = l.hx - ext, hy0 = -23 + by;
-const fx = hx0 + f.x, fy = -f.lift * (3.5 + run * 3);
-const fl = flexOf(f);
-const kx = fx - 3.2 - fl * 1.5, ky = fy - 6.5 + fl * 1.5;
-const [nx, ny] = ik(hx0, hy0, kx, ky, 10, 11, -1);
-const ps = curve(outline([[hx0 - 1, hy0 - 3], [hx0, hy0], [nx, ny], [kx, ky], [fx, fy - 1.3]],
-[7 * k, 6.5 * k, 3.8 * k, 1.6 * k, 1.5 * k]), 4);
-poly(ps);
-if (near) legFur(ps, l.hx * 13);
-paw(fx + 1.1, fy - 1.2, fl * 0.6, k);
-};
-const legs = PAW_LEGS.map(l => ({ l, f: catFoot(phase, catLegOff(l, run), stride, duty) }));
-const drawLeg = ({ l, f }) => (l.front ? frontLeg : hindLeg)(l, f, l.near ? 1 : 0.9, l.near);
-legs.filter(g => !g.l.near).forEach(drawLeg);
-const th0 = lerp(lerp(-2.4, -2.95, run), -1.75, startle);
-const kap = lerp(lerp(0.06, 0.01, run), 0.02, startle);
-const puff = 1 + startle * 0.8;
-const J = [[-20.5 - ext, -27 + by]];
-const TR = [];
-let x = J[0][0], y = J[0][1], th = th0;
-const SEG = 12, L = 2.7;
-for (let i = 1; i <= SEG; i++) {
-const u = i / SEG;
-th += kap + (u > 0.7 ? 0.2 * calm : 0)
-+ Math.sin(t * 2.2 - i * 0.45) * 0.045 * (1 - run * 0.7)
-+ Math.sin(t * 11 - i * 0.6) * 0.04 * run;
-x += Math.cos(th) * L; y += Math.sin(th) * L;
-J.push([x, y]);
-}
-J.forEach((_, i) => TR.push((i === 0 ? 3.2 : 2.4 - Math.max(0, i / SEG - 0.75) * 2.5) * puff));
-const tailPs = curve(outline(J, TR), 3);
-poly(tailPs);
-const tdir = [J[SEG][0] - J[0][0], J[SEG][1] - J[0][1]];
-const tdl = Math.hypot(tdir[0], tdir[1]) || 1;
-fur(tailPs, () => (0.75 + startle * 0.5) * puff, 91, [tdir[0] / tdl * 0.8, tdir[1] / tdl * 0.8]);
-const nearF = legs.find(g => g.l.near && g.l.front).f;
-const nearH = legs.find(g => g.l.near && !g.l.front).f;
-const sh = Math.max(0, -nearF.x / stride) * 1.4 * (1 - run * 0.5);
-const hp = Math.max(0, -nearH.x / stride) * 1;
-const Hx = 24.5 + ext + run * 3;
-const Hy = -32 + by * 0.3 + run * 3 + startle * 0.5 + Math.sin(phase * 2 + 1) * 0.35 * (1 - run);
-const F = ext, R = -ext;
-const bodyPs = curve([
-[-19 + R, -28.5 + by - hp - arch * 0.4],
-[-8, -29.6 + by - arch],
-[4, -29.6 + by - arch * 0.7],
-[13 + F, -30.6 + by - sh - arch * 0.2],
-[Hx - 7.5, Hy - 4.2],
-[Hx - 4.5, Hy - 6.6],
-[Hx + 0.5, Hy - 7.2],
-[Hx + 4.6, Hy - 5.2],
-[Hx + 6.8, Hy - 2.2],
-[Hx + 7.8, Hy + 0.4],
-[Hx + 7.1, Hy + 2.6],
-[Hx + 4.6, Hy + 4.2],
-[Hx + 0.8, Hy + 5.6],
-[Hx - 2.5, Hy + 7.8],
-[20.5 + F, -21.5 + by],
-[20.5 + F, -17.5 + by],
-[16 + F, -13.8 + by],
-[5, -14.6 + by],
-[-7, -13.8 + by],
-[-15 + R, -14.5 + by],
-[-21 + R, -17 + by],
-[-24 + R, -21.5 + by],
-[-23 + R, -26 + by],
-], 6);
-poly(bodyPs);
-fur(bodyPs, (p, nx, ny) => {
-if (p[0] > Hx - 4.5 && p[1] < Hy + 4.5) return 0.25;
-if (ny > 0.55) return 1.2;
-if (p[0] > 12 && nx > 0.2) return 1.3;
-if (p[0] < -17 && nx < -0.2) return 1.1;
-return 0.5;
-}, 3);
-const flat = run * 0.8 - startle * 0.15;
-const ear = (b1x, b1y, tx, ty, b2x, b2y) => {
-tx += Hx - flat * 4.5; ty += Hy + flat * 4.5;
-b1x += Hx; b1y += Hy; b2x += Hx; b2y += Hy;
-c.beginPath();
-c.moveTo(b1x, b1y);
-c.quadraticCurveTo((b1x + tx) / 2 - 1.2, (b1y + ty) / 2 + 0.3, tx, ty);
-c.quadraticCurveTo((tx + b2x) / 2 + 0.3, (ty + b2y) / 2, b2x, b2y);
-c.closePath();
-c.fill();
-};
-ear(0.2, -6.8, 3.4, -12.6, 6.2, -4.4);
-ear(-5.6, -5, -2.6, -13.2, 1.2, -7);
-c.lineWidth = 0.32;
-c.beginPath();
-c.moveTo(Hx + 6.6, Hy + 1.9); c.quadraticCurveTo(Hx + 10.5, Hy + 0.8, Hx + 14.5, Hy + 1.5);
-c.moveTo(Hx + 6.6, Hy + 2.4); c.quadraticCurveTo(Hx + 10.5, Hy + 2.7, Hx + 14, Hy + 4.3);
-c.moveTo(Hx + 6.2, Hy + 2.8); c.quadraticCurveTo(Hx + 9.5, Hy + 4.2, Hx + 12.5, Hy + 6.6);
-c.stroke();
-legs.filter(g => g.l.near).forEach(drawLeg);
-return { hx: Hx, hy: Hy };
-};
-const drawCat = (x, y, dir, phase, s, t, eye, pose) => {
-bctx.setTransform(1, 0, 0, 1, 0, 0);
-bctx.clearRect(0, 0, buf.width, buf.height);
-bctx.setTransform(dpr * s * dir, 0, 0, dpr * s, buf.width / 2 + dir * dpr * s * (BUF_OX - BUF_W / 2), dpr * s * BUF_OY);
-const head = drawCatShape(bctx, phase, t, pose);
-ctx.save();
-ctx.globalAlpha = CAT_SHADOW_OPACITY;
-if ('filter' in ctx) ctx.filter = 'blur(0.5px)';
-const bx = x - s * (dir === 1 ? BUF_OX : BUF_W - BUF_OX);
-ctx.drawImage(buf, bx, y - s * BUF_OY, BUF_W * s, BUF_H * s);
-ctx.restore();
-if (eye > 0.01) {
-ctx.save();
-ctx.translate(x, y);
-ctx.scale(dir * s, s);
-ctx.fillStyle = `rgba(200, 255, 100, ${eye.toFixed(3)})`;
-ctx.shadowColor = 'rgba(180, 255, 80, 0.9)';
-ctx.shadowBlur = 6;
-const { hx, hy } = head;
-const open = 1 - pose.run * 0.3;
-ctx.beginPath();
-ctx.ellipse(hx + 4, hy - 1.8, 1.7, 1.15 * open, -0.2, 0, Math.PI * 2);
-ctx.ellipse(hx + 6.6, hy - 1.9, 0.6, 0.9 * open, -0.2, 0, Math.PI * 2);
-ctx.fill();
-ctx.restore();
-}
-};
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.05);
-last = now;
-const t = now / 1000;
-if (state.isLightOn) {
-if (walk) { walk = null; ctx.clearRect(0, 0, W, H); }
-return;
-}
-if (!walk) {
-darkTime += dt * 1000;
-if (darkTime >= nextAt) {
-darkTime = 0;
-nextAt = rand(CAT_SHADOW_MIN_DELAY, CAT_SHADOW_MAX_DELAY);
-start();
-}
-if (!walk) return;
-}
-const w = walk;
-const total = Math.abs(w.endX - (w.dir === 1 ? P.leftX - 70 : P.rightX + 70));
-const progress = 1 - Math.abs(w.endX - w.x) / total;
-// Попала в луч фонарика?
-if (w.mode === 'walk' && FLASHLIGHT_ENABLED && state.flashPointerInside) {
-const b = state.flashBeam;
-if (Math.hypot(b.x - w.x, b.y - (P.y - 25 * P.scale)) < b.r * 0.6) {
-w.mode = 'freeze';
-w.freezeT = 0.5;
-playCatHiss(); // <--- ДОБАВЛЕНО: кошка шипит от испуга
-}
-}
-let eyeTarget = 0;
-if (w.mode === 'walk') {
-w.x += w.dir * w.speed * dt;
-w.phase += catPhaseRate(w) * dt;
-if (w.glintT < 0 && progress >= w.glintAt) w.glintT = 0;
-if (w.glintT >= 0 && w.glintT < 0.5) {
-w.glintT += dt;
-eyeTarget = 0.7;
-}
-} else if (w.mode === 'freeze') {
-w.freezeT -= dt;
-eyeTarget = 1;
-if (w.freezeT <= 0) { w.mode = 'run'; w.speed *= CAT_SHADOW_RUN_SPEEDUP; }
-} else {
-w.x += w.dir * w.speed * dt;
-w.phase += catPhaseRate(w) * dt;
-eyeTarget = 0.4;
-}
-w.eye += (eyeTarget - w.eye) * Math.min(1, dt * 12);
-w.run += ((w.mode === 'run' ? 1 : 0) - w.run) * Math.min(1, dt * 8);
-w.startle += ((w.mode === 'freeze' ? 1 : 0) - w.startle) * Math.min(1, dt * (w.mode === 'freeze' ? 14 : 4));
-w.stride = lerp(CAT_STRIDE_WALK, CAT_STRIDE_RUN, w.run);
-w.duty = lerp(CAT_DUTY_WALK, CAT_DUTY_RUN, w.run);
-if (state.addPawPrint) {
-PAW_LEGS.forEach((l, i) => {
-const f = catFoot(w.phase, catLegOff(l, w.run), w.stride, w.duty);
-const up = f.swing >= 0;
-if (w.footUp[i] && !up) {
-const fx = l.hx + f.x;
-state.addPawPrint(w.x + w.dir * P.scale * fx,
-P.y + (l.near ? 1.5 : -1) * P.scale, w.dir);
-}
-w.footUp[i] = up;
-});
-}
-ctx.clearRect(0, 0, W, H);
-if ((w.dir === 1 && w.x >= w.endX) || (w.dir === -1 && w.x <= w.endX)) {
-walk = null;
-return;
-}
-ctx.save();
-ctx.beginPath();
-ctx.rect(P.leftX, 0, P.rightX - P.leftX, H);
-CAT_SHADOW_HIDE.forEach(poly => {
-ctx.moveTo(poly[0][0], poly[0][1]);
-for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
-ctx.closePath();
-});
-ctx.clip('evenodd');
-ctx.globalAlpha = CAT_SHADOW_OPACITY;
-drawCat(w.x, P.y, w.dir, w.phase, P.scale, t, w.eye, w);
-ctx.restore();
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('catShadow');
+  if (!canvas || !canvas.getContext) return;
+  if (!CAT_SHADOW_ENABLED) { canvas.remove(); return; }
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const P = CAT_SHADOW_PATH;
+  const rand = (a, b) => a + Math.random() * (b - a);
+  let darkTime = 0;
+  let nextAt = CAT_SHADOW_FIRST_DELAY;
+  let walk = null;
+  let last = performance.now();
+  const start = () => {
+    const dir = Math.random() < 0.5 ? 1 : -1;
+    walk = {
+      dir,
+      x: dir === 1 ? P.leftX - 70 : P.rightX + 70,
+      endX: dir === 1 ? P.rightX + 70 : P.leftX - 70,
+      speed: P.speed,
+      phase: 0,
+      mode: 'walk',
+      freezeT: 0,
+      eye: 0,
+      run: 0,
+      startle: 0,
+      stride: CAT_STRIDE_WALK,
+      duty: CAT_DUTY_WALK,
+      glintAt: rand(0.3, 0.7),
+      glintT: -1,
+      footUp: PAW_LEGS.map(() => true),
+    };
+  };
+  window.catShadowWalk = () => { if (!state.isLightOn) start(); };
+  const BUF_W = 140, BUF_H = 100, BUF_OX = 70, BUF_OY = 82;
+  const buf = document.createElement('canvas');
+  buf.width = Math.ceil(BUF_W * P.scale * dpr);
+  buf.height = Math.ceil(BUF_H * P.scale * dpr);
+  const bctx = buf.getContext('2d');
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const hash = (i) => { const v = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+  const curve = (pts, per = 5) => {
+    const out = [], n = pts.length;
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      for (let j = 0; j < per; j++) {
+        const u = j / per, u2 = u * u, u3 = u2 * u;
+        const f = (k) => 0.5 * (2 * p1[k] + (p2[k] - p0[k]) * u
+          + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * u2
+          + (3 * p1[k] - p0[k] - 3 * p2[k] + p3[k]) * u3);
+        out.push([f(0), f(1)]);
+      }
+    }
+    return out;
+  };
+  const outline = (J, R) => {
+    const a = [], b = [];
+    for (let i = 0; i < J.length; i++) {
+      const p = J[Math.max(0, i - 1)], q = J[Math.min(J.length - 1, i + 1)];
+      let tx = q[0] - p[0], ty = q[1] - p[1];
+      const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+      a.push([J[i][0] - ty * R[i], J[i][1] + tx * R[i]]);
+      b.push([J[i][0] + ty * R[i], J[i][1] - tx * R[i]]);
+    }
+    const e = J[J.length - 1], d = J[J.length - 2], el = Math.hypot(e[0] - d[0], e[1] - d[1]) || 1;
+    const r = R[R.length - 1] * 0.9;
+    a.push([e[0] + (e[0] - d[0]) / el * r, e[1] + (e[1] - d[1]) / el * r]);
+    return a.concat(b.reverse());
+  };
+  const drawCatShape = (c, phase, t, pose) => {
+    const { stride, run, startle, duty } = pose;
+    c.fillStyle = c.strokeStyle = 'rgb(5, 5, 8)';
+    c.lineCap = c.lineJoin = 'round';
+    const calm = (1 - run) * (1 - startle);
+    const by = Math.sin(phase * 2) * 0.5 * (1 - run) + run * (2.5 + Math.sin(phase) * 1.2) + startle * 1.5;
+    const ext = run * 2.5 * Math.sin(phase);
+    const arch = startle * 4.5;
+    const poly = (ps) => {
+      c.beginPath();
+      c.moveTo(ps[0][0], ps[0][1]);
+      for (let i = 1; i < ps.length; i++) c.lineTo(ps[i][0], ps[i][1]);
+      c.closePath();
+      c.fill();
+    };
+    const fur = (ps, len, seed, flow = [-0.9, 0.45]) => {
+      let area = 0;
+      for (let i = 0; i < ps.length; i++) {
+        const p = ps[i], q = ps[(i + 1) % ps.length];
+        area += p[0] * q[1] - q[0] * p[1];
+      }
+      const sgn = area > 0 ? 1 : -1, n = ps.length;
+      for (let i = 0; i < n; i++) {
+        const p = ps[i], a = ps[(i - 1 + n) % n], b = ps[(i + 1) % n];
+        let tx = b[0] - a[0], ty = b[1] - a[1];
+        const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+        const nx = ty * sgn, ny = -tx * sgn;
+        const l = len(p, nx, ny) * (0.55 + 0.9 * hash(i + seed));
+        if (l < 0.2) continue;
+        const w = 0.55 + l * 0.25;
+        c.beginPath();
+        c.moveTo(p[0] - tx * w - nx * 0.4, p[1] - ty * w - ny * 0.4);
+        c.lineTo(p[0] + nx * l * 0.9 + flow[0] * l * 0.5, p[1] + ny * l * 0.9 + flow[1] * l * 0.5);
+        c.lineTo(p[0] + tx * w - nx * 0.4, p[1] + ty * w - ny * 0.4);
+        c.fill();
+      }
+    };
+    c.globalAlpha = 0.3;
+    c.beginPath();
+    c.ellipse(-1, 0.4, 24 + run * 6, 1.6, 0, 0, Math.PI * 2);
+    c.fill();
+    c.globalAlpha = 1;
+    const ik = (ax, ay, bx, by2, l1, l2, side) => {
+      const dx = bx - ax, dy = by2 - ay;
+      const d = Math.min(Math.max(Math.hypot(dx, dy), Math.abs(l1 - l2) + 0.01), l1 + l2 - 0.01);
+      const a = Math.acos((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d));
+      const th = Math.atan2(dy, dx) + side * a;
+      return [ax + Math.cos(th) * l1, ay + Math.sin(th) * l1];
+    };
+    const flexOf = (f) => (f.swing >= 0 ? Math.sin(Math.PI * Math.min(1, f.swing * 1.3)) : 0);
+    const paw = (x, y, rot, k) => {
+      c.beginPath();
+      c.ellipse(x, y, 2.4 * k, 1.5 * k, rot, 0, Math.PI * 2);
+      c.fill();
+    };
+    const legFur = (ps, seed) => fur(ps, (p) => (p[1] < -15 + by ? 0 : 0.45), seed);
+    const frontLeg = (l, f, k, near) => {
+      const sx = l.hx + ext - 1.5, sy = -22 + by;
+      const fx = l.hx + ext + f.x, fy = -f.lift * (4 + run * 3);
+      const fl = flexOf(f);
+      const wx = fx - fl * 1.5, wy = fy - 3 + fl * 0.5;
+      const [ex, ey] = ik(sx, sy, wx, wy, 8.5, 9.5, 1);
+      const px = wx + lerp(1, -2.6, fl), py = wy + lerp(1.8, 1.6, fl);
+      const ps = curve(outline([[sx + 1, sy - 2], [sx, sy], [ex, ey], [wx, wy], [px, py]],
+        [5.5 * k, 4.6 * k, 2.6 * k, 1.6 * k, 1.6 * k]), 4);
+      poly(ps);
+      if (near) legFur(ps, l.hx * 7);
+      paw(px + 0.9 * (1 - fl), py + 0.1, fl * 0.9, k);
+    };
+    const hindLeg = (l, f, k, near) => {
+      const hx0 = l.hx - ext, hy0 = -23 + by;
+      const fx = hx0 + f.x, fy = -f.lift * (3.5 + run * 3);
+      const fl = flexOf(f);
+      const kx = fx - 3.2 - fl * 1.5, ky = fy - 6.5 + fl * 1.5;
+      const [nx, ny] = ik(hx0, hy0, kx, ky, 10, 11, -1);
+      const ps = curve(outline([[hx0 - 1, hy0 - 3], [hx0, hy0], [nx, ny], [kx, ky], [fx, fy - 1.3]],
+        [7 * k, 6.5 * k, 3.8 * k, 1.6 * k, 1.5 * k]), 4);
+      poly(ps);
+      if (near) legFur(ps, l.hx * 13);
+      paw(fx + 1.1, fy - 1.2, fl * 0.6, k);
+    };
+    const legs = PAW_LEGS.map(l => ({ l, f: catFoot(phase, catLegOff(l, run), stride, duty) }));
+    const drawLeg = ({ l, f }) => (l.front ? frontLeg : hindLeg)(l, f, l.near ? 1 : 0.9, l.near);
+    legs.filter(g => !g.l.near).forEach(drawLeg);
+    const th0 = lerp(lerp(-2.4, -2.95, run), -1.75, startle);
+    const kap = lerp(lerp(0.06, 0.01, run), 0.02, startle);
+    const puff = 1 + startle * 0.8;
+    const J = [[-20.5 - ext, -27 + by]];
+    const TR = [];
+    let x = J[0][0], y = J[0][1], th = th0;
+    const SEG = 12, L = 2.7;
+    for (let i = 1; i <= SEG; i++) {
+      const u = i / SEG;
+      th += kap + (u > 0.7 ? 0.2 * calm : 0)
+        + Math.sin(t * 2.2 - i * 0.45) * 0.045 * (1 - run * 0.7)
+        + Math.sin(t * 11 - i * 0.6) * 0.04 * run;
+      x += Math.cos(th) * L; y += Math.sin(th) * L;
+      J.push([x, y]);
+    }
+    J.forEach((_, i) => TR.push((i === 0 ? 3.2 : 2.4 - Math.max(0, i / SEG - 0.75) * 2.5) * puff));
+    const tailPs = curve(outline(J, TR), 3);
+    poly(tailPs);
+    const tdir = [J[SEG][0] - J[0][0], J[SEG][1] - J[0][1]];
+    const tdl = Math.hypot(tdir[0], tdir[1]) || 1;
+    fur(tailPs, () => (0.75 + startle * 0.5) * puff, 91, [tdir[0] / tdl * 0.8, tdir[1] / tdl * 0.8]);
+    const nearF = legs.find(g => g.l.near && g.l.front).f;
+    const nearH = legs.find(g => g.l.near && !g.l.front).f;
+    const sh = Math.max(0, -nearF.x / stride) * 1.4 * (1 - run * 0.5);
+    const hp = Math.max(0, -nearH.x / stride) * 1;
+    const Hx = 24.5 + ext + run * 3;
+    const Hy = -32 + by * 0.3 + run * 3 + startle * 0.5 + Math.sin(phase * 2 + 1) * 0.35 * (1 - run);
+    const F = ext, R = -ext;
+    const bodyPs = curve([
+      [-19 + R, -28.5 + by - hp - arch * 0.4],
+      [-8, -29.6 + by - arch],
+      [4, -29.6 + by - arch * 0.7],
+      [13 + F, -30.6 + by - sh - arch * 0.2],
+      [Hx - 7.5, Hy - 4.2],
+      [Hx - 4.5, Hy - 6.6],
+      [Hx + 0.5, Hy - 7.2],
+      [Hx + 4.6, Hy - 5.2],
+      [Hx + 6.8, Hy - 2.2],
+      [Hx + 7.8, Hy + 0.4],
+      [Hx + 7.1, Hy + 2.6],
+      [Hx + 4.6, Hy + 4.2],
+      [Hx + 0.8, Hy + 5.6],
+      [Hx - 2.5, Hy + 7.8],
+      [20.5 + F, -21.5 + by],
+      [20.5 + F, -17.5 + by],
+      [16 + F, -13.8 + by],
+      [5, -14.6 + by],
+      [-7, -13.8 + by],
+      [-15 + R, -14.5 + by],
+      [-21 + R, -17 + by],
+      [-24 + R, -21.5 + by],
+      [-23 + R, -26 + by],
+    ], 6);
+    poly(bodyPs);
+    fur(bodyPs, (p, nx, ny) => {
+      if (p[0] > Hx - 4.5 && p[1] < Hy + 4.5) return 0.25;
+      if (ny > 0.55) return 1.2;
+      if (p[0] > 12 && nx > 0.2) return 1.3;
+      if (p[0] < -17 && nx < -0.2) return 1.1;
+      return 0.5;
+    }, 3);
+    const flat = run * 0.8 - startle * 0.15;
+    const ear = (b1x, b1y, tx, ty, b2x, b2y) => {
+      tx += Hx - flat * 4.5; ty += Hy + flat * 4.5;
+      b1x += Hx; b1y += Hy; b2x += Hx; b2y += Hy;
+      c.beginPath();
+      c.moveTo(b1x, b1y);
+      c.quadraticCurveTo((b1x + tx) / 2 - 1.2, (b1y + ty) / 2 + 0.3, tx, ty);
+      c.quadraticCurveTo((tx + b2x) / 2 + 0.3, (ty + b2y) / 2, b2x, b2y);
+      c.closePath();
+      c.fill();
+    };
+    ear(0.2, -6.8, 3.4, -12.6, 6.2, -4.4);
+    ear(-5.6, -5, -2.6, -13.2, 1.2, -7);
+    c.lineWidth = 0.32;
+    c.beginPath();
+    c.moveTo(Hx + 6.6, Hy + 1.9); c.quadraticCurveTo(Hx + 10.5, Hy + 0.8, Hx + 14.5, Hy + 1.5);
+    c.moveTo(Hx + 6.6, Hy + 2.4); c.quadraticCurveTo(Hx + 10.5, Hy + 2.7, Hx + 14, Hy + 4.3);
+    c.moveTo(Hx + 6.2, Hy + 2.8); c.quadraticCurveTo(Hx + 9.5, Hy + 4.2, Hx + 12.5, Hy + 6.6);
+    c.stroke();
+    legs.filter(g => g.l.near).forEach(drawLeg);
+    return { hx: Hx, hy: Hy };
+  };
+  const drawCat = (x, y, dir, phase, s, t, eye, pose) => {
+    bctx.setTransform(1, 0, 0, 1, 0, 0);
+    bctx.clearRect(0, 0, buf.width, buf.height);
+    bctx.setTransform(dpr * s * dir, 0, 0, dpr * s, buf.width / 2 + dir * dpr * s * (BUF_OX - BUF_W / 2), dpr * s * BUF_OY);
+    const head = drawCatShape(bctx, phase, t, pose);
+    ctx.save();
+    ctx.globalAlpha = CAT_SHADOW_OPACITY;
+    if ('filter' in ctx) ctx.filter = 'blur(0.5px)';
+    const bx = x - s * (dir === 1 ? BUF_OX : BUF_W - BUF_OX);
+    ctx.drawImage(buf, bx, y - s * BUF_OY, BUF_W * s, BUF_H * s);
+    ctx.restore();
+    if (eye > 0.01) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(dir * s, s);
+      ctx.fillStyle = `rgba(200, 255, 100, ${eye.toFixed(3)})`;
+      ctx.shadowColor = 'rgba(180, 255, 80, 0.9)';
+      ctx.shadowBlur = 6;
+      const { hx, hy } = head;
+      const open = 1 - pose.run * 0.3;
+      ctx.beginPath();
+      ctx.ellipse(hx + 4, hy - 1.8, 1.7, 1.15 * open, -0.2, 0, Math.PI * 2);
+      ctx.ellipse(hx + 6.6, hy - 1.9, 0.6, 0.9 * open, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  };
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    const t = now / 1000;
+    if (state.isLightOn) {
+      if (walk) { walk = null; ctx.clearRect(0, 0, W, H); }
+      return;
+    }
+    if (!walk) {
+      darkTime += dt * 1000;
+      if (darkTime >= nextAt) {
+        darkTime = 0;
+        nextAt = rand(CAT_SHADOW_MIN_DELAY, CAT_SHADOW_MAX_DELAY);
+        start();
+      }
+      if (!walk) return;
+    }
+    const w = walk;
+    const total = Math.abs(w.endX - (w.dir === 1 ? P.leftX - 70 : P.rightX + 70));
+    const progress = 1 - Math.abs(w.endX - w.x) / total;
+    // Попала в луч фонарика?
+    if (w.mode === 'walk' && FLASHLIGHT_ENABLED && state.flashPointerInside) {
+      const b = state.flashBeam;
+      if (Math.hypot(b.x - w.x, b.y - (P.y - 25 * P.scale)) < b.r * 0.6) {
+        w.mode = 'freeze';
+        w.freezeT = 0.5;
+        playCatHiss(); // <--- ВОСПРОИЗВЕДЕНИЕ СЛУЧАЙНОГО ЗВУКА ШИПЕНИЯ
+      }
+    }
+    let eyeTarget = 0;
+    if (w.mode === 'walk') {
+      w.x += w.dir * w.speed * dt;
+      w.phase += catPhaseRate(w) * dt;
+      if (w.glintT < 0 && progress >= w.glintAt) w.glintT = 0;
+      if (w.glintT >= 0 && w.glintT < 0.5) {
+        w.glintT += dt;
+        eyeTarget = 0.7;
+      }
+    } else if (w.mode === 'freeze') {
+      w.freezeT -= dt;
+      eyeTarget = 1;
+      if (w.freezeT <= 0) { w.mode = 'run'; w.speed *= CAT_SHADOW_RUN_SPEEDUP; }
+    } else {
+      w.x += w.dir * w.speed * dt;
+      w.phase += catPhaseRate(w) * dt;
+      eyeTarget = 0.4;
+    }
+    w.eye += (eyeTarget - w.eye) * Math.min(1, dt * 12);
+    w.run += ((w.mode === 'run' ? 1 : 0) - w.run) * Math.min(1, dt * 8);
+    w.startle += ((w.mode === 'freeze' ? 1 : 0) - w.startle) * Math.min(1, dt * (w.mode === 'freeze' ? 14 : 4));
+    w.stride = lerp(CAT_STRIDE_WALK, CAT_STRIDE_RUN, w.run);
+    w.duty = lerp(CAT_DUTY_WALK, CAT_DUTY_RUN, w.run);
+    if (state.addPawPrint) {
+      PAW_LEGS.forEach((l, i) => {
+        const f = catFoot(w.phase, catLegOff(l, w.run), w.stride, w.duty);
+        const up = f.swing >= 0;
+        if (w.footUp[i] && !up) {
+          const fx = l.hx + f.x;
+          state.addPawPrint(w.x + w.dir * P.scale * fx,
+            P.y + (l.near ? 1.5 : -1) * P.scale, w.dir);
+        }
+        w.footUp[i] = up;
+      });
+    }
+    ctx.clearRect(0, 0, W, H);
+    if ((w.dir === 1 && w.x >= w.endX) || (w.dir === -1 && w.x <= w.endX)) {
+      walk = null;
+      return;
+    }
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(P.leftX, 0, P.rightX - P.leftX, H);
+    CAT_SHADOW_HIDE.forEach(poly => {
+      ctx.moveTo(poly[0][0], poly[0][1]);
+      for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
+      ctx.closePath();
+    });
+    ctx.clip('evenodd');
+    ctx.globalAlpha = CAT_SHADOW_OPACITY;
+    drawCat(w.x, P.y, w.dir, w.phase, P.scale, t, w.eye, w);
+    ctx.restore();
+  };
+  requestAnimationFrame(frame);
 }
 // ========== СВЕТ ИЗ ЩЕЛЕЙ В ПОЛУ ==========
 function setupFloorCracks() {
-const canvas = document.getElementById('floorCracks');
-if (!canvas || !canvas.getContext) return;
-if (!FLOOR_CRACKS_ENABLED) { canvas.remove(); return; }
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const F = FLOOR_CRACKS;
-const rand = (a, b) => a + Math.random() * (b - a);
-const xAt = (xb, y) => F.vpX + (xb - F.vpX) * (y - F.vpY) / (F.bottomY - F.vpY);
-const segments = [];
-F.xs.forEach(xb => {
-let t = rand(0, 0.15);
-while (t < 1) {
-const len = rand(0.15, 0.5);
-const t2 = Math.min(1, t + len);
-const y1 = F.topY + (F.bottomY - F.topY) * t;
-const y2 = F.topY + (F.bottomY - F.topY) * t2;
-segments.push({
-x1: xAt(xb, y1), y1, x2: xAt(xb, y2), y2,
-persp: 0.45 + 0.55 * (t + t2) / 2,
-bright: rand(0.4, 1),
-ph: rand(0, Math.PI * 2),
-});
-t = t2 + rand(0.03, 0.15);
-}
-});
-const clipPath = () => {
-ctx.beginPath();
-const poly = (pts) => {
-ctx.moveTo(pts[0][0], pts[0][1]);
-for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-ctx.closePath();
-};
-poly(FLOOR_AREA);
-CAT_SHADOW_HIDE.forEach(poly);
-poly(FLOOR_TAIL_HIDE);
-ctx.clip('evenodd');
-};
-let level = state.isLightOn ? FLOOR_CRACK_LIT : FLOOR_CRACK_STRENGTH;
-let walker = null;
-let darkTime = 0;
-let nextWalker = rand(FLOOR_WALKER_MIN_DELAY, FLOOR_WALKER_MAX_DELAY);
-window.floorWalker = () => { darkTime = nextWalker; };
-let drawn = false;
-let last = performance.now();
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.05);
-last = now;
-const t = now / 1000;
-const light = roomLightLevel();
-const target = FLOOR_CRACK_LIT * light + FLOOR_CRACK_STRENGTH * (1 - light);
-level += (target - level) * Math.min(1, dt * 5);
-if (!state.isLightOn) {
-if (!walker) {
-darkTime += dt * 1000;
-if (darkTime >= nextWalker) {
-darkTime = 0;
-nextWalker = rand(FLOOR_WALKER_MIN_DELAY, FLOOR_WALKER_MAX_DELAY);
-const dir = Math.random() < 0.5 ? 1 : -1;
-walker = { dir, x: dir === 1 ? -80 : W + 80, speed: rand(110, 170) };
-}
-}
-}
-if (walker) {
-walker.x += walker.dir * walker.speed * dt;
-if (walker.x < -100 || walker.x > W + 100) walker = null;
-}
-if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
-if (level < 0.01) return;
-const flicker = 1 + 0.07 * Math.sin(t * 1.7) + 0.04 * Math.sin(t * 4.3 + 1)
-+ 0.03 * Math.sin(t * 11.1 + 2);
-ctx.save();
-clipPath();
-ctx.lineCap = 'round';
-for (const s of segments) {
-let k = level * flicker * s.bright * (0.85 + 0.15 * Math.sin(t * 0.8 + s.ph));
-if (walker) {
-const mx = (s.x1 + s.x2) / 2;
-const sway = Math.sin(walker.x * 0.08) * 12;
-const d1 = (mx - walker.x - sway) / 22;
-const d2 = (mx - walker.x + sway) / 22;
-k *= 1 - 0.9 * Math.max(Math.exp(-d1 * d1), Math.exp(-d2 * d2));
-}
-if (k <= 0.01) continue;
-ctx.beginPath();
-ctx.moveTo(s.x1, s.y1);
-ctx.lineTo(s.x2, s.y2);
-ctx.globalAlpha = Math.min(1, 0.18 * k);
-ctx.strokeStyle = 'rgb(255, 150, 60)';
-ctx.lineWidth = 5 * s.persp;
-ctx.stroke();
-ctx.globalAlpha = Math.min(1, 0.85 * k);
-ctx.strokeStyle = 'rgb(255, 205, 130)';
-ctx.lineWidth = 1.1 * s.persp;
-ctx.stroke();
-}
-ctx.restore();
-ctx.globalAlpha = 1;
-drawn = true;
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('floorCracks');
+  if (!canvas || !canvas.getContext) return;
+  if (!FLOOR_CRACKS_ENABLED) { canvas.remove(); return; }
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const F = FLOOR_CRACKS;
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const xAt = (xb, y) => F.vpX + (xb - F.vpX) * (y - F.vpY) / (F.bottomY - F.vpY);
+  const segments = [];
+  F.xs.forEach(xb => {
+    let t = rand(0, 0.15);
+    while (t < 1) {
+      const len = rand(0.15, 0.5);
+      const t2 = Math.min(1, t + len);
+      const y1 = F.topY + (F.bottomY - F.topY) * t;
+      const y2 = F.topY + (F.bottomY - F.topY) * t2;
+      segments.push({
+        x1: xAt(xb, y1), y1, x2: xAt(xb, y2), y2,
+        persp: 0.45 + 0.55 * (t + t2) / 2,
+        bright: rand(0.4, 1),
+        ph: rand(0, Math.PI * 2),
+      });
+      t = t2 + rand(0.03, 0.15);
+    }
+  });
+  const clipPath = () => {
+    ctx.beginPath();
+    const poly = (pts) => {
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.closePath();
+    };
+    poly(FLOOR_AREA);
+    CAT_SHADOW_HIDE.forEach(poly);
+    poly(FLOOR_TAIL_HIDE);
+    ctx.clip('evenodd');
+  };
+  let level = state.isLightOn ? FLOOR_CRACK_LIT : FLOOR_CRACK_STRENGTH;
+  let walker = null;
+  let darkTime = 0;
+  let nextWalker = rand(FLOOR_WALKER_MIN_DELAY, FLOOR_WALKER_MAX_DELAY);
+  window.floorWalker = () => { darkTime = nextWalker; };
+  let drawn = false;
+  let last = performance.now();
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    const t = now / 1000;
+    const light = roomLightLevel();
+    const target = FLOOR_CRACK_LIT * light + FLOOR_CRACK_STRENGTH * (1 - light);
+    level += (target - level) * Math.min(1, dt * 5);
+    if (!state.isLightOn) {
+      if (!walker) {
+        darkTime += dt * 1000;
+        if (darkTime >= nextWalker) {
+          darkTime = 0;
+          nextWalker = rand(FLOOR_WALKER_MIN_DELAY, FLOOR_WALKER_MAX_DELAY);
+          const dir = Math.random() < 0.5 ? 1 : -1;
+          walker = { dir, x: dir === 1 ? -80 : W + 80, speed: rand(110, 170) };
+        }
+      }
+    }
+    if (walker) {
+      walker.x += walker.dir * walker.speed * dt;
+      if (walker.x < -100 || walker.x > W + 100) walker = null;
+    }
+    if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
+    if (level < 0.01) return;
+    const flicker = 1 + 0.07 * Math.sin(t * 1.7) + 0.04 * Math.sin(t * 4.3 + 1)
+      + 0.03 * Math.sin(t * 11.1 + 2);
+    ctx.save();
+    clipPath();
+    ctx.lineCap = 'round';
+    for (const s of segments) {
+      let k = level * flicker * s.bright * (0.85 + 0.15 * Math.sin(t * 0.8 + s.ph));
+      if (walker) {
+        const mx = (s.x1 + s.x2) / 2;
+        const sway = Math.sin(walker.x * 0.08) * 12;
+        const d1 = (mx - walker.x - sway) / 22;
+        const d2 = (mx - walker.x + sway) / 22;
+        k *= 1 - 0.9 * Math.max(Math.exp(-d1 * d1), Math.exp(-d2 * d2));
+      }
+      if (k <= 0.01) continue;
+      ctx.beginPath();
+      ctx.moveTo(s.x1, s.y1);
+      ctx.lineTo(s.x2, s.y2);
+      ctx.globalAlpha = Math.min(1, 0.18 * k);
+      ctx.strokeStyle = 'rgb(255, 150, 60)';
+      ctx.lineWidth = 5 * s.persp;
+      ctx.stroke();
+      ctx.globalAlpha = Math.min(1, 0.85 * k);
+      ctx.strokeStyle = 'rgb(255, 205, 130)';
+      ctx.lineWidth = 1.1 * s.persp;
+      ctx.stroke();
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    drawn = true;
+  };
+  requestAnimationFrame(frame);
 }
 // ========== СВЕТЛЯЧКИ ==========
 function setupFireflies() {
-const canvas = document.getElementById('fireflies');
-if (!canvas || !canvas.getContext) return;
-if (!FIREFLIES_ENABLED || FIREFLY_COUNT <= 0) { canvas.remove(); return; }
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const sprite = document.createElement('canvas');
-sprite.width = sprite.height = 64;
-const sc = sprite.getContext('2d');
-const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
-g.addColorStop(0, 'rgba(250, 255, 200, 1)');
-g.addColorStop(0.12, 'rgba(225, 255, 130, 0.9)');
-g.addColorStop(0.35, 'rgba(180, 240, 80, 0.3)');
-g.addColorStop(1, 'rgba(150, 220, 60, 0)');
-sc.fillStyle = g;
-sc.fillRect(0, 0, 64, 64);
-const A = FIREFLY_AREA;
-const rand = (a, b) => a + Math.random() * (b - a);
-const flies = Array.from({ length: FIREFLY_COUNT }, () => ({
-x: rand(A.left, A.right),
-y: rand(A.top, A.bottom),
-a: rand(0, Math.PI * 2),
-speed: rand(10, 22),
-period: rand(2.5, 6),
-phase: rand(0, 6),
-bob: rand(0, Math.PI * 2),
-size: rand(9, 14),
-glow: 0,
-hideUntil: 0,
-}));
-let darkFor = 0;
-let presence = 0;
-let drawn = false;
-let last = performance.now();
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.05);
-last = now;
-const t = now / 1000;
-if (state.isLightOn) darkFor = 0; else darkFor += dt * 1000;
-const want = darkFor > FIREFLY_APPEAR_MS ? 1 : 0;
-presence += (want - presence) * Math.min(1, dt * (want ? 0.6 : 6));
-if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
-if (presence < 0.01) return;
-const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
-const b = state.flashBeam;
-ctx.globalCompositeOperation = 'lighter';
-for (const f of flies) {
-if (beamOn) {
-const dx = f.x - b.x, dy = f.y - b.y;
-if (Math.hypot(dx, dy) < b.r * 0.85) {
-if (now >= f.hideUntil) f.a = Math.atan2(dy, dx) + rand(-0.4, 0.4);
-f.hideUntil = now + rand(2500, 5000);
-}
-}
-const hidden = now < f.hideUntil;
-f.a += rand(-1, 1) * dt * 2.2;
-const out = f.x < A.left || f.x > A.right || f.y < A.top || f.y > A.bottom;
-if (out) {
-const toC = Math.atan2((A.top + A.bottom) / 2 - f.y, (A.left + A.right) / 2 - f.x);
-let d = toC - f.a;
-d = Math.atan2(Math.sin(d), Math.cos(d));
-f.a += d * Math.min(1, dt * 2);
-}
-const sp = f.speed * (hidden ? 2.5 : 1);
-f.x += Math.cos(f.a) * sp * dt;
-f.y += Math.sin(f.a) * sp * dt + Math.sin(t * 1.3 + f.bob) * 6 * dt;
-const local = ((t + f.phase) % f.period) / f.period;
-const flash = local < 0.14 ? Math.sin(Math.PI * local / 0.14) : 0;
-const target = hidden ? 0 : 0.15 + 0.85 * flash;
-f.glow += (target - f.glow) * Math.min(1, dt * (hidden ? 14 : 8));
-const k = f.glow * presence * FIREFLY_BRIGHTNESS;
-if (k < 0.01) continue;
-const s = f.size * (0.7 + 0.3 * f.glow);
-ctx.globalAlpha = Math.min(1, k);
-ctx.drawImage(sprite, f.x - s, f.y - s, s * 2, s * 2);
-}
-ctx.globalCompositeOperation = 'source-over';
-ctx.globalAlpha = 1;
-drawn = true;
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('fireflies');
+  if (!canvas || !canvas.getContext) return;
+  if (!FIREFLIES_ENABLED || FIREFLY_COUNT <= 0) { canvas.remove(); return; }
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const sprite = document.createElement('canvas');
+  sprite.width = sprite.height = 64;
+  const sc = sprite.getContext('2d');
+  const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(250, 255, 200, 1)');
+  g.addColorStop(0.12, 'rgba(225, 255, 130, 0.9)');
+  g.addColorStop(0.35, 'rgba(180, 240, 80, 0.3)');
+  g.addColorStop(1, 'rgba(150, 220, 60, 0)');
+  sc.fillStyle = g;
+  sc.fillRect(0, 0, 64, 64);
+  const A = FIREFLY_AREA;
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const flies = Array.from({ length: FIREFLY_COUNT }, () => ({
+    x: rand(A.left, A.right),
+    y: rand(A.top, A.bottom),
+    a: rand(0, Math.PI * 2),
+    speed: rand(10, 22),
+    period: rand(2.5, 6),
+    phase: rand(0, 6),
+    bob: rand(0, Math.PI * 2),
+    size: rand(9, 14),
+    glow: 0,
+    hideUntil: 0,
+  }));
+  let darkFor = 0;
+  let presence = 0;
+  let drawn = false;
+  let last = performance.now();
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    const t = now / 1000;
+    if (state.isLightOn) darkFor = 0; else darkFor += dt * 1000;
+    const want = darkFor > FIREFLY_APPEAR_MS ? 1 : 0;
+    presence += (want - presence) * Math.min(1, dt * (want ? 0.6 : 6));
+    if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
+    if (presence < 0.01) return;
+    const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+    const b = state.flashBeam;
+    ctx.globalCompositeOperation = 'lighter';
+    for (const f of flies) {
+      if (beamOn) {
+        const dx = f.x - b.x, dy = f.y - b.y;
+        if (Math.hypot(dx, dy) < b.r * 0.85) {
+          if (now >= f.hideUntil) f.a = Math.atan2(dy, dx) + rand(-0.4, 0.4);
+          f.hideUntil = now + rand(2500, 5000);
+        }
+      }
+      const hidden = now < f.hideUntil;
+      f.a += rand(-1, 1) * dt * 2.2;
+      const out = f.x < A.left || f.x > A.right || f.y < A.top || f.y > A.bottom;
+      if (out) {
+        const toC = Math.atan2((A.top + A.bottom) / 2 - f.y, (A.left + A.right) / 2 - f.x);
+        let d = toC - f.a;
+        d = Math.atan2(Math.sin(d), Math.cos(d));
+        f.a += d * Math.min(1, dt * 2);
+      }
+      const sp = f.speed * (hidden ? 2.5 : 1);
+      f.x += Math.cos(f.a) * sp * dt;
+      f.y += Math.sin(f.a) * sp * dt + Math.sin(t * 1.3 + f.bob) * 6 * dt;
+      const local = ((t + f.phase) % f.period) / f.period;
+      const flash = local < 0.14 ? Math.sin(Math.PI * local / 0.14) : 0;
+      const target = hidden ? 0 : 0.15 + 0.85 * flash;
+      f.glow += (target - f.glow) * Math.min(1, dt * (hidden ? 14 : 8));
+      const k = f.glow * presence * FIREFLY_BRIGHTNESS;
+      if (k < 0.01) continue;
+      const s = f.size * (0.7 + 0.3 * f.glow);
+      ctx.globalAlpha = Math.min(1, k);
+      ctx.drawImage(sprite, f.x - s, f.y - s, s * 2, s * 2);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    drawn = true;
+  };
+  requestAnimationFrame(frame);
 }
 // ========== СЛЕДЫ ЛАП ==========
 const PAW_LEGS = [
-{ hx: 13,  offW: Math.PI / 2,   offR: Math.PI * 1.2, near: false, front: true },
-{ hx: -16, offW: Math.PI,       offR: Math.PI * 0.2, near: false, front: false },
-{ hx: 15,  offW: Math.PI * 1.5, offR: Math.PI,       near: true,  front: true },
-{ hx: -14, offW: 0,             offR: 0,             near: true,  front: false },
+  { hx: 13,  offW: Math.PI / 2,   offR: Math.PI * 1.2, near: false, front: true },
+  { hx: -16, offW: Math.PI,       offR: Math.PI * 0.2, near: false, front: false },
+  { hx: 15,  offW: Math.PI * 1.5, offR: Math.PI,       near: true,  front: true },
+  { hx: -14, offW: 0,             offR: 0,             near: true,  front: false },
 ];
 const catLegOff = (l, run) => l.offW + (l.offR - l.offW) * run;
 function catFoot(phase, off, stride, duty) {
-let u = ((phase + off) / (Math.PI * 2)) % 1;
-if (u < 0) u += 1;
-if (u < duty) return { x: stride * (1 - 2 * u / duty), lift: 0, swing: -1 };
-const k = (u - duty) / (1 - duty);
-return { x: stride * -Math.cos(Math.PI * k), lift: Math.sin(Math.PI * k), swing: k };
+  let u = ((phase + off) / (Math.PI * 2)) % 1;
+  if (u < 0) u += 1;
+  if (u < duty) return { x: stride * (1 - 2 * u / duty), lift: 0, swing: -1 };
+  const k = (u - duty) / (1 - duty);
+  return { x: stride * -Math.cos(Math.PI * k), lift: Math.sin(Math.PI * k), swing: k };
 }
 const catPhaseRate = (w) => w.speed * w.duty * Math.PI / w.stride;
 function setupPawPrints() {
-const canvas = document.getElementById('pawPrints');
-if (!canvas || !canvas.getContext) return;
-if (!PAW_PRINTS_ENABLED || !CAT_SHADOW_ENABLED) { canvas.remove(); return; }
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const P = CAT_SHADOW_PATH;
-const prints = [];
-state.addPawPrint = (x, y, dir) => {
-if (x < P.leftX || x > P.rightX) return;
-prints.push({ x, y, dir, born: performance.now(), rot: (Math.random() - 0.5) * 0.3 });
-if (prints.length > 300) prints.shift();
-};
-const drawPrint = (p) => {
-const s = PAW_PRINT_SIZE * P.scale;
-ctx.save();
-ctx.translate(p.x, p.y);
-ctx.scale(p.dir * s, s * 0.45);
-ctx.rotate(p.rot);
-ctx.beginPath();
-ctx.ellipse(0, 0, 2.2, 2, 0, 0, Math.PI * 2);
-ctx.moveTo(3.6, -2.2); ctx.arc(2.9, -2.2, 0.75, 0, Math.PI * 2);
-ctx.moveTo(4.2, 0);    ctx.arc(3.5, 0, 0.75, 0, Math.PI * 2);
-ctx.moveTo(3.6, 2.2);  ctx.arc(2.9, 2.2, 0.75, 0, Math.PI * 2);
-ctx.fill();
-ctx.restore();
-};
-let drawn = false;
-const frame = (now) => {
-requestAnimationFrame(frame);
-while (prints.length && now - prints[0].born > PAW_PRINT_FADE_MS) prints.shift();
-if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
-if (!prints.length) return;
-const light = roomLightLevel();
-const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
-if (light < 0.01 && !beamOn) return;
-const b = state.flashBeam;
-ctx.save();
-ctx.beginPath();
-ctx.rect(0, 0, W, H);
-CAT_SHADOW_HIDE.forEach(poly => {
-ctx.moveTo(poly[0][0], poly[0][1]);
-for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
-ctx.closePath();
-});
-ctx.clip('evenodd');
-ctx.fillStyle = 'rgb(28, 18, 8)';
-for (const p of prints) {
-let vis = light;
-if (beamOn) {
-const d = Math.hypot(p.x - b.x, p.y - b.y) / b.r;
-if (d < 1) vis = Math.max(vis, 1 - d * d);
-}
-if (vis <= 0.01) continue;
-const age = (now - p.born) / PAW_PRINT_FADE_MS;
-const fade = 1 - age * age;
-ctx.globalAlpha = PAW_PRINT_OPACITY * fade * vis;
-drawPrint(p);
-}
-ctx.restore();
-ctx.globalAlpha = 1;
-drawn = true;
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('pawPrints');
+  if (!canvas || !canvas.getContext) return;
+  if (!PAW_PRINTS_ENABLED || !CAT_SHADOW_ENABLED) { canvas.remove(); return; }
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const P = CAT_SHADOW_PATH;
+  const prints = [];
+  state.addPawPrint = (x, y, dir) => {
+    if (x < P.leftX || x > P.rightX) return;
+    prints.push({ x, y, dir, born: performance.now(), rot: (Math.random() - 0.5) * 0.3 });
+    if (prints.length > 300) prints.shift();
+  };
+  const drawPrint = (p) => {
+    const s = PAW_PRINT_SIZE * P.scale;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.scale(p.dir * s, s * 0.45);
+    ctx.rotate(p.rot);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 2.2, 2, 0, 0, Math.PI * 2);
+    ctx.moveTo(3.6, -2.2); ctx.arc(2.9, -2.2, 0.75, 0, Math.PI * 2);
+    ctx.moveTo(4.2, 0);    ctx.arc(3.5, 0, 0.75, 0, Math.PI * 2);
+    ctx.moveTo(3.6, 2.2);  ctx.arc(2.9, 2.2, 0.75, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  };
+  let drawn = false;
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    while (prints.length && now - prints[0].born > PAW_PRINT_FADE_MS) prints.shift();
+    if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; }
+    if (!prints.length) return;
+    const light = roomLightLevel();
+    const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+    if (light < 0.01 && !beamOn) return;
+    const b = state.flashBeam;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, W, H);
+    CAT_SHADOW_HIDE.forEach(poly => {
+      ctx.moveTo(poly[0][0], poly[0][1]);
+      for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
+      ctx.closePath();
+    });
+    ctx.clip('evenodd');
+    ctx.fillStyle = 'rgb(28, 18, 8)';
+    for (const p of prints) {
+      let vis = light;
+      if (beamOn) {
+        const d = Math.hypot(p.x - b.x, p.y - b.y) / b.r;
+        if (d < 1) vis = Math.max(vis, 1 - d * d);
+      }
+      if (vis <= 0.01) continue;
+      const age = (now - p.born) / PAW_PRINT_FADE_MS;
+      const fade = 1 - age * age;
+      ctx.globalAlpha = PAW_PRINT_OPACITY * fade * vis;
+      drawPrint(p);
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    drawn = true;
+  };
+  requestAnimationFrame(frame);
 }
 // ========== МОТЫЛЁК ==========
 function setupMoth() {
-const canvas = document.getElementById('moth');
-if (!canvas || !canvas.getContext) return;
-if (!MOTH_ENABLED) { canvas.remove(); return; }
-const ctx = canvas.getContext('2d');
-const W = state.sceneW, H = state.sceneH;
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = Math.round(W * dpr);
-canvas.height = Math.round(H * dpr);
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-const rand = (a, b) => a + Math.random() * (b - a);
-const randIn = ([a, b]) => rand(a, b);
-const bulb = { x: LAMP_BEAM.x, y: LAMP_BEAM.y - 12 };
-const MAX_SPEED = 300;
-const m = {
-mode: 'away',
-x: -50, y: -50, vx: 0, vy: 0,
-heading: 0,
-flap: 0,
-theta: rand(0, Math.PI * 2),
-orbitDir: 1,
-R: 45,
-wander: rand(0, Math.PI * 2),
-exit: { x: 0, y: 0 },
-nextOrbitChange: 0,
-nextBump: 0,
-bumpUntil: 0,
-};
-let start = performance.now();
-let wasOn = state.isLightOn;
-let returnAt = start + randIn(MOTH_RETURN_DELAY);
-let beamAt = Infinity, beamUntil = Infinity;
-const scheduleBeam = (now) => {
-beamAt = Math.random() < MOTH_BEAM_CHANCE ? now + randIn(MOTH_BEAM_DELAY) : Infinity;
-beamUntil = Infinity;
-};
-if (!wasOn) scheduleBeam(start);
-const spawn = () => {
-const side = Math.random();
-if (side < 0.5) { m.x = rand(W * 0.15, W * 0.85); m.y = -20; }
-else if (side < 0.75) { m.x = -20; m.y = rand(0, H * 0.6); }
-else { m.x = W + 20; m.y = rand(0, H * 0.6); }
-const a = Math.atan2(H * 0.4 - m.y, W / 2 - m.x);
-m.vx = Math.cos(a) * 150;
-m.vy = Math.sin(a) * 150;
-m.heading = a;
-};
-const startLeaving = () => {
-m.mode = 'leave';
-const a = Math.atan2(m.vy, m.vx) + rand(-0.6, 0.6);
-m.exit = { x: m.x + Math.cos(a) * 2000, y: m.y + Math.sin(a) * 2000 };
-};
-const drawMoth = (x, y, heading, open, scale, colors) => {
-ctx.save();
-ctx.translate(x, y);
-ctx.rotate(heading + Math.PI / 2);
-ctx.scale(scale, scale);
-for (const s of [-1, 1]) {
-ctx.fillStyle = colors.fore;
-ctx.beginPath();
-ctx.moveTo(0, -1.5);
-ctx.quadraticCurveTo(s * 7 * open, -5, s * 8.5 * open, 1);
-ctx.quadraticCurveTo(s * 4 * open, 2.5, 0, 1.5);
-ctx.fill();
-ctx.fillStyle = colors.hind;
-ctx.beginPath();
-ctx.moveTo(0, 0.5);
-ctx.quadraticCurveTo(s * 5.5 * open, 1.5, s * 4.5 * open, 5);
-ctx.quadraticCurveTo(s * 2 * open, 5.5, 0, 3.5);
-ctx.fill();
-}
-ctx.fillStyle = colors.body;
-ctx.beginPath();
-ctx.ellipse(0, 1, 1.1, 3.8, 0, 0, Math.PI * 2);
-ctx.fill();
-ctx.strokeStyle = colors.body;
-ctx.lineWidth = 0.5;
-ctx.beginPath();
-ctx.moveTo(-0.4, -2.5); ctx.quadraticCurveTo(-1.5, -4.5, -2.5, -5);
-ctx.moveTo(0.4, -2.5);  ctx.quadraticCurveTo(1.5, -4.5, 2.5, -5);
-ctx.stroke();
-ctx.restore();
-};
-const MOTH_COLORS = { fore: '#e2d1ab', hind: '#c9b38a', body: '#6e5940' };
-const SHADOW_COLORS = { fore: '#140d05', hind: '#140d05', body: '#140d05' };
-let last = start;
-const frame = (now) => {
-requestAnimationFrame(frame);
-const dt = Math.min((now - last) / 1000, 0.05);
-last = now;
-if (dt <= 0) return;
-if (state.isLightOn !== wasOn) {
-wasOn = state.isLightOn;
-if (wasOn) returnAt = now + randIn(MOTH_RETURN_DELAY);
-else scheduleBeam(now);
-}
-const light = roomLightLevel();
-const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
-let want = 'leave';
-if (state.isLightOn && now >= returnAt) want = 'lamp';
-else if (beamOn && now >= beamAt && now < beamUntil) want = 'beam';
-if (want !== 'leave') {
-if (m.mode === 'away') spawn();
-if (want === 'beam' && m.mode !== 'beam') beamUntil = now + randIn(MOTH_BEAM_STAY);
-m.mode = want;
-} else if (m.mode === 'lamp' || m.mode === 'beam') {
-if (m.mode === 'beam' && now >= beamUntil) {
-beamAt = Math.random() < MOTH_BEAM_CHANCE ? now + rand(20000, 40000) : Infinity;
-}
-startLeaving();
-}
-ctx.clearRect(0, 0, W, H);
-if (m.mode === 'away') return;
-let tx, ty, K = 10, D = 2.4;
-if (m.mode === 'lamp' || m.mode === 'beam') {
-const c = m.mode === 'lamp' ? bulb : state.flashBeam;
-if (now >= m.nextOrbitChange) {
-if (Math.random() < 0.4) m.orbitDir *= -1;
-m.R = m.mode === 'lamp' ? rand(22, 70) : rand(18, 50);
-m.nextOrbitChange = now + rand(700, 2200);
-}
-m.theta += m.orbitDir * dt * (m.mode === 'lamp' ? 3.2 : 2.2);
-tx = c.x + Math.cos(m.theta) * m.R;
-ty = c.y + Math.sin(m.theta) * m.R * 0.6 + (m.mode === 'lamp' ? 14 : 0);
-if (m.mode === 'lamp') {
-if (!m.nextBump) m.nextBump = now + rand(2000, 5000);
-if (now >= m.nextBump && !m.bumpUntil) m.bumpUntil = now + 350;
-if (m.bumpUntil) {
-tx = bulb.x; ty = bulb.y; K = 28;
-if (now >= m.bumpUntil || Math.hypot(m.x - bulb.x, m.y - bulb.y) < 8) {
-const a = Math.atan2(m.y - bulb.y, m.x - bulb.x) + rand(-0.5, 0.5);
-m.vx = Math.cos(a) * 220;
-m.vy = Math.sin(a) * 220;
-m.bumpUntil = 0;
-m.nextBump = now + rand(2000, 5000);
-}
-}
-} else {
-m.bumpUntil = 0; m.nextBump = 0;
-}
-} else {
-tx = m.exit.x; ty = m.exit.y; K = 0.6; D = 0.8;
-}
-m.wander += rand(-1, 1) * dt * 14;
-const noise = m.mode === 'leave' ? 250 : 520;
-let ax = (tx - m.x) * K - m.vx * D + Math.cos(m.wander) * noise;
-let ay = (ty - m.y) * K - m.vy * D + Math.sin(m.wander) * noise;
-m.vx += ax * dt;
-m.vy += ay * dt;
-const sp = Math.hypot(m.vx, m.vy);
-if (sp > MAX_SPEED) { m.vx *= MAX_SPEED / sp; m.vy *= MAX_SPEED / sp; }
-m.x += m.vx * dt;
-m.y += m.vy * dt;
-if (m.mode === 'leave' &&
-(m.x < -40 || m.x > W + 40 || m.y < -40 || m.y > H + 40)) {
-m.mode = 'away';
-return;
-}
-if (sp > 10) {
-let d = Math.atan2(m.vy, m.vx) - m.heading;
-d = Math.atan2(Math.sin(d), Math.cos(d));
-m.heading += d * Math.min(1, dt * 10);
-}
-m.flap += dt * Math.PI * 2 * (13 + sp * 0.02);
-const open = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(m.flap));
-let vis = light;
-if (beamOn) {
-const b = state.flashBeam;
-const d = Math.hypot(m.x - b.x, m.y - b.y) / b.r;
-if (d < 1) vis = Math.max(vis, 1 - d * d);
-}
-if (vis <= 0.01) return;
-if (MOTH_SHADOW > 0 && light > 0.05) {
-const sx = m.x + (m.x - bulb.x) * 0.6;
-const sy = m.y + (m.y - bulb.y) * 0.6 + 6;
-ctx.globalAlpha = MOTH_SHADOW * light;
-ctx.filter = 'blur(2px)';
-drawMoth(sx, sy, m.heading, open, MOTH_SCALE * 1.8, SHADOW_COLORS);
-ctx.filter = 'none';
-}
-ctx.globalAlpha = Math.min(1, 0.95 * vis);
-drawMoth(m.x, m.y, m.heading, open, MOTH_SCALE, MOTH_COLORS);
-ctx.globalAlpha = 1;
-};
-requestAnimationFrame(frame);
+  const canvas = document.getElementById('moth');
+  if (!canvas || !canvas.getContext) return;
+  if (!MOTH_ENABLED) { canvas.remove(); return; }
+  const ctx = canvas.getContext('2d');
+  const W = state.sceneW, H = state.sceneH;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const randIn = ([a, b]) => rand(a, b);
+  const bulb = { x: LAMP_BEAM.x, y: LAMP_BEAM.y - 12 };
+  const MAX_SPEED = 300;
+  const m = {
+    mode: 'away',
+    x: -50, y: -50, vx: 0, vy: 0,
+    heading: 0,
+    flap: 0,
+    theta: rand(0, Math.PI * 2),
+    orbitDir: 1,
+    R: 45,
+    wander: rand(0, Math.PI * 2),
+    exit: { x: 0, y: 0 },
+    nextOrbitChange: 0,
+    nextBump: 0,
+    bumpUntil: 0,
+  };
+  let start = performance.now();
+  let wasOn = state.isLightOn;
+  let returnAt = start + randIn(MOTH_RETURN_DELAY);
+  let beamAt = Infinity, beamUntil = Infinity;
+  const scheduleBeam = (now) => {
+    beamAt = Math.random() < MOTH_BEAM_CHANCE ? now + randIn(MOTH_BEAM_DELAY) : Infinity;
+    beamUntil = Infinity;
+  };
+  if (!wasOn) scheduleBeam(start);
+  const spawn = () => {
+    const side = Math.random();
+    if (side < 0.5) { m.x = rand(W * 0.15, W * 0.85); m.y = -20; }
+    else if (side < 0.75) { m.x = -20; m.y = rand(0, H * 0.6); }
+    else { m.x = W + 20; m.y = rand(0, H * 0.6); }
+    const a = Math.atan2(H * 0.4 - m.y, W / 2 - m.x);
+    m.vx = Math.cos(a) * 150;
+    m.vy = Math.sin(a) * 150;
+    m.heading = a;
+  };
+  const startLeaving = () => {
+    m.mode = 'leave';
+    const a = Math.atan2(m.vy, m.vx) + rand(-0.6, 0.6);
+    m.exit = { x: m.x + Math.cos(a) * 2000, y: m.y + Math.sin(a) * 2000 };
+  };
+  const drawMoth = (x, y, heading, open, scale, colors) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(heading + Math.PI / 2);
+    ctx.scale(scale, scale);
+    for (const s of [-1, 1]) {
+      ctx.fillStyle = colors.fore;
+      ctx.beginPath();
+      ctx.moveTo(0, -1.5);
+      ctx.quadraticCurveTo(s * 7 * open, -5, s * 8.5 * open, 1);
+      ctx.quadraticCurveTo(s * 4 * open, 2.5, 0, 1.5);
+      ctx.fill();
+      ctx.fillStyle = colors.hind;
+      ctx.beginPath();
+      ctx.moveTo(0, 0.5);
+      ctx.quadraticCurveTo(s * 5.5 * open, 1.5, s * 4.5 * open, 5);
+      ctx.quadraticCurveTo(s * 2 * open, 5.5, 0, 3.5);
+      ctx.fill();
+    }
+    ctx.fillStyle = colors.body;
+    ctx.beginPath();
+    ctx.ellipse(0, 1, 1.1, 3.8, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = colors.body;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(-0.4, -2.5); ctx.quadraticCurveTo(-1.5, -4.5, -2.5, -5);
+    ctx.moveTo(0.4, -2.5);  ctx.quadraticCurveTo(1.5, -4.5, 2.5, -5);
+    ctx.stroke();
+    ctx.restore();
+  };
+  const MOTH_COLORS = { fore: '#e2d1ab', hind: '#c9b38a', body: '#6e5940' };
+  const SHADOW_COLORS = { fore: '#140d05', hind: '#140d05', body: '#140d05' };
+  let last = start;
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    if (dt <= 0) return;
+    if (state.isLightOn !== wasOn) {
+      wasOn = state.isLightOn;
+      if (wasOn) returnAt = now + randIn(MOTH_RETURN_DELAY);
+      else scheduleBeam(now);
+    }
+    const light = roomLightLevel();
+    const beamOn = FLASHLIGHT_ENABLED && !state.isLightOn && state.flashPointerInside;
+    let want = 'leave';
+    if (state.isLightOn && now >= returnAt) want = 'lamp';
+    else if (beamOn && now >= beamAt && now < beamUntil) want = 'beam';
+    if (want !== 'leave') {
+      if (m.mode === 'away') spawn();
+      if (want === 'beam' && m.mode !== 'beam') beamUntil = now + randIn(MOTH_BEAM_STAY);
+      m.mode = want;
+    } else if (m.mode === 'lamp' || m.mode === 'beam') {
+      if (m.mode === 'beam' && now >= beamUntil) {
+        beamAt = Math.random() < MOTH_BEAM_CHANCE ? now + rand(20000, 40000) : Infinity;
+      }
+      startLeaving();
+    }
+    ctx.clearRect(0, 0, W, H);
+    if (m.mode === 'away') return;
+    let tx, ty, K = 10, D = 2.4;
+    if (m.mode === 'lamp' || m.mode === 'beam') {
+      const c = m.mode === 'lamp' ? bulb : state.flashBeam;
+      if (now >= m.nextOrbitChange) {
+        if (Math.random() < 0.4) m.orbitDir *= -1;
+        m.R = m.mode === 'lamp' ? rand(22, 70) : rand(18, 50);
+        m.nextOrbitChange = now + rand(700, 2200);
+      }
+      m.theta += m.orbitDir * dt * (m.mode === 'lamp' ? 3.2 : 2.2);
+      tx = c.x + Math.cos(m.theta) * m.R;
+      ty = c.y + Math.sin(m.theta) * m.R * 0.6 + (m.mode === 'lamp' ? 14 : 0);
+      if (m.mode === 'lamp') {
+        if (!m.nextBump) m.nextBump = now + rand(2000, 5000);
+        if (now >= m.nextBump && !m.bumpUntil) m.bumpUntil = now + 350;
+        if (m.bumpUntil) {
+          tx = bulb.x; ty = bulb.y; K = 28;
+          if (now >= m.bumpUntil || Math.hypot(m.x - bulb.x, m.y - bulb.y) < 8) {
+            const a = Math.atan2(m.y - bulb.y, m.x - bulb.x) + rand(-0.5, 0.5);
+            m.vx = Math.cos(a) * 220;
+            m.vy = Math.sin(a) * 220;
+            m.bumpUntil = 0;
+            m.nextBump = now + rand(2000, 5000);
+          }
+        }
+      } else {
+        m.bumpUntil = 0; m.nextBump = 0;
+      }
+    } else {
+      tx = m.exit.x; ty = m.exit.y; K = 0.6; D = 0.8;
+    }
+    m.wander += rand(-1, 1) * dt * 14;
+    const noise = m.mode === 'leave' ? 250 : 520;
+    let ax = (tx - m.x) * K - m.vx * D + Math.cos(m.wander) * noise;
+    let ay = (ty - m.y) * K - m.vy * D + Math.sin(m.wander) * noise;
+    m.vx += ax * dt;
+    m.vy += ay * dt;
+    const sp = Math.hypot(m.vx, m.vy);
+    if (sp > MAX_SPEED) { m.vx *= MAX_SPEED / sp; m.vy *= MAX_SPEED / sp; }
+    m.x += m.vx * dt;
+    m.y += m.vy * dt;
+    if (m.mode === 'leave' &&
+      (m.x < -40 || m.x > W + 40 || m.y < -40 || m.y > H + 40)) {
+      m.mode = 'away';
+      return;
+    }
+    if (sp > 10) {
+      let d = Math.atan2(m.vy, m.vx) - m.heading;
+      d = Math.atan2(Math.sin(d), Math.cos(d));
+      m.heading += d * Math.min(1, dt * 10);
+    }
+    m.flap += dt * Math.PI * 2 * (13 + sp * 0.02);
+    const open = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(m.flap));
+    let vis = light;
+    if (beamOn) {
+      const b = state.flashBeam;
+      const d = Math.hypot(m.x - b.x, m.y - b.y) / b.r;
+      if (d < 1) vis = Math.max(vis, 1 - d * d);
+    }
+    if (vis <= 0.01) return;
+    if (MOTH_SHADOW > 0 && light > 0.05) {
+      const sx = m.x + (m.x - bulb.x) * 0.6;
+      const sy = m.y + (m.y - bulb.y) * 0.6 + 6;
+      ctx.globalAlpha = MOTH_SHADOW * light;
+      ctx.filter = 'blur(2px)';
+      drawMoth(sx, sy, m.heading, open, MOTH_SCALE * 1.8, SHADOW_COLORS);
+      ctx.filter = 'none';
+    }
+    ctx.globalAlpha = Math.min(1, 0.95 * vis);
+    drawMoth(m.x, m.y, m.heading, open, MOTH_SCALE, MOTH_COLORS);
+    ctx.globalAlpha = 1;
+  };
+  requestAnimationFrame(frame);
 }
 // ========== ВИНЬЕТКА ==========
 function updateVignette() {
-const v = document.getElementById('vignette');
-if (!v) return;
-v.style.opacity = String(state.isLightOn ? VIGNETTE_LIT : VIGNETTE_DARK);
+  const v = document.getElementById('vignette');
+  if (!v) return;
+  v.style.opacity = String(state.isLightOn ? VIGNETTE_LIT : VIGNETTE_DARK);
 }
 document.addEventListener('DOMContentLoaded', () => {
-document.getElementById('pullCord').addEventListener('click', toggleLight);
+  document.getElementById('pullCord').addEventListener('click', toggleLight);
 });
 initialize();
 </script>
